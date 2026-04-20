@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}VolleyLearn — Master Volleyball{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8 text-center">
+
+    <!-- Hero -->
+    <div style="margin-bottom: 60px; margin-top: 20px;">
+      <p class="section-title mb-3">Welcome to</p>
+      <h1 style="font-family:'Bebas Neue',cursive; font-size:5rem; line-height:1; letter-spacing:2px;">
+        Volley<span style="color:var(--spike)">Learn</span>
+        <span style="font-size:3.5rem;">🏐</span>
+      </h1>
+      <p style="font-size:1.2rem; color:rgba(255,255,255,0.6); margin-top:20px; max-width:500px; margin-left:auto; margin-right:auto;">
+        From total beginner to court-ready player — learn the basics of volleyball, then prove it on the court.
+      </p>
+    </div>
+
+    <!-- What you'll do — 3-step flow -->
+    <div class="vl-card mb-4 text-start" style="border-color:rgba(232,197,71,0.15);">
+      <p class="section-title mb-4">How it works</p>
+      <div style="display:flex; flex-direction:column; gap:0;">
+
+        <div style="display:flex; gap:18px; align-items:flex-start; padding-bottom:22px; position:relative;">
+          <div style="width:40px; height:40px; border-radius:50%; background:var(--net); color:var(--dark); font-family:'Bebas Neue',cursive; font-size:1.3rem; display:flex; align-items:center; justify-content:center; flex-shrink:0;">1</div>
+          <div style="padding-top:6px;">
+            <div style="font-weight:700; font-size:1rem; margin-bottom:3px;">Read 5 Lessons</div>
+            <div style="font-size:.83rem; color:rgba(255,255,255,0.45);">Court rules, serving, passing, setting, and spiking — everything you need to understand the game.</div>
+          </div>
+          <div style="position:absolute; left:20px; top:44px; bottom:0; width:1px; background:rgba(255,255,255,0.08);"></div>
+        </div>
+
+        <div style="display:flex; gap:18px; align-items:flex-start; padding-bottom:22px; position:relative;">
+          <div style="width:40px; height:40px; border-radius:50%; background:var(--court); color:white; font-family:'Bebas Neue',cursive; font-size:1.3rem; display:flex; align-items:center; justify-content:center; flex-shrink:0;">2</div>
+          <div style="padding-top:6px;">
+            <div style="font-weight:700; font-size:1rem; margin-bottom:3px;">3 Build-a-Play Challenges</div>
+            <div style="font-size:.83rem; color:rgba(255,255,255,0.45);">Drag players onto a real volleyball court to set up the correct formation for each scenario.</div>
+          </div>
+          <div style="position:absolute; left:20px; top:44px; bottom:0; width:1px; background:rgba(255,255,255,0.08);"></div>
+        </div>
+
+        <div style="display:flex; gap:18px; align-items:flex-start;">
+          <div style="width:40px; height:40px; border-radius:50%; background:var(--spike); color:white; font-family:'Bebas Neue',cursive; font-size:1.3rem; display:flex; align-items:center; justify-content:center; flex-shrink:0;">3</div>
+          <div style="padding-top:6px;">
+            <div style="font-weight:700; font-size:1rem; margin-bottom:3px;">Hit the Court</div>
+            <div style="font-size:.83rem; color:rgba(255,255,255,0.45);">Earn all 3 stars and you're ready to play your first real match.</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Lesson preview grid -->
+    <div class="vl-card mb-5 text-start">
+      <p class="section-title mb-4">5 Lessons + 3 Challenges</p>
+      <div class="row g-3">
+        {% set topics = [
+          ("🏟️", "The Court & Rules"),
+          ("💪", "Serving"),
+          ("🙌", "Passing"),
+          ("👆", "Setting"),
+          ("⚡", "Spiking"),
+        ] %}
+        {% for emoji, title in topics %}
+        <div class="col-6 col-sm-4">
+          <div style="background:rgba(255,255,255,0.04); border-radius:10px; padding:14px 16px; border:1px solid rgba(255,255,255,0.07); display:flex; align-items:center; gap:10px;">
+            <span style="font-size:1.3rem;">{{ emoji }}</span>
+            <span style="font-weight:600; font-size:.88rem;">{{ title }}</span>
+          </div>
+        </div>
+        {% endfor %}
+        <div class="col-6 col-sm-4">
+          <div style="background:rgba(224,92,58,0.1); border-radius:10px; padding:14px 16px; border:1px solid rgba(224,92,58,0.3); display:flex; align-items:center; gap:10px;">
+            <span style="font-size:1.3rem;">🎮</span>
+            <span style="font-weight:600; font-size:.88rem; color:var(--spike);">Build-a-Play ×3</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <a href="/start" class="btn-vl btn-vl-spike" style="font-size:1.3rem; padding:16px 60px; border-radius:12px; text-decoration:none; display:inline-block;">
+      START LEARNING →
+    </a>
+    <p style="color:rgba(255,255,255,0.3); font-size:0.8rem; margin-top:14px;">~10 minutes · 5 lessons + 3 interactive challenges</p>
+
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Build-a-Play Challenge — VolleyLearn{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7 text-center">
+
+    <div style="margin-bottom: 48px; margin-top: 16px;">
+      <div style="font-size: 5rem; margin-bottom: 16px; animation: bounce 1.2s ease infinite;">🏐</div>
+      <p style="font-family:'Bebas Neue',cursive; color:var(--net); letter-spacing:3px; font-size:.9rem; margin-bottom:8px;">KNOWLEDGE CHECK</p>
+      <h1 style="font-family:'Bebas Neue',cursive; font-size:3.8rem; line-height:1.05; letter-spacing:1px;">
+        Build-a-Play<br><span style="color:var(--spike)">Challenge</span>
+      </h1>
+      <p style="color:rgba(255,255,255,0.55); font-size:1.05rem; max-width:480px; margin: 18px auto 0; line-height:1.7;">
+        Drag players onto the court to set up the correct formation for each scenario. Get every player in the right spot to pass the challenge.
+      </p>
+    </div>
+
+    <div class="vl-card mb-5 text-start" style="border-color: rgba(232,197,71,0.2);">
+      <p class="section-title mb-3">You'll face {{ total }} scenarios</p>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        {% set names = ["Serve Receive Formation", "Spiking Attack Setup", "Defensive Block Position"] %}
+        {% set emojis = ["📡", "⚡", "🛡️"] %}
+        {% for i in range(total) %}
+        <div style="display:flex; align-items:center; gap:14px; padding:12px 16px; background:rgba(255,255,255,0.04); border-radius:10px; border:1px solid rgba(255,255,255,0.06);">
+          <span style="font-size:1.5rem;">{{ emojis[i] }}</span>
+          <div>
+            <div style="font-weight:600; font-size:.95rem;">{{ names[i] }}</div>
+            <div style="font-size:.78rem; color:rgba(255,255,255,0.4);">Drag all 6 players to correct positions</div>
+          </div>
+          <span style="margin-left:auto; font-family:'Bebas Neue',cursive; color:rgba(255,255,255,0.25); font-size:.9rem; letter-spacing:1px;">{{ i+1 }}/{{ total }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <a href="/play/1" class="btn-vl btn-vl-spike" style="font-size:1.3rem; padding:16px 64px; border-radius:12px; text-decoration:none; display:inline-block;">
+      LET'S GO →
+    </a>
+
+  </div>
+</div>
+
+<style>
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+</style>
+{% endblock %}

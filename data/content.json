@@ -1,0 +1,167 @@
+{
+  "lessons": [
+    {
+      "id": 1,
+      "title": "The Court & The Game",
+      "emoji": "🏐",
+      "subtitle": "Understanding the playing field",
+      "content": "Volleyball is played on an 18m x 9m court divided by a net. Two teams of 6 players compete to send the ball over the net and land it in the opponent's court. Each team gets up to 3 touches before sending it back. A match is best of 5 sets — first to 25 points (with a 2-point lead) wins a set.",
+      "key_facts": [
+        "Court size: 18m × 9m",
+        "6 players per team on court",
+        "Max 3 touches per possession",
+        "First to 25 points wins a set",
+        "The net height is 2.43m (men) / 2.24m (women)"
+      ],
+      "image_emoji": "🏟️",
+      "selection_prompt": "Which part of the court would you most want to play on?",
+      "selection_options": ["Front row (attacker)", "Back row (defender)", "I'm not sure yet"]
+    },
+    {
+      "id": 2,
+      "title": "The Serve",
+      "emoji": "💪",
+      "subtitle": "Starting every rally",
+      "content": "Every point begins with a serve. The server stands behind the end line and hits the ball into the opponent's court. There are two main types: the underhand serve (easier, less power) and the overhand serve (more power and control). Advanced players use a jump serve for maximum speed and angle.",
+      "key_facts": [
+        "Server must stand behind the end line",
+        "Only 8 seconds to serve after whistle",
+        "Ball must clear the net without touching it",
+        "Underhand: hit ball with open fist from below",
+        "Overhand: toss ball and strike with open palm"
+      ],
+      "image_emoji": "🤜",
+      "selection_prompt": "Which serve would you try first?",
+      "selection_options": ["Underhand serve", "Overhand serve", "Jump serve (ambitious!)"]
+    },
+    {
+      "id": 3,
+      "title": "The Pass (Bump)",
+      "emoji": "🙌",
+      "subtitle": "The foundation of defense",
+      "content": "The forearm pass (or 'bump') is the most fundamental skill in volleyball. You join your forearms together to create a flat platform and contact the ball with your forearms — NOT your hands. It's used to receive serves, dig attacks, and control the ball. Good passing is the #1 key to winning.",
+      "key_facts": [
+        "Join forearms flat — no interlocked fingers",
+        "Bend your knees and get low",
+        "Contact ball on your forearms, not wrists",
+        "Aim to pass the ball up to the setter",
+        "Move your feet to get behind the ball"
+      ],
+      "image_emoji": "🤲",
+      "selection_prompt": "What feels most challenging about passing?",
+      "selection_options": ["Getting the footwork right", "Judging where the ball goes", "Keeping forearms flat", "Seems manageable!"]
+    },
+    {
+      "id": 4,
+      "title": "The Set",
+      "emoji": "👆",
+      "subtitle": "The art of the setup",
+      "content": "The set is typically the second touch, delivered by the setter. Using fingertips (not palms), the setter pushes the ball upward and forward to position it perfectly for an attacker. It's the most precise skill in volleyball — a great set makes spiking much easier. The setter is like the quarterback of the team.",
+      "key_facts": [
+        "Use fingertips, never the palm",
+        "Hands form a 'window' above your forehead",
+        "Push the ball — don't catch and throw it",
+        "Setter runs the team's offense",
+        "A set should hang in the air near the net"
+      ],
+      "image_emoji": "🖐️",
+      "selection_prompt": "Would you want to be a setter?",
+      "selection_options": ["Yes, I love being in control", "No, I'd rather attack", "I'd try it — seems fun"]
+    },
+    {
+      "id": 5,
+      "title": "The Spike (Attack)",
+      "emoji": "⚡",
+      "subtitle": "The most exciting play",
+      "content": "The spike (or attack) is the third touch — a powerful hit aimed to score a point. The attacker takes a 3-step approach, jumps, and drives the ball downward into the opponent's court. It's the most spectacular play in volleyball. A spike can travel over 100 km/h at the professional level!",
+      "key_facts": [
+        "3-step approach: left-right-left (for right-handers)",
+        "Swing your arms back before jumping",
+        "Contact ball at the highest point",
+        "Snap your wrist to angle the ball down",
+        "Aim for open spots or weak defenders"
+      ],
+      "image_emoji": "✊",
+      "selection_prompt": "Where would you aim your spike?",
+      "selection_options": ["Line shot (down the sideline)", "Cross-court (diagonal)", "Short tip over the block", "Right at the setter!"]
+    }
+  ],
+  "quiz": [
+    {
+      "id": 1,
+      "question": "How many players are on the court per team in volleyball?",
+      "options": ["4", "5", "6", "7"],
+      "answer": 2,
+      "explanation": "Each team has 6 players on the court at a time."
+    },
+    {
+      "id": 2,
+      "question": "How many touches is each team allowed per possession?",
+      "options": ["1", "2", "3", "4"],
+      "answer": 2,
+      "explanation": "Teams get a maximum of 3 touches before sending the ball back over the net."
+    },
+    {
+      "id": 3,
+      "question": "Which body part do you use for a forearm pass (bump)?",
+      "options": ["Palms", "Fists", "Forearms", "Wrists"],
+      "answer": 2,
+      "explanation": "The forearm pass uses a flat platform formed by your forearms — not your hands or fists."
+    },
+    {
+      "id": 4,
+      "question": "What is the role of the setter in volleyball?",
+      "options": [
+        "To serve every point",
+        "To position the ball for an attacker",
+        "To block all spikes",
+        "To receive all serves"
+      ],
+      "answer": 1,
+      "explanation": "The setter delivers the second touch, setting up the ball near the net for an attacker to spike."
+    },
+    {
+      "id": 5,
+      "question": "How many points does a team need to win a set (in most cases)?",
+      "options": ["15", "21", "25", "30"],
+      "answer": 2,
+      "explanation": "A team needs 25 points (with a 2-point lead) to win a set. The 5th set, if played, goes to 15."
+    },
+    {
+      "id": 6,
+      "question": "In an overhand serve, how do you contact the ball?",
+      "options": [
+        "With a closed fist from below",
+        "With an open palm after tossing it up",
+        "With your wrist flicked sideways",
+        "With both hands simultaneously"
+      ],
+      "answer": 1,
+      "explanation": "An overhand serve involves tossing the ball in the air and striking it with an open palm."
+    },
+    {
+      "id": 7,
+      "question": "What is the typical 3-step approach order for a right-handed spiker?",
+      "options": [
+        "Right-left-right",
+        "Left-right-left",
+        "Right-right-left",
+        "Left-left-right"
+      ],
+      "answer": 1,
+      "explanation": "Right-handed players use a left-right-left (or sometimes right-left-right) approach. Left-right-left is most common."
+    },
+    {
+      "id": 8,
+      "question": "Where must the server stand when serving?",
+      "options": [
+        "Anywhere on the court",
+        "At the net",
+        "Behind the end line",
+        "In the middle of the back row"
+      ],
+      "answer": 2,
+      "explanation": "The server must always stand behind the end line (the back boundary) before and during the serve."
+    }
+  ]
+}

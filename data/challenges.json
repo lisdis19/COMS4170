@@ -1,0 +1,79 @@
+{
+  "challenges": [
+    {
+      "id": 1,
+      "title": "Serve Receive Formation",
+      "emoji": "📡",
+      "description": "The opponent just served. Set up your team in the classic 'W' serve receive — 3 back-row passers in a W shape and 2 front-row players ready near the net.",
+      "hint": "Your 3 passers form a W in the back court. The setter and one hitter wait near the net.",
+      "players": [
+        {"id": "P1", "label": "S",  "role": "Setter",          "color": "#E8C547"},
+        {"id": "P2", "label": "OH", "role": "Outside Hitter",  "color": "#3B82A0"},
+        {"id": "P3", "label": "MB", "role": "Middle Blocker",  "color": "#3B82A0"},
+        {"id": "P4", "label": "L",  "role": "Libero",          "color": "#E05C3A"},
+        {"id": "P5", "label": "DS", "role": "Defensive Spec.", "color": "#5AAD7E"},
+        {"id": "P6", "label": "OH", "role": "Opp. Hitter",     "color": "#3B82A0"}
+      ],
+      "zones": [
+        {"id": "Z1", "label": "Net Left",    "x": 18, "y": 12, "accepts": ["P2"]},
+        {"id": "Z2", "label": "Net Right",   "x": 82, "y": 12, "accepts": ["P1"]},
+        {"id": "Z3", "label": "Back Left",   "x": 15, "y": 62, "accepts": ["P5"]},
+        {"id": "Z4", "label": "Back Center", "x": 50, "y": 72, "accepts": ["P4"]},
+        {"id": "Z5", "label": "Back Right",  "x": 85, "y": 62, "accepts": ["P3"]},
+        {"id": "Z6", "label": "Mid Center",  "x": 50, "y": 42, "accepts": ["P6"]}
+      ],
+      "success_message": "Perfect W formation! Your passers cover the whole back court and your setter is ready to set.",
+      "learn_tip": "The W formation puts your best passers — often the Libero in the middle back — where most serves land."
+    },
+    {
+      "id": 2,
+      "title": "Spiking Attack",
+      "emoji": "⚡",
+      "description": "Your team has the ball and the setter just set it high on the left side. Arrange your players — blockers jump at the net, hitters approach, and back row covers tips.",
+      "hint": "Two blockers at the net defend. The outside hitter approaches from the left. Back row players cover the court.",
+      "players": [
+        {"id": "P1", "label": "S",  "role": "Setter",          "color": "#E8C547"},
+        {"id": "P2", "label": "OH", "role": "Outside Hitter",  "color": "#3B82A0"},
+        {"id": "P3", "label": "MB", "role": "Middle Blocker",  "color": "#9B59B6"},
+        {"id": "P4", "label": "L",  "role": "Libero",          "color": "#E05C3A"},
+        {"id": "P5", "label": "RS", "role": "Right Side",      "color": "#5AAD7E"},
+        {"id": "P6", "label": "MB", "role": "Mid Blocker 2",   "color": "#9B59B6"}
+      ],
+      "zones": [
+        {"id": "Z1", "label": "Left Antenna",  "x": 12, "y": 10, "accepts": ["P3"]},
+        {"id": "Z2", "label": "Right Block",   "x": 60, "y": 10, "accepts": ["P5"]},
+        {"id": "Z3", "label": "Attack Zone",   "x": 10, "y": 35, "accepts": ["P2"]},
+        {"id": "Z4", "label": "Setting Spot",  "x": 75, "y": 30, "accepts": ["P1"]},
+        {"id": "Z5", "label": "Left Cover",    "x": 25, "y": 70, "accepts": ["P4"]},
+        {"id": "Z6", "label": "Right Cover",   "x": 70, "y": 68, "accepts": ["P6"]}
+      ],
+      "success_message": "Textbook attack formation! Blockers up, hitter approaching, back row ready to cover the tip.",
+      "learn_tip": "When your team attacks, back row players 'cover' the hitter — ready to dig if the block sends it back."
+    },
+    {
+      "id": 3,
+      "title": "Defensive Block",
+      "emoji": "🛡️",
+      "description": "The other team's outside hitter is about to spike from the left side. Get your team into defensive position — two blockers at the net and back row in defensive spots.",
+      "hint": "Two players jump at the net to block. The other four drop back in a defensive base formation.",
+      "players": [
+        {"id": "P1", "label": "S",  "role": "Setter",         "color": "#E8C547"},
+        {"id": "P2", "label": "OH", "role": "Outside Hitter", "color": "#3B82A0"},
+        {"id": "P3", "label": "MB", "role": "Middle Blocker", "color": "#9B59B6"},
+        {"id": "P4", "label": "L",  "role": "Libero",         "color": "#E05C3A"},
+        {"id": "P5", "label": "RS", "role": "Right Side",     "color": "#5AAD7E"},
+        {"id": "P6", "label": "DS", "role": "Def. Specialist","color": "#F0A500"}
+      ],
+      "zones": [
+        {"id": "Z1", "label": "Block Left",    "x": 15, "y": 10, "accepts": ["P3"]},
+        {"id": "Z2", "label": "Block Right",   "x": 40, "y": 10, "accepts": ["P5"]},
+        {"id": "Z3", "label": "Setter Zone",   "x": 78, "y": 22, "accepts": ["P1"]},
+        {"id": "Z4", "label": "Left Back",     "x": 15, "y": 70, "accepts": ["P2"]},
+        {"id": "Z5", "label": "Center Back",   "x": 50, "y": 78, "accepts": ["P4"]},
+        {"id": "Z6", "label": "Right Back",    "x": 82, "y": 68, "accepts": ["P6"]}
+      ],
+      "success_message": "Great defensive setup! Two blockers seal the net and back row is spread to cover the whole court.",
+      "learn_tip": "The libero almost always plays center back — they're your best passer and get the most digs from that spot."
+    }
+  ]
+}

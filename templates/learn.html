@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}Lesson {{ lesson_num }}: {{ lesson.title }} — VolleyLearn{% endblock %}
+
+{% block progress %}
+<div class="progress-wrap">
+  <div class="progress-label">Lesson {{ lesson_num }} of {{ total }} — Learning Phase</div>
+  <div class="progress">
+    <div class="progress-bar" style="width: {{ progress }}%"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+
+    <!-- Header -->
+    <div class="mb-4">
+      <p class="section-title">Lesson {{ lesson_num }} / {{ total }}</p>
+      <h1 class="page-heading">
+        <span style="color:var(--net)">{{ lesson.emoji }}</span>
+        {{ lesson.title }}
+      </h1>
+      <p style="color:rgba(255,255,255,0.5); margin-top:6px; font-size:1rem;">{{ lesson.subtitle }}</p>
+    </div>
+
+    <form method="POST">
+      <!-- Main content card -->
+      <div class="vl-card mb-4">
+        <div style="font-size:4rem; margin-bottom:20px; text-align:center;">{{ lesson.image_emoji }}</div>
+        <p style="font-size:1.05rem; line-height:1.75; color:rgba(255,255,255,0.85);">
+          {{ lesson.content }}
+        </p>
+      </div>
+
+      <!-- Key facts -->
+      <div class="vl-card mb-4">
+        <p class="section-title mb-3">Key Facts</p>
+        <div style="display:flex; flex-wrap:wrap; gap:10px;">
+          {% for fact in lesson.key_facts %}
+          <span class="fact-pill">{{ fact }}</span>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Selection question -->
+      <div class="vl-card mb-5">
+        <p class="section-title mb-3">Quick Reflection</p>
+        <p style="font-size:1rem; font-weight:500; margin-bottom:16px; color:rgba(255,255,255,0.85);">
+          {{ lesson.selection_prompt }}
+        </p>
+        {% for opt in lesson.selection_options %}
+        <label class="selection-option">
+          <input type="radio" name="selection" value="{{ opt }}" required>
+          {{ opt }}
+        </label>
+        {% endfor %}
+      </div>
+
+      <!-- Nav -->
+      <div class="d-flex justify-content-between align-items-center">
+        {% if lesson_num > 1 %}
+        <a href="/learn/{{ lesson_num - 1 }}" class="btn-vl btn-vl-outline" style="text-decoration:none; font-family:'Bebas Neue',cursive; font-size:1rem; padding:10px 28px; border-radius:8px;">← Back</a>
+        {% else %}
+        <a href="/" class="btn-vl btn-vl-outline" style="text-decoration:none; font-family:'Bebas Neue',cursive; font-size:1rem; padding:10px 28px; border-radius:8px;">← Home</a>
+        {% endif %}
+
+        <button type="submit" class="btn-vl">
+          {% if lesson_num == total %}Build-a-Play →{% else %}Next Lesson →{% endif %}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}

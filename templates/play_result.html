@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Challenge Complete — VolleyLearn{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7 text-center">
+
+    {% if completed == total %}
+    <div style="font-size:5rem; margin-bottom:16px; animation: spin 1s ease 1;">🏐</div>
+    <p style="font-family:'Bebas Neue',cursive; color:var(--net); letter-spacing:3px; font-size:.9rem; margin-bottom:8px;">YOU DID IT</p>
+    <h1 style="font-family:'Bebas Neue',cursive; font-size:3.8rem; line-height:1.1;">
+      Court-Ready<br><span style="color:var(--spike)">Legend!</span>
+    </h1>
+    <p style="color:rgba(255,255,255,0.55); font-size:1rem; max-width:440px; margin: 16px auto 0; line-height:1.7;">
+      You nailed all {{ total }} formations. You know where every player goes — time to hit the real court.
+    </p>
+    {% else %}
+    <div style="font-size:5rem; margin-bottom:16px;">💪</div>
+    <p style="font-family:'Bebas Neue',cursive; color:var(--net); letter-spacing:3px; font-size:.9rem; margin-bottom:8px;">NICE EFFORT</p>
+    <h1 style="font-family:'Bebas Neue',cursive; font-size:3.8rem; line-height:1.1;">
+      {{ completed }}/{{ total }}<br><span style="color:var(--spike)">Challenges</span>
+    </h1>
+    <p style="color:rgba(255,255,255,0.55); font-size:1rem; max-width:440px; margin: 16px auto 0; line-height:1.7;">
+      Keep practicing — go back through the lessons and try again to nail every formation.
+    </p>
+    {% endif %}
+
+    <!-- Stars -->
+    <div style="display:flex; justify-content:center; gap:10px; margin: 32px 0;">
+      {% for i in range(total) %}
+      <div style="font-size:2.5rem; {% if i < completed %}filter:drop-shadow(0 0 10px var(--net));{% else %}opacity:0.2;{% endif %}">⭐</div>
+      {% endfor %}
+    </div>
+
+    <!-- Recap card -->
+    <div class="vl-card text-start mb-5" style="border-color:rgba(232,197,71,0.2);">
+      <p class="section-title mb-4">What you mastered</p>
+      {% set challenge_info = [
+        ("📡", "Serve Receive", "W-formation with libero in center back"),
+        ("⚡", "Spiking Attack", "Blockers up, hitter approaching, back row covering"),
+        ("🛡️", "Defensive Block", "Two blockers at net, four defenders spread behind"),
+      ] %}
+      {% for emoji, title, desc in challenge_info %}
+      <div style="display:flex; gap:14px; align-items:flex-start; padding:12px 0; {% if not loop.last %}border-bottom: 1px solid rgba(255,255,255,0.06);{% endif %}">
+        <span style="font-size:1.4rem; flex-shrink:0;">{{ emoji }}</span>
+        <div>
+          <div style="font-weight:700; font-size:.92rem; color:rgba(255,255,255,0.9);">{{ title }}</div>
+          <div style="font-size:.8rem; color:rgba(255,255,255,0.4); margin-top:2px;">{{ desc }}</div>
+        </div>
+        <span style="margin-left:auto; font-size:1.2rem;">{{ '✅' if loop.index <= completed else '⬜' }}</span>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+      <a href="/play/1" class="btn-vl" style="text-decoration:none;">Play Again</a>
+      <a href="/" class="btn-vl btn-vl-outline" style="text-decoration:none; font-family:'Bebas Neue',cursive; font-size:1.1rem; padding:12px 36px; border-radius:8px; border:2px solid var(--net); color:var(--net);">Home</a>
+    </div>
+
+  </div>
+</div>
+
+<style>
+@keyframes spin {
+  0%   { transform: rotate(0deg) scale(1); }
+  50%  { transform: rotate(180deg) scale(1.3); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+</style>
+{% endblock %}
