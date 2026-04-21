@@ -11,13 +11,13 @@ app.jinja_env.globals.update(enumerate=enumerate)
 
 # Load content data
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-with open(os.path.join(BASE_DIR, "data", "content.json")) as f:
+with open(os.path.join(BASE_DIR, "data", "content.json"), encoding="utf-8") as f:
     CONTENT = json.load(f)
 
 LESSONS = CONTENT["lessons"]
 QUIZ = CONTENT["quiz"]
 
-with open(os.path.join(BASE_DIR, "data", "challenges.json")) as f:
+with open(os.path.join(BASE_DIR, "data", "challenges.json"), encoding="utf-8") as f:
     CHALLENGES = json.load(f)["challenges"]
 
 # ---------- Simple in-memory user log (one user at a time) ----------
