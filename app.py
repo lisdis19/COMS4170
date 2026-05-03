@@ -20,6 +20,18 @@ QUIZ = CONTENT["quiz"]
 with open(os.path.join(BASE_DIR, "data", "challenges.json"), encoding="utf-8") as f:
     CHALLENGES = json.load(f)["challenges"]
 
+import socket
+
+def find_port(start=5000, end=5100):
+    for port in range(start, end):
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            try:
+                s.bind(("127.0.0.1", port))
+                return port
+            except OSError:
+                continue
+    raise RuntimeError("No free ports available in range")
+
 # ---------- Simple in-memory user log (one user at a time) ----------
 user_log = {
     "session_start": None,
@@ -176,4 +188,5 @@ def api_log():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = find_port()
+    app.run(debug=True, port=port)

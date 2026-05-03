@@ -181,7 +181,7 @@
 }
 
 .bench-section {
-  background: var(--mid); border: 1px solid rgba(255,255,255,0.07);
+  background: var(--blue); border: 1px solid rgba(255,255,255,0.07);
   border-radius: 12px; padding: 16px; margin-top: 12px;
 }
 .bench { display: flex; flex-direction: column; gap: 7px; }
@@ -294,6 +294,7 @@ CHALLENGE.players.forEach(p => players[p.id] = p);
 const zoneContents   = {};
 let draggingPlayerId = null;
 let draggingFromZone = null;
+
 
 function setRing(zoneId, state) {
   const ring = document.getElementById(`ring-${zoneId}`);
@@ -464,6 +465,7 @@ document.querySelectorAll('.player-token').forEach(token => {
 
 // ── Check ──
 document.getElementById('checkBtn').addEventListener('click', async () => {
+  
   const res  = await fetch('/api/play/submit', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -493,8 +495,16 @@ document.getElementById('checkBtn').addEventListener('click', async () => {
 // ── Reset / Retry ──
 function doReset() {
   document.getElementById('resultOverlay').style.display = 'none';
-  Object.keys(zoneContents).forEach(zid => { document.querySelector(`.court-player[data-zone="${zid}"]`)?.remove(); setRing(zid,''); delete zoneContents[zid]; });
-  document.querySelectorAll('.player-token').forEach(t => { t.classList.remove('placed'); t.querySelector('.placed-check').style.display='none'; });
+  Object.keys(zoneContents).forEach(zid => { 
+    document.querySelector(`.court-player[data-zone="${zid}"]`)?.remove(); 
+    delete zoneContents[zid]; 
+  });
+  document.querySelectorAll('.player-token').forEach(t => { 
+    
+    t.classList.remove('placed'); 
+    t.querySelector('.placed-check').style.display='none'; 
+  
+});
   updateSidebar();
 }
 document.getElementById('retryBtn').addEventListener('click', doReset);
