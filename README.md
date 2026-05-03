@@ -61,10 +61,11 @@ python app.py
 ```
 
 **4. Open in your browser**
+It should show you 
 ```
-http://localhost:5000
+* Running on http://127.0.0.1:5000
 ```
-
+It may be a port different from 5000 (ex. 5001). Open that in your browser!
 ---
 
 ## Routes
