@@ -61,7 +61,7 @@ python app.py
 ```
 
 **4. Open in your browser**
-- It should show you 
+- It should show you: 
 ```
 * Running on http://127.0.0.1:5000
 ```
