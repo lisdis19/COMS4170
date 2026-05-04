@@ -9,10 +9,10 @@
       "players": [
         {"id": "P1", "label": "S",  "role": "Setter",          "color": "#E8C547"},
         {"id": "P2", "label": "OH", "role": "Outside Hitter",  "color": "#3B82A0"},
-        {"id": "P3", "label": "MB", "role": "Middle Blocker",  "color": "#3B82A0"},
+        {"id": "P3", "label": "MB", "role": "Middle Blocker",  "color": "#9B59B6"},
         {"id": "P4", "label": "L",  "role": "Libero",          "color": "#E05C3A"},
-        {"id": "P5", "label": "DS", "role": "Defensive Spec.", "color": "#5AAD7E"},
-        {"id": "P6", "label": "OH", "role": "Opp. Hitter",     "color": "#3B82A0"}
+        {"id": "P5", "label": "DS", "role": "Defensive Spec.", "color": "#F0A500"},
+        {"id": "P6", "label": "RS", "role": "Right Side",     "color": "#5AAD7E"}
       ],
       "zones": [
         {"id": "Z1", "label": "Net Left",    "x": 18, "y": 12, "accepts": ["P2"]},
@@ -37,7 +37,7 @@
         {"id": "P3", "label": "MB", "role": "Middle Blocker",  "color": "#9B59B6"},
         {"id": "P4", "label": "L",  "role": "Libero",          "color": "#E05C3A"},
         {"id": "P5", "label": "RS", "role": "Right Side",      "color": "#5AAD7E"},
-        {"id": "P6", "label": "MB", "role": "Mid Blocker 2",   "color": "#9B59B6"}
+        {"id": "P6", "label": "DS", "role": "Defensive Spec.",   "color": "#F0A500"}
       ],
       "zones": [
         {"id": "Z1", "label": "Left Antenna",  "x": 12, "y": 10, "accepts": ["P3"]},
@@ -62,7 +62,7 @@
         {"id": "P3", "label": "MB", "role": "Middle Blocker", "color": "#9B59B6"},
         {"id": "P4", "label": "L",  "role": "Libero",         "color": "#E05C3A"},
         {"id": "P5", "label": "RS", "role": "Right Side",     "color": "#5AAD7E"},
-        {"id": "P6", "label": "DS", "role": "Def. Specialist","color": "#F0A500"}
+        {"id": "P6", "label": "DS", "role": "Defensive Spec.","color": "#F0A500"}
       ],
       "zones": [
         {"id": "Z1", "label": "Block Left",    "x": 15, "y": 10, "accepts": ["P3"]},
