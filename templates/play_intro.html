@@ -34,6 +34,24 @@
       </div>
     </div>
 
+    <div class="vl-card mb-5 text-start" style="border-color: rgba(232,197,71,0.2);">
+<p class="section-title mb-3">The Types of Players</p>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        {% set playerss = ["Setter", "Outside Hitter (Left Side)", "Middle Blocker", "Opposite Hitter (Right Side)", "Libero", "Defensive Specialist"] %}
+	{% set desc = ["Passes the ball to hitters for attacks", "Usually attacks from the left and helps pass", "Blocks the opponent’s attacks and hits quick middle balls", "Attacks from the right and plays defense too", "Defensive player in the back row who wears a different jersey", "Similar to a libero, plays only in the back row"] %}
+        {% for i in range(6) %}
+        <div style="display:flex; align-items:center; gap:14px; padding:12px 16px; background:rgba(255,255,255,0.04); border-radius:10px; border:1px solid rgba(255,255,255,0.06);">
+          
+          <div>
+            <div style="font-weight:600; font-size:.95rem;">{{ playerss[i] }}</div>
+            <div style="font-size:.78rem; color:rgba(255,255,255,0.4);">{{ desc[i] }}</div>
+          </div>
+          
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
     <a href="/play/1" class="btn-vl btn-vl-spike" style="font-size:1.3rem; padding:16px 64px; border-radius:12px; text-decoration:none; display:inline-block;">
       LET'S GO →
     </a>
