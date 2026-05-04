@@ -31,9 +31,14 @@ COMS4170/
 ├── app.py                  # Flask routes and session logic
 ├── data/
 │   ├── content.json        # Lesson content and quiz data
-│   └── challenges.json     # Build-a-Play challenge definitions
+│   ├── challenges.json     # Build-a-Play challenge definitions
+│   ├── Spike.jpg
+│   ├── Set.jpg
+│   ├── Pass.jpg
+│   └── Serve.jpg
 └── templates/
     ├── home.html
+    ├── court.html
     ├── learn.html
     ├── play_intro.html
     ├── play.html
