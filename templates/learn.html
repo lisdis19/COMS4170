@@ -27,7 +27,15 @@
     <form method="POST">
       <!-- Main content card -->
       <div class="vl-card mb-4">
-        <div style="font-size:4rem; margin-bottom:20px; text-align:center;">{{ lesson.image_emoji }}</div>
+        {% if lesson_num == 1 %}
+<div style="width:50%; margin:0 auto 20px;">
+  {% include "court.html" %}
+</div>
+{% else %}
+  <div style="font-size:4rem; margin-bottom:20px; text-align:center;">
+<img src="/data/{{ lesson.image }}" style="max-width:50%; border-radius:6px;">
+</div>
+{% endif %}
         <p style="font-size:1.05rem; line-height:1.75; color:rgba(255,255,255,0.85);">
           {{ lesson.content }}
         </p>

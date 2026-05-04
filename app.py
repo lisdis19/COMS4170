@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request, session, jsonify
+from flask import Flask, render_template, redirect, url_for, request, session, jsonify, send_from_directory
 import json
 import os
 from datetime import datetime
@@ -185,6 +185,10 @@ def play_result():
 @app.route("/api/log")
 def api_log():
     return jsonify(user_log)
+
+@app.route('/data/<path:filename>')                                    
+def data_files(filename):                                                  
+    return send_from_directory(os.path.join(BASE_DIR, 'data'), filename)
 
 
 if __name__ == "__main__":

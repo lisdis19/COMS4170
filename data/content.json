@@ -32,7 +32,7 @@
         "Underhand: hit ball with open fist from below",
         "Overhand: toss ball and strike with open palm"
       ],
-      "image_emoji": "🤜",
+      "image": "Serve.jpg",
       "selection_prompt": "Which serve would you try first?",
       "selection_options": ["Underhand serve", "Overhand serve", "Jump serve (ambitious!)"]
     },
@@ -50,7 +50,7 @@
         "Aim to pass the ball up to the setter",
         "Move your feet to get behind the ball"
       ],
-      "image_emoji": "🤲",
+      "image": "Pass.jpg",
       "selection_prompt": "What feels most challenging about passing?",
       "selection_options": ["Getting the footwork right", "Judging where the ball goes", "Keeping forearms flat", "Seems manageable!"]
     },
@@ -68,7 +68,7 @@
         "Setter runs the team's offense",
         "A set should hang in the air near the net"
       ],
-      "image_emoji": "🖐️",
+      "image": "Set.jpg",
       "selection_prompt": "Would you want to be a setter?",
       "selection_options": ["Yes, I love being in control", "No, I'd rather attack", "I'd try it — seems fun"]
     },
@@ -86,7 +86,7 @@
         "Snap your wrist to angle the ball down",
         "Aim for open spots or weak defenders"
       ],
-      "image_emoji": "✊",
+      "image": "Spike.jpg",
       "selection_prompt": "Where would you aim your spike?",
       "selection_options": ["Line shot (down the sideline)", "Cross-court (diagonal)", "Short tip over the block", "Right at the setter!"]
     }
