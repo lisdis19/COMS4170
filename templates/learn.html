@@ -54,13 +54,49 @@
       <!-- Selection question -->
       <div class="vl-card mb-5">
         <p class="section-title mb-3">Quick Reflection</p>
+
         <p style="font-size:1rem; font-weight:500; margin-bottom:16px; color:rgba(255,255,255,0.85);">
           {{ lesson.selection_prompt }}
         </p>
+
         {% for opt in lesson.selection_options %}
-        <label class="selection-option">
+        <label class="choice-card">
           <input type="radio" name="selection" value="{{ opt }}" required>
-          {{ opt }}
+
+          <div class="choice-inner">
+
+            <div class="choice-icon">
+              {% if "Front" in opt or "attack" in opt %}
+                ⚡
+              {% elif "Back" in opt or "defense" in opt %}
+                🛡️
+              {% elif "Underhand" in opt %}
+                🤲
+              {% elif "Overhand" in opt %}
+                💪
+              {% elif "Jump" in opt %}
+                🚀
+              {% elif "forearms" in opt %}
+                🙌
+              {% elif "setter" in opt %}
+                🧠
+              {% elif "line" in opt %}
+                📏
+              {% elif "cross" in opt %}
+                ↗️
+              {% elif "tip" in opt %}
+                🎯
+              {% else %}
+                🏐
+              {% endif %}
+            </div>
+
+            <div>
+              <div class="choice-text">{{ opt }}</div>
+              <div class="choice-subtext">Tap to choose</div>
+            </div>
+
+          </div>
         </label>
         {% endfor %}
       </div>
