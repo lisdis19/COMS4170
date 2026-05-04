@@ -32,13 +32,13 @@ COMS4170/
 ├── data/
 │   ├── content.json        # Lesson content and quiz data
 │   ├── challenges.json     # Build-a-Play challenge definitions
-│   ├── Spike.jpg
-│   ├── Set.jpg
 │   ├── Pass.jpg
-│   └── Serve.jpg
+│   ├── Set.jpg
+│   ├── Serve.jpg
+│   └── Spike.jpg
 └── templates/
-    ├── home.html
     ├── court.html
+    ├── home.html
     ├── learn.html
     ├── play_intro.html
     ├── play.html
