@@ -30,18 +30,20 @@ VolleyLearn walks users through two core learning experiences:
 COMS4170/
 ├── app.py                  # Flask routes and session logic
 ├── data/
-│   ├── content.json        # Lesson content and quiz data
-│   ├── challenges.json     # Build-a-Play challenge definitions
 │   ├── Pass.jpg
 │   ├── Set.jpg
 │   ├── Serve.jpg
-│   └── Spike.jpg
+│   ├── content.json        # Lesson content and quiz data
+│   └── Spike.jpgchallenges.json     # Build-a-Play challenge definitions
+├── static/
+│   ├── player_bump.png 
 └── templates/
+    ├── base.html
     ├── court.html
     ├── home.html
     ├── learn.html
-    ├── play_intro.html
     ├── play.html
+    ├── play_intro.html
     └── play_result.html
 ```
 
