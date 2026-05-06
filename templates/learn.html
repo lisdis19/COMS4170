@@ -21,24 +21,43 @@
         <span style="color:var(--net)">{{ lesson.emoji }}</span>
         {{ lesson.title }}
       </h1>
-      <p style="color:rgba(255,255,255,0.5); margin-top:6px; font-size:1rem;">{{ lesson.subtitle }}</p>
+      <p style="color:rgba(255,255,255,0.5); margin-top:6px; font-size:1rem;">
+        {{ lesson.subtitle }}
+      </p>
     </div>
 
     <form method="POST">
+
       <!-- Main content card -->
       <div class="vl-card mb-4">
+
         {% if lesson_num == 1 %}
-<div style="width:50%; margin:0 auto 20px;">
-  {% include "court.html" %}
-</div>
-{% else %}
-  <div style="font-size:4rem; margin-bottom:20px; text-align:center;">
-<img src="/data/{{ lesson.image }}" style="max-width:50%; border-radius:6px;">
-</div>
-{% endif %}
-        <p style="font-size:1.05rem; line-height:1.75; color:rgba(255,255,255,0.85);">
+        <div style="width:50%; margin:0 auto 20px;">
+          {% include "court.html" %}
+        </div>
+        {% else %}
+        <div style="text-align:center; margin-bottom:20px;">
+          <img src="/data/{{ lesson.image }}" style="max-width:50%; border-radius:8px;">
+        </div>
+        {% endif %}
+
+        <p style="font-size:1.05rem; line-height:1.75; color:rgba(255,255,255,0.85); margin-bottom:22px;">
           {{ lesson.content }}
         </p>
+
+        <!-- Lesson-specific visual cards -->
+        <div class="lesson-visual-grid">
+          {% for card in lesson.visual_cards %}
+          <div class="lesson-info-card" onclick="toggleLessonCard(this)">
+            <div class="lesson-info-icon">{{ card.icon }}</div>
+            <div>
+              <h4>{{ card.title }}</h4>
+              <p>{{ card.text }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
       </div>
 
       <!-- Key facts -->
@@ -78,11 +97,11 @@
                 🚀
               {% elif "forearms" in opt %}
                 🙌
-              {% elif "setter" in opt %}
+              {% elif "setter" in opt or "control" in opt %}
                 🧠
-              {% elif "line" in opt %}
+              {% elif "line" in opt or "Line" in opt %}
                 📏
-              {% elif "cross" in opt %}
+              {% elif "cross" in opt or "Cross" in opt %}
                 ↗️
               {% elif "tip" in opt %}
                 🎯
@@ -90,10 +109,6 @@
                 🏐
               {% endif %}
             </div>
-
-
-
-            
 
             <div>
               <div class="choice-text">{{ opt }}</div>
@@ -108,9 +123,13 @@
       <!-- Nav -->
       <div class="d-flex justify-content-between align-items-center">
         {% if lesson_num > 1 %}
-        <a href="/learn/{{ lesson_num - 1 }}" class="btn-vl btn-vl-outline" style="text-decoration:none; font-family:'Bebas Neue',cursive; font-size:1rem; padding:10px 28px; border-radius:8px;">← Back</a>
+        <a href="/learn/{{ lesson_num - 1 }}" class="btn-vl btn-vl-outline" style="text-decoration:none; font-family:'Bebas Neue',cursive; font-size:1rem; padding:10px 28px; border-radius:8px;">
+          ← Back
+        </a>
         {% else %}
-        <a href="/" class="btn-vl btn-vl-outline" style="text-decoration:none; font-family:'Bebas Neue',cursive; font-size:1rem; padding:10px 28px; border-radius:8px;">← Home</a>
+        <a href="/" class="btn-vl btn-vl-outline" style="text-decoration:none; font-family:'Bebas Neue',cursive; font-size:1rem; padding:10px 28px; border-radius:8px;">
+          ← Home
+        </a>
         {% endif %}
 
         <button type="submit" class="btn-vl">

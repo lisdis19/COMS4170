@@ -16,8 +16,35 @@
       ],
       "image_emoji": "🏟️",
       "selection_prompt": "Which part of the court would you most want to play on?",
-      "selection_options": ["Front row (attacker)", "Back row (defender)", "I'm not sure yet"]
+      "selection_options": [
+        "Front row (attacker)",
+        "Back row (defender)",
+        "I'm not sure yet"
+      ],
+      "visual_cards": [
+        {
+          "icon": "📏",
+          "title": "Court Size",
+          "text": "Volleyball is played on an 18m × 9m court."
+        },
+        {
+          "icon": "👥",
+          "title": "6 Players",
+          "text": "Each team has 6 players on the court."
+        },
+        {
+          "icon": "🔁",
+          "title": "3 Touches",
+          "text": "Teams get up to 3 touches before returning the ball."
+        },
+        {
+          "icon": "🏆",
+          "title": "First to 25",
+          "text": "Most sets are played to 25 points."
+        }
+      ]
     },
+
     {
       "id": 2,
       "title": "The Serve",
@@ -34,8 +61,35 @@
       ],
       "image": "Serve.jpg",
       "selection_prompt": "Which serve would you try first?",
-      "selection_options": ["Underhand serve", "Overhand serve", "Jump serve (ambitious!)"]
+      "selection_options": [
+        "Underhand serve",
+        "Overhand serve",
+        "Jump serve (ambitious!)"
+      ],
+      "visual_cards": [
+        {
+          "icon": "🚩",
+          "title": "Behind the Line",
+          "text": "The server starts behind the end line."
+        },
+        {
+          "icon": "🤲",
+          "title": "Underhand",
+          "text": "A beginner-friendly serve hit from below."
+        },
+        {
+          "icon": "💪",
+          "title": "Overhand",
+          "text": "A stronger serve using an open palm."
+        },
+        {
+          "icon": "🚀",
+          "title": "Jump Serve",
+          "text": "Advanced players jump for more power."
+        }
+      ]
     },
+
     {
       "id": 3,
       "title": "The Pass (Bump)",
@@ -52,8 +106,36 @@
       ],
       "image": "Pass.jpg",
       "selection_prompt": "What feels most challenging about passing?",
-      "selection_options": ["Getting the footwork right", "Judging where the ball goes", "Keeping forearms flat", "Seems manageable!"]
+      "selection_options": [
+        "Getting the footwork right",
+        "Judging where the ball goes",
+        "Keeping forearms flat",
+        "Seems manageable!"
+      ],
+      "visual_cards": [
+        {
+          "icon": "🙌",
+          "title": "Flat Platform",
+          "text": "Keep forearms flat for better control."
+        },
+        {
+          "icon": "🦵",
+          "title": "Bend Knees",
+          "text": "Stay low and balanced while passing."
+        },
+        {
+          "icon": "👟",
+          "title": "Move Feet",
+          "text": "Get behind the ball before contact."
+        },
+        {
+          "icon": "🎯",
+          "title": "Pass Upward",
+          "text": "Aim your pass toward the setter."
+        }
+      ]
     },
+
     {
       "id": 4,
       "title": "The Set",
@@ -70,8 +152,35 @@
       ],
       "image": "Set.jpg",
       "selection_prompt": "Would you want to be a setter?",
-      "selection_options": ["Yes, I love being in control", "No, I'd rather attack", "I'd try it — seems fun"]
+      "selection_options": [
+        "Yes, I love being in control",
+        "No, I'd rather attack",
+        "I'd try it — seems fun"
+      ],
+      "visual_cards": [
+        {
+          "icon": "🖐️",
+          "title": "Use Fingertips",
+          "text": "Setters contact the ball with fingertips."
+        },
+        {
+          "icon": "🪟",
+          "title": "Make a Window",
+          "text": "Hands form a triangle above the forehead."
+        },
+        {
+          "icon": "🎯",
+          "title": "Place the Ball",
+          "text": "A set positions the ball for an attacker."
+        },
+        {
+          "icon": "🧠",
+          "title": "Runs the Offense",
+          "text": "The setter controls the team's attack."
+        }
+      ]
     },
+
     {
       "id": 5,
       "title": "The Spike (Attack)",
@@ -88,9 +197,37 @@
       ],
       "image": "Spike.jpg",
       "selection_prompt": "Where would you aim your spike?",
-      "selection_options": ["Line shot (down the sideline)", "Cross-court (diagonal)", "Short tip over the block", "Right at the setter!"]
+      "selection_options": [
+        "Line shot (down the sideline)",
+        "Cross-court (diagonal)",
+        "Short tip over the block",
+        "Right at the setter!"
+      ],
+      "visual_cards": [
+        {
+          "icon": "👟",
+          "title": "3-Step Approach",
+          "text": "Attackers use a fast approach before jumping."
+        },
+        {
+          "icon": "⬆️",
+          "title": "Jump High",
+          "text": "Contact the ball at the highest point."
+        },
+        {
+          "icon": "⚡",
+          "title": "Power Hit",
+          "text": "Spikes are strong attacking shots."
+        },
+        {
+          "icon": "🎯",
+          "title": "Aim Smart",
+          "text": "Attack open spaces and weak defenders."
+        }
+      ]
     }
   ],
+
   "quiz": [
     {
       "id": 1,
@@ -134,54 +271,7 @@
       "question": "How many points does a team need to win a set (in most cases)?",
       "options": ["15", "21", "25", "30"],
       "answer": 2,
-      "explanation": "A team needs 25 points (with a 2-point lead) to win a set. The 5th set, if played, goes to 15.",
-      "topic": "Court Setup"
-    },
-    {
-      "id": 6,
-      "question": "In an overhand serve, how do you contact the ball?",
-      "options": [
-        "With a closed fist from below",
-        "With an open palm after tossing it up",
-        "With your wrist flicked sideways",
-        "With both hands simultaneously"
-      ],
-      "answer": 1,
-      "explanation": "An overhand serve involves tossing the ball in the air and striking it with an open palm.",
-      "topic": "Serving"
-    },
-    {
-      "id": 7,
-      "question": "What is the typical 3-step approach order for a right-handed spiker?",
-      "options": [
-        "Right-left-right",
-        "Left-right-left",
-        "Right-right-left",
-        "Left-left-right"
-      ],
-      "answer": 1,
-      "explanation": "Right-handed players use a left-right-left (or sometimes right-left-right) approach. Left-right-left is most common.",
-      "topic": "Hitting"
-    },
-    {
-      "id": 8,
-      "question": "Where must the server stand when serving?",
-      "options": [
-        "Anywhere on the court",
-        "At the net",
-        "Behind the end line",
-        "In the middle of the back row"
-      ],
-      "answer": 2,
-      "explanation": "The server must always stand behind the end line (the back boundary) before and during the serve.",
-      "topic": "Serving"
-    },
-    {
-      "id": 9,
-      "question": "Which player usually wears a different color jersey?",
-      "options": ["Setter", "Libero", "Middle Blocker", "Outside Hitter"],
-      "answer": 1,
-      "explanation": "The libero wears a different colored jersey and specializes in defense.",
+      "explanation": "A team needs 25 points (with a 2-point lead) to win a set.",
       "topic": "Court Setup"
     }
   ]
