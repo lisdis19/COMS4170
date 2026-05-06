@@ -3,7 +3,13 @@
 
 {% block progress %}
 <div class="progress-wrap">
-  <div class="progress-label">Lesson {{ lesson_num }} of {{ total }} — Learning Phase</div>
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+    <div class="progress-label" style="margin:0;">Lesson {{ lesson_num }} of {{ total }} — Learning Phase</div>
+    <div style="font-size:.7rem; color:rgba(255,255,255,0.3); letter-spacing:1px;">
+      {% if lesson.level == 'Beginner' %}🟢{% elif lesson.level == 'Intermediate' %}🟡{% else %}🔴{% endif %}
+      {{ lesson.level | upper }}
+    </div>
+  </div>
   <div class="progress">
     <div class="progress-bar" style="width: {{ progress }}%"></div>
   </div>
@@ -14,125 +20,292 @@
 <div class="row justify-content-center">
   <div class="col-lg-8">
 
-    <!-- Header -->
-    <div class="mb-4">
+    <div class="mb-5">
       <p class="section-title">Lesson {{ lesson_num }} / {{ total }}</p>
-      <h1 class="page-heading">
-        <span style="color:var(--net)">{{ lesson.emoji }}</span>
-        {{ lesson.title }}
+      <h1 class="page-heading" style="font-size:3.2rem;">
+        <span style="color:var(--net)">{{ lesson.emoji }}</span> {{ lesson.title }}
       </h1>
-      <p style="color:rgba(255,255,255,0.5); margin-top:6px; font-size:1rem;">
-        {{ lesson.subtitle }}
-      </p>
+      <p style="color:rgba(255,255,255,0.45); margin-top:8px; font-size:.95rem; font-style:italic;">{{ lesson.subtitle }}</p>
     </div>
 
-    <form method="POST">
+    <form method="POST" id="lessonForm">
+      <input type="hidden" name="selection" value="read">
+      <input type="hidden" name="confidence" id="confidenceVal" value="3">
 
-      <!-- Main content card -->
+      <!-- ── MAIN CONTENT ── -->
       <div class="vl-card mb-4">
-
         {% if lesson_num == 1 %}
-        <div style="width:50%; margin:0 auto 20px;">
-          {% include "court.html" %}
-        </div>
+        <div style="width:55%; margin:0 auto 28px;">{% include "court.html" %}</div>
         {% else %}
-        <div style="text-align:center; margin-bottom:20px;">
-          <img src="/data/{{ lesson.image }}" style="max-width:50%; border-radius:8px;">
+        <div style="text-align:center; margin-bottom:28px;">
+          <img src="/data/{{ lesson.image }}" style="max-width:55%; border-radius:12px; box-shadow:0 8px 40px rgba(0,0,0,0.5);">
         </div>
         {% endif %}
+        {% for para in lesson.content.split('\n\n') %}
+        <p style="font-size:1.04rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:{% if not loop.last %}20px{% else %}0{% endif %};">{{ para }}</p>
+        {% endfor %}
+      </div>
 
-        <p style="font-size:1.05rem; line-height:1.75; color:rgba(255,255,255,0.85); margin-bottom:22px;">
-          {{ lesson.content }}
+      <!-- ── DID YOU KNOW ── -->
+      {% if lesson.did_you_know %}
+      <div class="vl-card mb-4" style="border-color:rgba(232,197,71,0.3); background:rgba(232,197,71,0.06); padding:22px 28px;">
+        <div style="display:flex; gap:16px; align-items:flex-start;">
+          <div class="icon-bubble" style="background:rgba(232,197,71,0.15); border-color:rgba(232,197,71,0.4);">💡</div>
+          <div>
+            <p class="section-title mb-2">DID YOU KNOW?</p>
+            <p style="font-size:.92rem; line-height:1.72; color:rgba(255,255,255,0.72); margin:0; font-style:italic;">{{ lesson.did_you_know }}</p>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- ══════════════════════════════════════════
+           LESSON-SPECIFIC INTERACTIVE WIDGETS
+      ══════════════════════════════════════════ -->
+
+      {% if lesson_num == 1 %}
+      <!-- LESSON 1: Drag-to-order rally sequence + fill-in-the-blank -->
+
+      <div class="vl-card mb-4 interactive-card">
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 TRY IT</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:18px;">Arrange the 3 touches of a rally in the correct order — drag them into place.</p>
+        <div id="orderTarget" style="display:flex; gap:10px; margin-bottom:16px; min-height:54px; align-items:center;">
+          <div class="order-slot" data-slot="0"><span class="slot-placeholder">1st touch</span></div>
+          <div style="color:rgba(255,255,255,0.2); font-size:1.2rem;">→</div>
+          <div class="order-slot" data-slot="1"><span class="slot-placeholder">2nd touch</span></div>
+          <div style="color:rgba(255,255,255,0.2); font-size:1.2rem;">→</div>
+          <div class="order-slot" data-slot="2"><span class="slot-placeholder">3rd touch</span></div>
+        </div>
+        <div id="orderBank" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:18px;">
+          <div class="order-chip" draggable="true" data-val="spike">⚡ Spike</div>
+          <div class="order-chip" draggable="true" data-val="pass">🙌 Pass</div>
+          <div class="order-chip" draggable="true" data-val="set">👆 Set</div>
+        </div>
+        <button type="button" class="check-btn" onclick="checkOrder()">Check My Order</button>
+        <div id="orderFeedback" class="feedback-box" style="display:none;"></div>
+      </div>
+
+      <div class="vl-card mb-4 interactive-card">
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 FILL IN THE BLANK</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:18px;">No pressure — just making sure the number sticks.</p>
+        <p style="font-size:1rem; color:rgba(255,255,255,0.85); margin-bottom:14px;">
+          Each team is allowed up to <input id="touchFill" type="number" min="1" max="9" placeholder="?" class="inline-input"> touches before sending the ball back over the net.
         </p>
+        <button type="button" class="check-btn" onclick="checkFill('touchFill', 3, 'Correct! Max 3 touches per possession — Pass, Set, Spike.', 'Not quite. Each team gets up to 3 touches.')">Check</button>
+        <div id="touchFillFeedback" class="feedback-box" style="display:none;"></div>
+      </div>
 
-        <!-- Lesson-specific visual cards -->
-        <div class="lesson-visual-grid">
-          {% for card in lesson.visual_cards %}
-          <div class="lesson-info-card" onclick="toggleLessonCard(this)">
-            <div class="lesson-info-icon">{{ card.icon }}</div>
+      {% elif lesson_num == 2 %}
+      <!-- LESSON 2: Spot the mistake + scenario reveal -->
+
+      <div class="vl-card mb-4 interactive-card">
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 SPOT THE MISTAKE</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Something is wrong with this serve. Tap what the player is doing incorrectly.</p>
+        <div style="background:rgba(0,0,0,0.2); border-radius:10px; padding:20px; margin-bottom:16px; font-size:.95rem; line-height:1.8; color:rgba(255,255,255,0.8);">
+          🏐 The server stands <strong>1 foot in front of</strong> the end line. They toss the ball high, swing their open palm through it, and the ball clears the net cleanly into the opponent's court.
+        </div>
+        <div class="choice-group" id="spotGroup1" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+          <div class="choice-card" data-correct="false" data-msg="The open palm contact is correct for an overhand serve — that part is right.">Their hand contact was wrong</div>
+          <div class="choice-card" data-correct="true"  data-msg="Correct! The server was standing IN FRONT of the end line — that's a foot fault. You must stay behind it until the ball is contacted.">They stepped over the end line</div>
+          <div class="choice-card" data-correct="false" data-msg="The ball clearing the net cleanly is actually what you want — no mistake there.">The ball touched the net</div>
+          <div class="choice-card" data-correct="false" data-msg="A high toss is standard and correct for an overhand serve.">Their toss was too high</div>
+        </div>
+        <div id="spotFeedback" class="feedback-box" style="display:none;"></div>
+      </div>
+
+      <div class="vl-card mb-4 interactive-card">
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 WHAT WOULD YOU DO?</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Read the scenario, make your call, then see what the right move is.</p>
+        <div style="background:rgba(0,0,0,0.2); border-radius:10px; padding:18px; margin-bottom:16px; font-size:.93rem; line-height:1.75; color:rgba(255,255,255,0.8);">
+          📋 You're serving. The referee blows the whistle. You toss the ball, but it goes sideways and you miss it completely. What do you do?
+        </div>
+        <div class="choice-group" id="spotGroup2" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+          <div class="choice-card" data-correct="true"  data-msg="Correct! A toss you don't like can be abandoned — just let it drop without touching it. Then re-toss and serve, as long as you're within the 8-second window.">Let the ball drop and re-toss</div>
+          <div class="choice-card" data-correct="false" data-msg="If you try to contact a bad toss and mishit it, that counts as your serve attempt — even if it goes out or hits the net.">Try to hit it anyway</div>
+          <div class="choice-card" data-correct="false" data-msg="You can't ask for more time — the 8-second clock doesn't pause for a bad toss.">Ask the referee for extra time</div>
+        </div>
+        <div id="spotFeedback2" class="feedback-box" style="display:none;"></div>
+      </div>
+
+      {% elif lesson_num == 3 %}
+      <!-- LESSON 3: Drag body-part labels + fill in the blank -->
+
+      <div class="vl-card mb-4 interactive-card">
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 DRAG TO LABEL</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Where on your arms do you actually contact the ball during a bump? Drag the correct label to the contact zone.</p>
+        <div style="display:flex; gap:24px; align-items:center; flex-wrap:wrap; margin-bottom:18px;">
+          <div style="flex:1; min-width:180px;">
+            <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:18px; text-align:center; font-size:.85rem; color:rgba(255,255,255,0.5); line-height:2.2;">
+              <div style="color:rgba(255,255,255,0.6); margin-bottom:4px;">👐 Hands / Wrists</div>
+              <div id="dropHands" class="body-drop-zone">drop here</div>
+              <div style="color:rgba(255,255,255,0.6); margin-top:8px; margin-bottom:4px;">💪 Forearms</div>
+              <div id="dropForearms" class="body-drop-zone">drop here</div>
+              <div style="color:rgba(255,255,255,0.6); margin-top:8px;">🦾 Elbows</div>
+              <div id="dropElbows" class="body-drop-zone" style="margin-top:4px;">drop here</div>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div class="body-chip" draggable="true" data-val="contact">🏐 Ball Contact Zone</div>
+          </div>
+        </div>
+        <button type="button" class="check-btn" onclick="checkBodyDrop()">Check Placement</button>
+        <div id="bodyDropFeedback" class="feedback-box" style="display:none;"></div>
+      </div>
+
+      <div class="vl-card mb-4 interactive-card">
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 FILL IN THE BLANK</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:18px;">Complete the coach's instruction.</p>
+        <p style="font-size:1rem; color:rgba(255,255,255,0.85); margin-bottom:14px; line-height:1.8;">
+          When bumping, move your <input id="feetFill" type="text" placeholder="?" class="inline-input inline-input-text"> first to get behind the ball — never reach sideways for it.
+        </p>
+        <button type="button" class="check-btn" onclick="checkTextFill('feetFill', ['feet','foot'], 'Exactly right! Move your feet to get your whole body behind the ball.', 'Think about what you move to reposition your body — it\'s not your arms.')">Check</button>
+        <div id="feetFillFeedback" class="feedback-box" style="display:none;"></div>
+      </div>
+
+      {% elif lesson_num == 4 %}
+      <!-- LESSON 4: "Your instinct was..." reveals + arrange steps -->
+
+      <div class="vl-card mb-4 interactive-card">
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 YOUR INSTINCT VS. REALITY</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Tap what you'd instinctively do, then see what actually happens.</p>
+        <div style="background:rgba(0,0,0,0.2); border-radius:10px; padding:16px; margin-bottom:14px; font-size:.93rem; color:rgba(255,255,255,0.8); line-height:1.75;">
+          📋 The ball comes to you for the second touch near the net. Your instinct is to...
+        </div>
+        <div class="choice-group instinct-group" id="instinctGroup" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+          <div class="choice-card" data-val="palm"      data-msg="Most beginners do this — it feels natural! But palming the ball is a 'lift' (illegal). Referees look for the ball resting in the hands even briefly. Fingertips only means quick, clean contact.">Cup it with my palms and push</div>
+          <div class="choice-card" data-val="fingertip" data-msg="You already have great instincts! Fingertip contact is exactly right. The motion is a sharp wrist extension — like pushing something off a shelf above your head.">Use only my fingertips</div>
+          <div class="choice-card" data-val="fist"      data-msg="A fist would send the ball flying uncontrollably — that's more of a volleyball punch than a set. Fingertips create the precision and direction the offense needs.">Hit it with my fist</div>
+        </div>
+        <div id="instinctBox" class="feedback-box" style="display:none;"></div>
+      </div>
+
+      <div class="vl-card mb-4 interactive-card">
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 ARRANGE IN ORDER</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Put these setter actions in the correct sequence — drag them into order.</p>
+        <div id="setOrderTarget" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+          <div class="order-slot-v" data-slot="0"><span class="slot-placeholder">Step 1</span></div>
+          <div class="order-slot-v" data-slot="1"><span class="slot-placeholder">Step 2</span></div>
+          <div class="order-slot-v" data-slot="2"><span class="slot-placeholder">Step 3</span></div>
+        </div>
+        <div id="setOrderBank" style="display:flex; flex-direction:column; gap:8px; margin-bottom:16px;">
+          <div class="order-chip-v" draggable="true" data-val="contact">Contact with fingertips, extend wrists</div>
+          <div class="order-chip-v" draggable="true" data-val="position">Sprint to position, hands up above forehead</div>
+          <div class="order-chip-v" draggable="true" data-val="call">Call the play — signal which hitter gets the ball</div>
+        </div>
+        <button type="button" class="check-btn" onclick="checkSetOrder()">Check Order</button>
+        <div id="setOrderFeedback" class="feedback-box" style="display:none;"></div>
+      </div>
+
+      {% elif lesson_num == 5 %}
+      <!-- LESSON 5: Arrange approach steps + scenario shot selection -->
+
+      <div class="vl-card mb-4 interactive-card">
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 ARRANGE IN ORDER</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Put the 3-step spike approach in the correct foot order for a right-handed hitter.</p>
+        <div id="approachTarget" style="display:flex; gap:8px; margin-bottom:14px; align-items:center;">
+          <div class="order-slot" data-slot="0" style="flex:1;"><span class="slot-placeholder">1st</span></div>
+          <div style="color:rgba(255,255,255,0.2);">→</div>
+          <div class="order-slot" data-slot="1" style="flex:1;"><span class="slot-placeholder">2nd</span></div>
+          <div style="color:rgba(255,255,255,0.2);">→</div>
+          <div class="order-slot" data-slot="2" style="flex:1;"><span class="slot-placeholder">3rd</span></div>
+        </div>
+        <div id="approachBank" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;">
+          <div class="order-chip" draggable="true" data-val="rightleft">👟👟 Right-Left (plant)</div>
+          <div class="order-chip" draggable="true" data-val="left">👟 Left</div>
+          <div class="order-chip" draggable="true" data-val="jump">⬆️ Jump!</div>
+        </div>
+        <button type="button" class="check-btn" onclick="checkApproach()">Check My Approach</button>
+        <div id="approachFeedback" class="feedback-box" style="display:none;"></div>
+      </div>
+
+      <div class="vl-card mb-4 interactive-card">
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 WHAT SHOT DO YOU HIT?</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Read the situation. Tap your best shot — then see why.</p>
+        <div style="background:rgba(0,0,0,0.2); border-radius:10px; padding:16px; margin-bottom:14px; font-size:.93rem; color:rgba(255,255,255,0.8); line-height:1.8;">
+          📋 You jump to spike. Two opposing blockers are perfectly set up, hands spread wide covering the entire net. The back row defenders are standing deep, anticipating a hard hit.
+        </div>
+        <div class="choice-group" id="shotGroup" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+          <div class="choice-card" data-correct="false" data-msg="A line shot hits straight into the blockers — their hands are covering the full net width. That's exactly where they want you to go.">Blast a line shot down the sideline</div>
+          <div class="choice-card" data-correct="false" data-msg="Cross-court sends the ball into well-positioned blockers too. With both hands spread, they're covering that angle.">Hit cross-court as hard as possible</div>
+          <div class="choice-card" data-correct="true"  data-msg="Yes! A soft tip just over the blockers' hands catches the defense completely off guard — they've dropped back expecting a power hit, leaving the 3m line wide open.">Tip it softly just over the block</div>
+        </div>
+        <div id="spotFeedback3" class="feedback-box" style="display:none;"></div>
+      </div>
+
+      {% endif %}
+
+      <!-- ── STEP-BY-STEP TECHNIQUE ── -->
+      {% if lesson.steps %}
+      <div class="vl-card mb-4" style="padding:28px 32px;">
+        <p class="section-title mb-4">Step-by-Step Technique</p>
+        <div style="display:flex; flex-direction:column; gap:0;">
+          {% for step in lesson.steps %}
+          <div style="display:flex; gap:18px; align-items:flex-start; padding:16px 0; {% if not loop.last %}border-bottom:1px solid rgba(255,255,255,0.05);{% endif %}">
+            <div style="width:32px; height:32px; border-radius:50%; background:rgba(59,130,160,0.2); border:1.5px solid rgba(59,130,160,0.5); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',cursive; color:#9dd5ef; font-size:1rem; flex-shrink:0; margin-top:2px;">{{ loop.index }}</div>
             <div>
-              <h4>{{ card.title }}</h4>
-              <p>{{ card.text }}</p>
+              <div style="font-weight:700; font-size:.9rem; color:rgba(255,255,255,0.9); margin-bottom:4px;">{{ step.title }}</div>
+              <div style="font-size:.84rem; color:rgba(255,255,255,0.5); line-height:1.65;">{{ step.detail }}</div>
             </div>
           </div>
           {% endfor %}
         </div>
-
       </div>
+      {% endif %}
 
-      <!-- Key facts -->
-      <div class="vl-card mb-4">
-        <p class="section-title mb-3">More Facts</p>
-        <div style="display:flex; flex-wrap:wrap; gap:10px;">
+      <!-- ── KEY TAKEAWAYS ── -->
+      <div class="vl-card mb-4" style="padding:28px 32px;">
+        <p class="section-title mb-3">Key Takeaways</p>
+        <div style="display:flex; flex-wrap:wrap; gap:9px;">
           {% for fact in lesson.key_facts %}
           <span class="fact-pill">{{ fact }}</span>
           {% endfor %}
         </div>
       </div>
 
-      <!-- Selection question -->
-      <div class="vl-card mb-5">
-        <p class="section-title mb-3">Quick Reflection</p>
-
-        <p style="font-size:1rem; font-weight:500; margin-bottom:16px; color:rgba(255,255,255,0.85);">
-          {{ lesson.selection_prompt }}
-        </p>
-
-        {% for opt in lesson.selection_options %}
-        <label class="choice-card">
-          <input type="radio" name="selection" value="{{ opt }}" required>
-
-          <div class="choice-inner">
-
-            <div class="choice-icon">
-              {% if "Front" in opt or "attack" in opt %}
-                ⚡
-              {% elif "Back" in opt or "defense" in opt %}
-                🛡️
-              {% elif "Underhand" in opt %}
-                🤲
-              {% elif "Overhand" in opt %}
-                💪
-              {% elif "Jump" in opt %}
-                🚀
-              {% elif "forearms" in opt %}
-                🙌
-              {% elif "setter" in opt or "control" in opt %}
-                🧠
-              {% elif "line" in opt or "Line" in opt %}
-                📏
-              {% elif "cross" in opt or "Cross" in opt %}
-                ↗️
-              {% elif "tip" in opt %}
-                🎯
-              {% else %}
-                🏐
-              {% endif %}
-            </div>
-
-            <div>
-              <div class="choice-text">{{ opt }}</div>
-              <div class="choice-subtext">Tap to choose</div>
-            </div>
-
+      <!-- ── COMMON MISTAKE ── -->
+      {% if lesson.common_mistake %}
+      <div class="vl-card mb-4" style="border-color:rgba(224,92,58,0.3); background:rgba(224,92,58,0.05); padding:22px 28px;">
+        <div style="display:flex; gap:16px; align-items:flex-start;">
+          <div class="icon-bubble" style="background:rgba(224,92,58,0.12); border-color:rgba(224,92,58,0.4);">⚠️</div>
+          <div>
+            <p class="section-title mb-2" style="color:var(--spike);">COMMON BEGINNER MISTAKE</p>
+            <p style="font-size:.92rem; line-height:1.72; color:rgba(255,255,255,0.72); margin:0;">{{ lesson.common_mistake }}</p>
           </div>
-        </label>
-        {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- ── CONFIDENCE SLIDER ── -->
+      <div class="vl-card mb-5" style="border-color:rgba(59,130,160,0.2); padding:26px 32px;">
+        <p class="section-title mb-1" style="color:#9dd5ef;">HOW ARE YOU FEELING?</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.28); margin-bottom:20px;">Rate your confidence with this skill — just for you, no grading.</p>
+        <div style="display:flex; align-items:center; gap:16px;">
+          <span style="font-size:1.3rem;">😬</span>
+          <div style="flex:1; position:relative;">
+            <input type="range" id="confidenceSlider" min="1" max="5" value="3"
+              style="width:100%; accent-color:var(--court); cursor:pointer;"
+              oninput="updateConfidence(this.value)">
+            <div style="display:flex; justify-content:space-between; margin-top:6px;">
+              <span style="font-size:.7rem; color:rgba(255,255,255,0.25);">Lost</span>
+              <span style="font-size:.7rem; color:rgba(255,255,255,0.25);">Getting it</span>
+              <span style="font-size:.7rem; color:rgba(255,255,255,0.25);">Got it!</span>
+            </div>
+          </div>
+          <span style="font-size:1.3rem;">😎</span>
+        </div>
+        <div id="confidenceLabel" style="text-align:center; margin-top:14px; font-size:.88rem; color:rgba(255,255,255,0.5); font-style:italic; min-height:20px;">
+          "I think I get the basics..."
+        </div>
       </div>
 
-      <!-- Nav -->
-      <div class="d-flex justify-content-between align-items-center">
+      <!-- ── NAV ── -->
+      <div class="d-flex justify-content-between align-items-center pb-4">
         {% if lesson_num > 1 %}
-        <a href="/learn/{{ lesson_num - 1 }}" class="btn-vl btn-vl-outline" style="text-decoration:none; font-family:'Bebas Neue',cursive; font-size:1rem; padding:10px 28px; border-radius:8px;">
-          ← Back
-        </a>
+        <a href="/learn/{{ lesson_num - 1 }}" class="btn-vl btn-vl-outline" style="text-decoration:none; font-family:'Bebas Neue',cursive; font-size:1rem; padding:11px 28px; border-radius:8px;">← Back</a>
         {% else %}
-        <a href="/" class="btn-vl btn-vl-outline" style="text-decoration:none; font-family:'Bebas Neue',cursive; font-size:1rem; padding:10px 28px; border-radius:8px;">
-          ← Home
-        </a>
+        <a href="/" class="btn-vl btn-vl-outline" style="text-decoration:none; font-family:'Bebas Neue',cursive; font-size:1rem; padding:11px 28px; border-radius:8px;">← Home</a>
         {% endif %}
-
-        <button type="submit" class="btn-vl">
+        <button type="submit" class="btn-vl" style="font-size:1.05rem; padding:13px 36px;">
           {% if lesson_num == total %}Build-a-Play →{% else %}Next Lesson →{% endif %}
         </button>
       </div>
@@ -140,4 +313,399 @@
     </form>
   </div>
 </div>
+
+<style>
+.icon-bubble {
+  width:38px; height:38px; border-radius:50%; border-width:1.5px; border-style:solid;
+  display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0;
+}
+.interactive-card { border-color: rgba(59,130,160,0.25); background: rgba(59,130,160,0.05); }
+
+/* ── Drag chips (horizontal) ── */
+.order-chip {
+  background: rgba(232,197,71,0.12); border: 1.5px solid rgba(232,197,71,0.35);
+  color: var(--net); border-radius:8px; padding:10px 16px;
+  font-size:.88rem; font-weight:600; cursor:grab; user-select:none;
+  transition: transform .15s, box-shadow .15s;
+}
+.order-chip:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(232,197,71,0.2); }
+.order-chip.dragging { opacity:.35; cursor:grabbing; }
+
+/* ── Drag chips (vertical) ── */
+.order-chip-v {
+  background: rgba(232,197,71,0.12); border: 1.5px solid rgba(232,197,71,0.35);
+  color: var(--net); border-radius:8px; padding:10px 16px;
+  font-size:.85rem; font-weight:600; cursor:grab; user-select:none;
+  transition: transform .15s;
+}
+.order-chip-v:hover { transform:translateX(4px); }
+.order-chip-v.dragging { opacity:.35; }
+
+/* ── Drop slots (horizontal) ── */
+.order-slot {
+  flex:1; min-height:46px; border:2px dashed rgba(255,255,255,0.12);
+  border-radius:8px; display:flex; align-items:center; justify-content:center;
+  transition: border-color .2s, background .2s; position:relative;
+}
+.order-slot.drag-over { border-color:var(--net); background:rgba(232,197,71,0.08); }
+.order-slot.filled { border-style:solid; border-color:rgba(232,197,71,0.4); }
+.slot-placeholder { font-size:.72rem; color:rgba(255,255,255,0.2); pointer-events:none; }
+
+/* ── Drop slots (vertical) ── */
+.order-slot-v {
+  min-height:44px; border:2px dashed rgba(255,255,255,0.12);
+  border-radius:8px; padding:0 14px; display:flex; align-items:center;
+  transition: border-color .2s, background .2s;
+}
+.order-slot-v.drag-over { border-color:var(--net); background:rgba(232,197,71,0.08); }
+.order-slot-v.filled { border-style:solid; border-color:rgba(232,197,71,0.4); }
+
+/* ── Body label drop zones ── */
+.body-drop-zone {
+  min-height:36px; border:2px dashed rgba(255,255,255,0.12);
+  border-radius:8px; display:flex; align-items:center; justify-content:center;
+  font-size:.72rem; color:rgba(255,255,255,0.2); margin-top:4px; transition:all .2s;
+  cursor:default;
+}
+.body-drop-zone.drag-over { border-color:var(--net); background:rgba(232,197,71,0.08); }
+.body-drop-zone.filled { border-style:solid; border-color:rgba(59,130,160,0.5); background:rgba(59,130,160,0.1); color:#9dd5ef; font-size:.82rem; font-weight:600; }
+.body-chip {
+  background:rgba(59,130,160,0.15); border:1.5px solid rgba(59,130,160,0.4);
+  color:#9dd5ef; border-radius:8px; padding:10px 16px; font-size:.88rem;
+  font-weight:600; cursor:grab; user-select:none; white-space:nowrap;
+}
+
+/* ── Choice cards (replaces spot-option buttons) ── */
+.choice-card {
+  padding: 13px 18px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.75);
+  font-size: .9rem;
+  cursor: pointer;
+  transition: border-color .18s, background .18s, color .18s;
+  user-select: none;
+}
+.choice-card:hover { border-color: rgba(59,130,160,0.55); background: rgba(59,130,160,0.09); color: white; }
+.choice-card.chosen-correct { border-color: var(--success) !important; background: rgba(93,216,123,0.12) !important; color: var(--success) !important; cursor: default; }
+.choice-card.chosen-wrong   { border-color: var(--spike) !important;   background: rgba(224,92,58,0.08) !important;  color: rgba(255,255,255,0.35) !important; cursor: default; }
+.choice-card.chosen-neutral { border-color: rgba(59,130,160,0.6) !important; background: rgba(59,130,160,0.15) !important; color: #9dd5ef !important; cursor: default; }
+.choice-group.done .choice-card { pointer-events: none; }
+
+/* ── Feedback boxes ── */
+.feedback-box {
+  border-radius:8px; padding:12px 16px; font-size:.85rem; line-height:1.65; margin-top:10px;
+}
+.feedback-box.correct-fb { background:rgba(93,216,123,0.1); border:1px solid rgba(93,216,123,0.3); color:#5dd87b; }
+.feedback-box.wrong-fb   { background:rgba(224,92,58,0.08); border:1px solid rgba(224,92,58,0.25); color:#e09080; }
+.feedback-box.instinct-reveal { background:rgba(59,130,160,0.1); border:1px solid rgba(59,130,160,0.3); color:#9dd5ef; }
+
+/* ── Check button ── */
+.check-btn {
+  background:transparent; border:1.5px solid rgba(59,130,160,0.4);
+  color:#9dd5ef; border-radius:8px; padding:9px 22px; font-size:.85rem;
+  font-family:'Bebas Neue',cursive; letter-spacing:1.5px; cursor:pointer;
+  transition:all .18s;
+}
+.check-btn:hover { background:rgba(59,130,160,0.15); border-color:rgba(59,130,160,0.7); }
+
+.inline-input {
+  background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.15);
+  border-radius:6px; padding:4px 10px; color:white; font-size:1rem;
+  width:60px; text-align:center; font-family:'DM Sans',sans-serif;
+  outline:none;
+}
+.inline-input-text { width:90px; }
+.inline-input:focus { border-color:var(--court); }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// ── Confidence slider ──
+const confidenceLabels = {
+  1: "\"I'm pretty lost still...\"",
+  2: "\"Starting to get a feel for it.\"",
+  3: "\"I think I get the basics...\"",
+  4: "\"Feeling fairly confident!\"",
+  5: "\"Let me on the court right now.\""
+};
+function updateConfidence(val) {
+  document.getElementById('confidenceVal').value = val;
+  document.getElementById('confidenceLabel').textContent = confidenceLabels[val];
+}
+
+// ══════════════════════════════════
+// LESSON 1 LOGIC
+// ══════════════════════════════════
+const correctOrder = ['pass','set','spike'];
+const orderSlotContents = {};
+let draggingChip = null;
+
+
+function getChipLabel(val, cls) {
+  const map = {
+    'pass':'🙌 Pass','set':'👆 Set','spike':'⚡ Spike',
+    'left':'👟 Left','rightleft':'👟👟 Right-Left (plant)','jump':'⬆️ Jump!'
+  };
+  return map[val] || val;
+}
+
+function checkOrder() {
+  const fb = document.getElementById('orderFeedback');
+  const order = [orderSlotContents['0'], orderSlotContents['1'], orderSlotContents['2']];
+  if (order.includes(undefined)) { fb.style.display='block'; fb.className='feedback-box wrong-fb'; fb.textContent='Fill all three slots first!'; return; }
+  const correct = JSON.stringify(order) === JSON.stringify(correctOrder);
+  fb.style.display = 'block';
+  fb.className = `feedback-box ${correct ? 'correct-fb' : 'wrong-fb'}`;
+  fb.textContent = correct
+    ? '✓ Perfect! Pass → Set → Spike is the classic three-touch sequence. Every great rally follows this pattern.'
+    : `Not quite. The right order is Pass → Set → Spike. You had: ${order.map(v => v ? v.charAt(0).toUpperCase()+v.slice(1) : '?').join(' → ')}.`;
+}
+
+function checkFill(inputId, correctVal, successMsg, failMsg) {
+  const val = parseInt(document.getElementById(inputId).value);
+  const fbId = inputId + 'Feedback';
+  const fb = document.getElementById(fbId);
+  fb.style.display = 'block';
+  const correct = val === correctVal;
+  fb.className = `feedback-box ${correct ? 'correct-fb' : 'wrong-fb'}`;
+  fb.textContent = correct ? '✓ ' + successMsg : '✗ ' + failMsg;
+}
+
+function checkTextFill(inputId, correctVals, successMsg, failMsg) {
+  const val = document.getElementById(inputId).value.trim().toLowerCase();
+  const fbId = inputId + 'Feedback';
+  const fb = document.getElementById(fbId);
+  fb.style.display = 'block';
+  const correct = correctVals.some(v => val.includes(v));
+  fb.className = `feedback-box ${correct ? 'correct-fb' : 'wrong-fb'}`;
+  fb.textContent = correct ? '✓ ' + successMsg : '✗ ' + failMsg;
+}
+
+// ══════════════════════════════════
+// UNIVERSAL CHOICE CARD SYSTEM
+// ══════════════════════════════════
+function initChoiceGroups() {
+  document.querySelectorAll('.choice-group').forEach(group => {
+    const isInstinct = group.classList.contains('instinct-group');
+    // find the feedback div: first .feedback-box sibling after the group
+    let fb = group.nextElementSibling;
+    while (fb && !fb.classList.contains('feedback-box')) fb = fb.nextElementSibling;
+
+    group.querySelectorAll('.choice-card').forEach(card => {
+      card.addEventListener('click', () => {
+        if (group.classList.contains('done')) return;
+        group.classList.add('done');
+
+        const isCorrect = card.dataset.correct === 'true';
+        const msg = card.dataset.msg;
+
+        if (isInstinct) {
+          // instinct mode: every answer is valid, just reveal explanation
+          group.querySelectorAll('.choice-card').forEach(c => c.classList.add('chosen-wrong'));
+          card.classList.remove('chosen-wrong');
+          card.classList.add('chosen-neutral');
+          if (fb) {
+            fb.style.display = 'block';
+            fb.className = 'feedback-box instinct-reveal';
+            fb.textContent = '💬 ' + msg;
+          }
+        } else {
+          // correct/wrong mode
+          group.querySelectorAll('.choice-card').forEach(c => {
+            if (c !== card) c.classList.add('chosen-wrong');
+          });
+          card.classList.add(isCorrect ? 'chosen-correct' : 'chosen-wrong');
+          if (fb) {
+            fb.style.display = 'block';
+            fb.className = `feedback-box ${isCorrect ? 'correct-fb' : 'wrong-fb'}`;
+            fb.textContent = (isCorrect ? '✓ ' : '✗ ') + msg;
+          }
+        }
+      });
+    });
+  });
+}
+
+// ══════════════════════════════════
+// LESSON 3 LOGIC — body label drop
+// ══════════════════════════════════
+let bodyChipDragging = false;
+let bodyChipPlaced = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const chip = document.querySelector('.body-chip');
+  if (!chip) return;
+  chip.addEventListener('dragstart', () => { bodyChipDragging = true; chip.classList.add('dragging'); });
+  chip.addEventListener('dragend', () => { chip.classList.remove('dragging'); });
+
+  document.querySelectorAll('.body-drop-zone').forEach(zone => {
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      // reset previous
+      document.querySelectorAll('.body-drop-zone').forEach(z => { if (z.classList.contains('filled')) { z.classList.remove('filled'); z.textContent='drop here'; } });
+      bodyChipPlaced = zone.id;
+      zone.classList.add('filled');
+      zone.textContent = '🏐 Ball Contact Zone';
+      if (chip) chip.style.display = 'none';
+    });
+  });
+});
+
+function checkBodyDrop() {
+  const fb = document.getElementById('bodyDropFeedback');
+  fb.style.display = 'block';
+  if (!bodyChipPlaced) {
+    fb.className = 'feedback-box wrong-fb';
+    fb.textContent = 'Drag the label to one of the zones first.';
+    return;
+  }
+  if (bodyChipPlaced === 'dropForearms') {
+    fb.className = 'feedback-box correct-fb';
+    fb.textContent = '✓ Exactly right! The fleshy part of your forearms — between wrist and elbow — is the contact zone. Never your hands, never your wrists.';
+  } else {
+    fb.className = 'feedback-box wrong-fb';
+    fb.textContent = bodyChipPlaced === 'dropHands'
+      ? '✗ Close — but your hands create an uneven surface and referees can call illegal contact. It\'s your forearms that form the flat platform.'
+      : '✗ Not quite — your elbows are bony and would send the ball in random directions. The forearms (between wrist and elbow) are the correct contact zone.';
+  }
+}
+
+// ══════════════════════════════════
+// LESSON 4 LOGIC — vertical order
+// ══════════════════════════════════
+const setCorrectOrder = ['call','position','contact'];
+const setSlotContents = {};
+
+document.addEventListener('DOMContentLoaded', () => {
+  const vChips = document.querySelectorAll('.order-chip-v');
+  const vSlots = document.querySelectorAll('.order-slot-v');
+  if (!vChips.length) return;
+
+  vChips.forEach(chip => {
+    chip.addEventListener('dragstart', e => { draggingChip = chip.dataset.val; chip.classList.add('dragging'); });
+    chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
+  });
+  vSlots.forEach(slot => {
+    slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('drag-over'); });
+    slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
+    slot.addEventListener('drop', e => {
+      e.preventDefault();
+      slot.classList.remove('drag-over');
+      const idx = slot.dataset.slot;
+      if (setSlotContents[idx]) {
+        const prev = document.querySelector(`.order-chip-v[data-val="${setSlotContents[idx]}"]`);
+        if (prev) prev.style.display = '';
+      }
+      setSlotContents[idx] = draggingChip;
+      const chip = document.querySelector(`.order-chip-v[data-val="${draggingChip}"]`);
+      if (chip) chip.style.display = 'none';
+      const labels = {'call':'Call the play — signal which hitter gets the ball','position':'Sprint to position, hands up above forehead','contact':'Contact with fingertips, extend wrists'};
+      slot.classList.add('filled');
+      slot.innerHTML = `<span style="font-size:.83rem; color:var(--net); font-weight:600; padding:4px 0;">${labels[draggingChip]}</span>`;
+      draggingChip = null;
+    });
+  });
+});
+
+function checkSetOrder() {
+  const fb = document.getElementById('setOrderFeedback');
+  const order = [setSlotContents['0'], setSlotContents['1'], setSlotContents['2']];
+  if (order.includes(undefined)) { fb.style.display='block'; fb.className='feedback-box wrong-fb'; fb.textContent='Fill all three slots first!'; return; }
+  fb.style.display = 'block';
+  // correct: call → position → contact (real answer is position → call → contact, but let's accept position-first too)
+  // Actually the real sequence: 1) call play 2) sprint to position 3) contact
+  const correct = order[0]==='call' && order[1]==='position' && order[2]==='contact';
+  fb.className = `feedback-box ${correct ? 'correct-fb' : 'wrong-fb'}`;
+  fb.textContent = correct
+    ? '✓ Perfect setter sequence! Call the play first so your hitters know what\'s coming → sprint to position → contact with fingertips.'
+    : '✗ Not quite. The real sequence: 1) Call the play (hitters need to know!) → 2) Sprint to your position → 3) Contact with fingertips. Try again!';
+}
+
+// ══════════════════════════════════
+// LESSON 5 LOGIC — approach order
+// ══════════════════════════════════
+const approachCorrect = ['left','rightleft','jump'];
+const approachSlotContents = {};
+
+document.addEventListener('DOMContentLoaded', () => {
+  const aChips = document.querySelectorAll('#approachBank .order-chip');
+  const aSlots = document.querySelectorAll('#approachTarget .order-slot');
+  if (!aChips.length) return;
+
+  aChips.forEach(chip => {
+    chip.addEventListener('dragstart', e => { draggingChip = chip.dataset.val; chip.classList.add('dragging'); });
+    chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
+  });
+  aSlots.forEach(slot => {
+    slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('drag-over'); });
+    slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
+    slot.addEventListener('drop', e => {
+      e.preventDefault();
+      slot.classList.remove('drag-over');
+      const idx = slot.dataset.slot;
+      if (approachSlotContents[idx]) {
+        const prev = document.querySelector(`#approachBank .order-chip[data-val="${approachSlotContents[idx]}"]`);
+        if (prev) prev.style.display = '';
+      }
+      approachSlotContents[idx] = draggingChip;
+      const chip = document.querySelector(`#approachBank .order-chip[data-val="${draggingChip}"]`);
+      if (chip) chip.style.display = 'none';
+      slot.classList.add('filled');
+      slot.innerHTML = `<span style="font-size:.82rem; font-weight:600; color:var(--net); text-align:center;">${getChipLabel(draggingChip,'order-chip')}</span>`;
+      draggingChip = null;
+    });
+  });
+});
+
+function checkApproach() {
+  const fb = document.getElementById('approachFeedback');
+  const order = [approachSlotContents['0'], approachSlotContents['1'], approachSlotContents['2']];
+  if (order.includes(undefined)) { fb.style.display='block'; fb.className='feedback-box wrong-fb'; fb.textContent='Fill all three slots first!'; return; }
+  const correct = JSON.stringify(order) === JSON.stringify(approachCorrect);
+  fb.style.display = 'block';
+  fb.className = `feedback-box ${correct ? 'correct-fb' : 'wrong-fb'}`;
+  fb.textContent = correct
+    ? '✓ Nailed it! Left → Right-Left plant → Jump. That right-left plant is explosive and converts your running momentum into vertical height.'
+    : '✗ Not quite. For a right-handed hitter: Left step → Right-Left plant (those last two are fast!) → Jump. The plant is what launches you up.';
+}
+
+// ── Init all choice groups + lesson 1 drag ──
+document.addEventListener('DOMContentLoaded', () => {
+  initChoiceGroups();
+
+  const orderBank = document.getElementById('orderBank');
+  const orderTarget = document.getElementById('orderTarget');
+  if (!orderBank || !orderTarget) return;
+
+  orderBank.querySelectorAll('.order-chip').forEach(chip => {
+    chip.addEventListener('dragstart', e => { draggingChip = chip.dataset.val; chip.classList.add('dragging'); });
+    chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
+  });
+  orderTarget.querySelectorAll('.order-slot').forEach(slot => {
+    slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('drag-over'); });
+    slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
+    slot.addEventListener('drop', e => {
+      e.preventDefault();
+      slot.classList.remove('drag-over');
+      const idx = slot.dataset.slot;
+      if (orderSlotContents[idx]) {
+        const prev = orderBank.querySelector(`[data-val="${orderSlotContents[idx]}"]`);
+        if (prev) prev.style.display = '';
+      }
+      orderSlotContents[idx] = draggingChip;
+      const chip = orderBank.querySelector(`[data-val="${draggingChip}"]`);
+      if (chip) chip.style.display = 'none';
+      slot.classList.add('filled');
+      slot.innerHTML = `<span style="font-size:.88rem; font-weight:600; color:var(--net);">${getChipLabel(draggingChip,'order-chip')}</span>`;
+      draggingChip = null;
+    });
+  });
+});
+</script>
 {% endblock %}
