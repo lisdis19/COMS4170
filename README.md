@@ -34,7 +34,8 @@ COMS4170/
 │   ├── Set.jpg
 │   ├── Serve.jpg
 │   ├── content.json        # Lesson content and quiz data
-│   └── Spike.jpgchallenges.json     # Build-a-Play challenge definitions
+│   └── Spike.jpg 
+    └── challenges.json     # Build-a-Play challenge definitions
 ├── static/
 │   └── player_bump.png 
 └── templates/

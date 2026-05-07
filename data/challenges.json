@@ -4,8 +4,8 @@
       "id": 1,
       "title": "Serve Receive Formation",
       "emoji": "📡",
-      "description": "The opponent just served. Set up your team in the classic 'W' serve receive — 3 back-row passers in a W shape and 2 front-row players ready near the net.",
-      "hint": "Your 3 passers form a W in the back court. The setter and one hitter wait near the net.",
+      "description": "The other team is about to serve, so your team needs to get into serve receive formation. Your goal is to position players so the serve can be passed cleanly to the setter. Three players should spread out in the back row to cover the court and receive the serve, while the setter stays near the net ready for the second touch.",
+      "hint": "Serve receive is how your team lines up to pass the other team's serve. In a W formation, three back-row players spread out to pass the serve: one left back, one middle back, and one right back. The libero is usually the strongest passer, so try placing them in the center back. The setter should stay near the net so they can set the next ball.",
       "players": [
         {"id": "P1", "label": "S",  "role": "Setter",          "color": "#E8C547"},
         {"id": "P2", "label": "OH", "role": "Outside Hitter",  "color": "#3B82A0"},
@@ -23,7 +23,7 @@
         {"id": "Z6", "label": "Mid Center",  "x": 50, "y": 42, "accepts": ["P6"]}
       ],
       "success_message": "Perfect W formation! Your passers cover the whole back court and your setter is ready to set.",
-      "learn_tip": "The W formation puts your best passers — often the Libero in the middle back — where most serves land."
+      "learn_tip": "In serve receive, the goal is to get the first touch under control. The back row spreads out to cover as much court as possible, while the setter stays near the net ready for the second touch."
     },
     {
       "id": 2,

@@ -343,6 +343,11 @@ function placePlayerInZone(playerId, zoneId) {
   const zone   = document.getElementById(`zone-${zoneId}`);
   const player = players[playerId];
 
+  // Remove this player from any old court position before placing them again
+  document
+    .querySelectorAll(`.court-player[data-player-id="${playerId}"]`)
+    .forEach(el => el.remove());
+
   const existing = document.querySelector(`.court-player[data-zone="${zoneId}"]`);
   if (existing) existing.remove();
 
