@@ -20,7 +20,8 @@
 <div class="row justify-content-center">
   <div class="col-lg-8">
 
-    <div class="mb-5">
+    <!-- ── LESSON HEADER ── -->
+    <div class="mb-4">
       <p class="section-title">Lesson {{ lesson_num }} / {{ total }}</p>
       <h1 class="page-heading" style="font-size:3.2rem;">
         <span style="color:var(--net)">{{ lesson.emoji }}</span> {{ lesson.title }}
@@ -32,42 +33,167 @@
       <input type="hidden" name="selection" value="read">
       <input type="hidden" name="confidence" id="confidenceVal" value="3">
 
-      <!-- ── MAIN CONTENT ── -->
+      {# ══════════════════════════════════════════════════════════════
+         LESSON 1 — The Court & The Game
+         Adds: positions court map, spaced recap mini-quiz mid-lesson
+      ══════════════════════════════════════════════════════════════ #}
+      {% if lesson_num == 1 %}
+
+      <!-- CARD 1: Court dimensions visual -->
       <div class="vl-card mb-4">
-        {% if lesson_num == 1 %}
-        <div style="width:55%; margin:0 auto 28px;">{% include "court.html" %}</div>
-        {% else %}
-        <div style="text-align:center; margin-bottom:28px;">
-          <img src="/data/{{ lesson.image }}" style="max-width:55%; border-radius:12px; box-shadow:0 8px 40px rgba(0,0,0,0.5);">
+        <p class="section-title mb-3">⚡ The Basics — Dimensions</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:24px;">
+          <div class="stat-tile">
+            <div class="stat-num">18m</div>
+            <div class="stat-label">Court Length</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-num">9m</div>
+            <div class="stat-label">Court Width</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-num">3</div>
+            <div class="stat-label">Max Touches / Possession</div>
+          </div>
         </div>
-        {% endif %}
-        {% for para in lesson.content.split('\n\n') %}
-        <p style="font-size:1.04rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:{% if not loop.last %}20px{% else %}0{% endif %};">{{ para }}</p>
-        {% endfor %}
+        <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:16px;">Volleyball is played on an 18m × 9m court — roughly the size of three parking spaces side by side. A net divides the court in half, and two teams of 6 players compete to send the ball over the net and land it on the opponent's side before it hits the ground.</p>
+        <div style="background:rgba(232,197,71,0.07); border-left:3px solid var(--net); border-radius:0 8px 8px 0; padding:12px 16px;">
+          <p style="font-size:.88rem; color:rgba(255,255,255,0.7); margin:0; line-height:1.7;">Each team gets <strong style="color:var(--net);">max 3 touches</strong> before the ball must cross back. The classic sequence is <strong style="color:var(--net);">Pass → Set → Spike</strong>.</p>
+        </div>
       </div>
 
-      <!-- ── DID YOU KNOW ── -->
-      {% if lesson.did_you_know %}
-      <div class="vl-card mb-4" style="border-color:rgba(232,197,71,0.3); background:rgba(232,197,71,0.06); padding:22px 28px;">
-        <div style="display:flex; gap:16px; align-items:flex-start;">
-          <div class="icon-bubble" style="background:rgba(232,197,71,0.15); border-color:rgba(232,197,71,0.4);">💡</div>
-          <div>
-            <p class="section-title mb-2">DID YOU KNOW?</p>
-            <p style="font-size:.92rem; line-height:1.72; color:rgba(255,255,255,0.72); margin:0; font-style:italic;">{{ lesson.did_you_know }}</p>
+      <!-- CARD 2: Scoring -->
+      <div class="vl-card mb-4">
+        <p class="section-title mb-3">🏆 Scoring</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:20px;">
+          <div class="stat-tile" style="background:rgba(59,130,160,0.15); border-color:rgba(59,130,160,0.4);">
+            <div class="stat-num" style="color:#9dd5ef;">25</div>
+            <div class="stat-label">Points to win a set<br><span style="font-size:.7rem; opacity:.6;">(2-pt lead required)</span></div>
+          </div>
+          <div class="stat-tile" style="background:rgba(224,92,58,0.12); border-color:rgba(224,92,58,0.35);">
+            <div class="stat-num" style="color:var(--spike);">15</div>
+            <div class="stat-label">Points in 5th set<br><span style="font-size:.7rem; opacity:.6;">(if match reaches it)</span></div>
+          </div>
+        </div>
+        <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82);">A match is best of 5 sets. The first team to 25 points (with at least a 2-point lead) wins a set. If it reaches a deciding 5th set, that one goes to 15 points.</p>
+      </div>
+
+      <!-- CARD 3: Rotation -->
+      <div class="vl-card mb-4">
+        <p class="section-title mb-3">🔄 Rotation</p>
+        <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:20px;">Players rotate <strong style="color:var(--net);">clockwise</strong> each time their team earns the right to serve. Everyone cycles through all 6 positions — front row attacks and blocks; back row passes and defends.</p>
+
+        <!-- Rotation SVG -->
+        <div style="text-align:center; margin-bottom:12px;">
+          <svg viewBox="0 0 320 200" style="width:100%; max-width:380px; border-radius:10px;">
+            <!-- Court background -->
+            <rect x="0" y="0" width="320" height="200" rx="8" fill="#1d3d2c"/>
+            <rect x="12" y="12" width="296" height="176" rx="4" fill="#2e6644"/>
+            <!-- Net -->
+            <line x1="12" y1="100" x2="308" y2="100" stroke="#c8b077" stroke-width="3"/>
+            <!-- Rotation arrow -->
+            <path d="M160 30 A70 55 0 0 1 260 100" fill="none" stroke="rgba(232,197,71,0.5)" stroke-width="1.5" stroke-dasharray="5,3"/>
+            <polygon points="262,92 268,105 255,103" fill="rgba(232,197,71,0.5)"/>
+            <text x="195" y="62" fill="rgba(232,197,71,0.7)" font-size="9" font-family="sans-serif">rotate clockwise</text>
+            <!-- Players front row -->
+            <circle cx="75"  cy="72" r="14" fill="#E8C547"/>
+            <text x="75"  y="77" text-anchor="middle" fill="#073763" font-size="9" font-family="sans-serif" font-weight="700">S</text>
+            <circle cx="160" cy="72" r="14" fill="#9B59B6"/>
+            <text x="160" y="77" text-anchor="middle" fill="white" font-size="8" font-family="sans-serif" font-weight="700">MB</text>
+            <circle cx="245" cy="72" r="14" fill="#5AAD7E"/>
+            <text x="245" y="77" text-anchor="middle" fill="white" font-size="8" font-family="sans-serif" font-weight="700">RS</text>
+            <!-- Players back row -->
+            <circle cx="75"  cy="148" r="14" fill="#3B82A0"/>
+            <text x="75"  y="153" text-anchor="middle" fill="white" font-size="8" font-family="sans-serif" font-weight="700">OH</text>
+            <circle cx="160" cy="148" r="14" fill="#E05C3A"/>
+            <text x="160" y="153" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif" font-weight="700">L</text>
+            <circle cx="245" cy="148" r="14" fill="#F0A500"/>
+            <text x="245" y="153" text-anchor="middle" fill="white" font-size="8" font-family="sans-serif" font-weight="700">DS</text>
+            <!-- Labels -->
+            <text x="20" y="80" fill="rgba(255,255,255,0.35)" font-size="8" font-family="sans-serif">FRONT</text>
+            <text x="20" y="155" fill="rgba(255,255,255,0.35)" font-size="8" font-family="sans-serif">BACK</text>
+          </svg>
+        </div>
+        <p style="font-size:.82rem; color:rgba(255,255,255,0.4); text-align:center;">Your team's current rotation — each position above ↑</p>
+      </div>
+
+      <!-- ══ POSITIONS MAP — the missing section ══ -->
+      <div class="vl-card mb-4" style="border-color:rgba(232,197,71,0.3); background:rgba(232,197,71,0.04);">
+        <p class="section-title mb-1" style="color:var(--net);">🏟️ MEET THE 6 POSITIONS</p>
+        <p style="font-size:.78rem; color:rgba(255,255,255,0.35); margin-bottom:20px;">Tap any player on the court to learn their role.</p>
+
+        <!-- Interactive court + position cards -->
+        <div style="display:flex; gap:20px; flex-wrap:wrap; align-items:flex-start;">
+          <!-- Court SVG with clickable players -->
+          <div style="flex:0 0 auto; width:220px;">
+            <svg id="positionCourt" viewBox="0 0 220 280" style="width:100%; cursor:pointer;">
+              <rect x="0" y="0" width="220" height="280" rx="6" fill="#1d3d2c"/>
+              <rect x="10" y="10" width="200" height="260" rx="3" fill="#2e6644"/>
+              <rect x="10" y="10" width="200" height="260" rx="3" fill="none" stroke="#7bcf79" stroke-width="1.5"/>
+              <!-- Attack lines -->
+              <line x1="10" y1="180" x2="210" y2="180" stroke="#7bcf79" stroke-width="1" stroke-dasharray="6,4"/>
+              <line x1="10" y1="100" x2="210" y2="100" stroke="#7bcf79" stroke-width="1" stroke-dasharray="6,4"/>
+              <!-- Net -->
+              <line x1="10" y1="140" x2="210" y2="140" stroke="#c8b077" stroke-width="4"/>
+              <!-- Zone labels -->
+              <text x="110" y="270" text-anchor="middle" fill="rgba(123,207,121,0.4)" font-size="7" font-family="sans-serif" letter-spacing="2">YOUR TEAM</text>
+              <text x="110" y="18" text-anchor="middle" fill="rgba(123,207,121,0.28)" font-size="7" font-family="sans-serif" letter-spacing="2">OPPONENT</text>
+
+              <!-- Zone numbers -->
+              <text x="37"  y="270" text-anchor="middle" fill="rgba(255,255,255,0.15)" font-size="9" font-family="sans-serif">4</text>
+              <text x="110" y="270" text-anchor="middle" fill="rgba(255,255,255,0.15)" font-size="9" font-family="sans-serif">3 (missing label)</text>
+              <text x="183" y="270" text-anchor="middle" fill="rgba(255,255,255,0.15)" font-size="9" font-family="sans-serif">2</text>
+
+              <!-- YOUR TEAM players — front row -->
+              <circle id="pc-S"  cx="183" cy="160" r="16" fill="#E8C547" class="pos-dot" data-pos="S"/>
+              <text x="183" cy="165" y="165" text-anchor="middle" fill="#073763" font-size="10" font-family="sans-serif" font-weight="700" class="pos-dot-label" data-pos="S">S</text>
+
+              <circle id="pc-MB" cx="110" cy="158" r="16" fill="#9B59B6" class="pos-dot" data-pos="MB"/>
+              <text x="110" y="163" text-anchor="middle" fill="white" font-size="8" font-family="sans-serif" font-weight="700" class="pos-dot-label" data-pos="MB">MB</text>
+
+              <circle id="pc-OH" cx="37"  cy="160" r="16" fill="#3B82A0" class="pos-dot" data-pos="OH"/>
+              <text x="37"  y="165" text-anchor="middle" fill="white" font-size="8" font-family="sans-serif" font-weight="700" class="pos-dot-label" data-pos="OH">OH</text>
+
+              <!-- YOUR TEAM back row -->
+              <circle id="pc-RS" cx="183" cy="230" r="16" fill="#5AAD7E" class="pos-dot" data-pos="RS"/>
+              <text x="183" y="235" text-anchor="middle" fill="white" font-size="8" font-family="sans-serif" font-weight="700" class="pos-dot-label" data-pos="RS">RS</text>
+
+              <circle id="pc-L"  cx="110" cy="240" r="16" fill="#E05C3A" class="pos-dot" data-pos="L"/>
+              <text x="110" y="245" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif" font-weight="700" class="pos-dot-label" data-pos="L">L</text>
+
+              <circle id="pc-DS" cx="37"  cy="230" r="16" fill="#F0A500" class="pos-dot" data-pos="DS"/>
+              <text x="37"  y="235" text-anchor="middle" fill="white" font-size="8" font-family="sans-serif" font-weight="700" class="pos-dot-label" data-pos="DS">DS</text>
+
+              <!-- Opponent silhouettes -->
+              <circle cx="37"  cy="80" r="11" fill="rgba(255,255,255,0.08)"/>
+              <circle cx="110" cy="80" r="11" fill="rgba(255,255,255,0.08)"/>
+              <circle cx="183" cy="80" r="11" fill="rgba(255,255,255,0.08)"/>
+              <circle cx="37"  cy="25" r="11" fill="rgba(255,255,255,0.05)"/>
+              <circle cx="110" cy="25" r="11" fill="rgba(255,255,255,0.05)"/>
+              <circle cx="183" cy="25" r="11" fill="rgba(255,255,255,0.05)"/>
+            </svg>
+            <p style="font-size:.72rem; color:rgba(255,255,255,0.3); text-align:center; margin-top:4px;">Tap a player to learn their role</p>
+          </div>
+
+          <!-- Info panel -->
+          <div style="flex:1; min-width:180px;">
+            <div id="posInfoPanel" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:18px; min-height:200px; transition:all .2s;">
+              <p style="font-size:.82rem; color:rgba(255,255,255,0.3); margin:0; font-style:italic; text-align:center; padding-top:60px;">← Tap a player</p>
+            </div>
+            <!-- Quick legend -->
+            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:12px;">
+              {% set pos_colors = [('S','#E8C547','#073763'),('OH','#3B82A0','white'),('MB','#9B59B6','white'),('RS','#5AAD7E','white'),('L','#E05C3A','white'),('DS','#F0A500','white')] %}
+              {% for abbr, bg, tc in pos_colors %}
+              <div class="pos-legend-dot" data-pos="{{ abbr }}" style="background:{{ bg }}; color:{{ tc }};">{{ abbr }}</div>
+              {% endfor %}
+            </div>
           </div>
         </div>
       </div>
-      {% endif %}
 
-      <!-- ══════════════════════════════════════════
-           LESSON-SPECIFIC INTERACTIVE WIDGETS
-      ══════════════════════════════════════════ -->
-
-      {% if lesson_num == 1 %}
-      <!-- LESSON 1: Drag-to-order rally sequence + fill-in-the-blank -->
-
+      <!-- ── LESSON 1 INTERACTIVE WIDGETS ── -->
       <div class="vl-card mb-4 interactive-card">
-        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 TRY IT</p>
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 TRY IT — Rally Order</p>
         <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:18px;">Arrange the 3 touches of a rally in the correct order — drag them into place.</p>
         <div id="orderTarget" style="display:flex; gap:10px; margin-bottom:16px; min-height:54px; align-items:center;">
           <div class="order-slot" data-slot="0"><span class="slot-placeholder">1st touch</span></div>
@@ -95,9 +221,84 @@
         <div id="touchFillFeedback" class="feedback-box" style="display:none;"></div>
       </div>
 
-      {% elif lesson_num == 2 %}
-      <!-- LESSON 2: Spot the mistake + scenario reveal -->
+      <!-- ── Spaced repetition: position recall ── -->
+      <div class="vl-card mb-4 interactive-card" style="border-color:rgba(232,197,71,0.3);">
+        <p class="section-title mb-1" style="color:var(--net);">🔁 QUICK RECALL — Positions</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Let's make sure the positions stuck before you move on.</p>
+        <div style="background:rgba(0,0,0,0.2); border-radius:10px; padding:16px; margin-bottom:14px; font-size:.93rem; color:rgba(255,255,255,0.8); line-height:1.75;">
+          📋 Which player wears a <strong>different colored jersey</strong> and specializes in back-row defense?
+        </div>
+        <div class="choice-group" id="posRecall" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+          <div class="choice-card" data-correct="false" data-msg="The Setter runs the offense and delivers sets — they wear the same jersey color as teammates.">Setter</div>
+          <div class="choice-card" data-correct="true"  data-msg="Correct! The Libero wears a contrasting jersey, can only play in the back row, and is the team's best defensive specialist.">Libero</div>
+          <div class="choice-card" data-correct="false" data-msg="The Middle Blocker plays front-row defense and attacks quick sets in the middle — but wears a standard jersey.">Middle Blocker</div>
+          <div class="choice-card" data-correct="false" data-msg="The Outside Hitter attacks from the left side and helps pass — also wears the same jersey as the rest of the team.">Outside Hitter</div>
+        </div>
+        <div id="posRecallFeedback" class="feedback-box" style="display:none;"></div>
+      </div>
 
+      {# ══════════════════════════════════════════════════════════════
+         LESSON 2 — The Serve
+      ══════════════════════════════════════════════════════════════ #}
+      {% elif lesson_num == 2 %}
+
+      <!-- Photo card -->
+      <div class="vl-card mb-4" style="padding:16px; overflow:hidden;">
+        <img src="/data/{{ lesson.image }}" style="width:100%; max-width:700px; height:auto; display:block; margin:0 auto; border-radius:12px;">
+        <div style="padding:18px 24px;">
+          <p class="section-title mb-1" style="color:#9dd5ef;">📸 THE SERVE IN ACTION</p>
+          <p style="font-size:.84rem; color:rgba(255,255,255,0.5); margin:0;">Watch the toss height, arm extension, and body position — all critical technique cues.</p>
+        </div>
+      </div>
+
+      <!-- 3 serve types — card grid -->
+      <div class="vl-card mb-4">
+        <p class="section-title mb-3">💪 3 Types of Serves</p>
+        <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:20px;">Every single point in volleyball begins with a serve. The server stands behind the end line and must send the ball over the net — without stepping over before making contact. You have just 8 seconds after the whistle.</p>
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="serve-type-card" style="border-color:rgba(93,216,123,0.3); background:rgba(93,216,123,0.05);">
+            <div class="serve-type-icon">🟢</div>
+            <div>
+              <div class="serve-type-name">Underhand</div>
+              <div class="serve-type-desc">Hold the ball in front, swing arm forward from below, contact with closed fist. Easiest to control — but easiest to receive.</div>
+            </div>
+          </div>
+          <div class="serve-type-card" style="border-color:rgba(232,197,71,0.3); background:rgba(232,197,71,0.05);">
+            <div class="serve-type-icon">🟡</div>
+            <div>
+              <div class="serve-type-name">Overhand</div>
+              <div class="serve-type-desc">Toss ~1 foot above head, extend hitting arm fully, drive open palm through the ball at peak of toss. Competitive standard.</div>
+            </div>
+          </div>
+          <div class="serve-type-card" style="border-color:rgba(224,92,58,0.3); background:rgba(224,92,58,0.05);">
+            <div class="serve-type-icon">🔴</div>
+            <div>
+              <div class="serve-type-name">Jump Serve</div>
+              <div class="serve-type-desc">Approach like an attack, toss high, spike it airborne. Elite weapon — pros reach 120+ km/h. An unreturnable serve = an <strong>ace</strong>.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step-by-step -->
+      {% if lesson.steps %}
+      <div class="vl-card mb-4" style="padding:28px 32px;">
+        <p class="section-title mb-4">Step-by-Step Technique</p>
+        <div style="display:flex; flex-direction:column; gap:0;">
+          {% for step in lesson.steps %}
+          <div style="display:flex; gap:18px; align-items:flex-start; padding:16px 0; {% if not loop.last %}border-bottom:1px solid rgba(255,255,255,0.05);{% endif %}">
+            <div style="width:32px; height:32px; border-radius:50%; background:rgba(59,130,160,0.2); border:1.5px solid rgba(59,130,160,0.5); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',cursive; color:#9dd5ef; font-size:1rem; flex-shrink:0; margin-top:2px;">{{ loop.index }}</div>
+            <div>
+              <div style="font-weight:700; font-size:.9rem; color:rgba(255,255,255,0.9); margin-bottom:4px;">{{ step.title }}</div>
+              <div style="font-size:.84rem; color:rgba(255,255,255,0.5); line-height:1.65;">{{ step.detail }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Interactive: spot the mistake -->
       <div class="vl-card mb-4 interactive-card">
         <p class="section-title mb-1" style="color:#9dd5ef;">🎮 SPOT THE MISTAKE</p>
         <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Something is wrong with this serve. Tap what the player is doing incorrectly.</p>
@@ -127,12 +328,95 @@
         <div id="spotFeedback2" class="feedback-box" style="display:none;"></div>
       </div>
 
+      {# ══════════════════════════════════════════════════════════════
+         LESSON 3 — The Pass
+      ══════════════════════════════════════════════════════════════ #}
       {% elif lesson_num == 3 %}
-      <!-- LESSON 3: Drag body-part labels + fill in the blank -->
 
+      <!-- Photo card -->
+      <div class="vl-card mb-4" style="padding:16px; overflow:hidden;">
+        <img src="/data/{{ lesson.image }}" style="width:100%; max-width:700px; height:auto; display:block; margin:0 auto; border-radius:12px;">
+        <div style="padding:18px 24px;">
+          <p class="section-title mb-1" style="color:#9dd5ef;">📸 THE FOREARM PASS</p>
+          <p style="font-size:.84rem; color:rgba(255,255,255,0.5); margin:0;">Notice the flat platform, locked elbows, bent knees, and weight forward.</p>
+        </div>
+      </div>
+
+      <!-- Technique visual -->
+      <div class="vl-card mb-4">
+        <p class="section-title mb-3">🙌 Forming the Platform</p>
+        <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:20px;">The forearm pass — called a 'bump' — is the most important skill in volleyball. Bad passing teams never win. Your first job when the opponent serves: control the ball and deliver it cleanly to your setter.</p>
+
+        <!-- Platform anatomy diagram -->
+        <div style="background:rgba(0,0,0,0.2); border-radius:10px; padding:20px; margin-bottom:20px; text-align:center;">
+          <svg viewBox="0 0 300 130" style="width:100%; max-width:340px;">
+            <!-- Left arm -->
+            <rect x="50" y="50" width="80" height="22" rx="11" fill="#3B82A0" opacity=".85"/>
+            <!-- Right arm -->
+            <rect x="170" y="50" width="80" height="22" rx="11" fill="#3B82A0" opacity=".85"/>
+            <!-- Clasped hands -->
+            <rect x="128" y="46" width="44" height="30" rx="8" fill="#5AAD7E" opacity=".9"/>
+            <text x="150" y="67" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif" font-weight="700">hands</text>
+            <!-- Ball -->
+            <circle cx="150" cy="28" r="16" fill="rgba(232,197,71,0.9)"/>
+            <text x="150" y="33" text-anchor="middle" fill="#073763" font-size="10" font-family="sans-serif" font-weight="700">🏐</text>
+            <!-- Contact zone label -->
+            <line x1="90" y1="50" x2="90" y2="30" stroke="rgba(255,255,255,0.3)" stroke-width="1" stroke-dasharray="3,2"/>
+            <text x="90" y="25" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="9" font-family="sans-serif">contact zone</text>
+            <!-- Wrist label -->
+            <text x="52" y="82" fill="rgba(255,255,255,0.35)" font-size="8" font-family="sans-serif">wrist</text>
+            <text x="235" y="82" fill="rgba(255,255,255,0.35)" font-size="8" font-family="sans-serif">wrist</text>
+            <text x="50" y="48" fill="#9dd5ef" font-size="8" font-family="sans-serif">elbow →</text>
+            <text x="193" y="48" fill="#9dd5ef" font-size="8" font-family="sans-serif">← elbow</text>
+            <!-- Angle arrow -->
+            <path d="M60 90 Q150 60 240 90" fill="none" stroke="rgba(232,197,71,0.4)" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <text x="150" y="110" text-anchor="middle" fill="rgba(232,197,71,0.6)" font-size="8" font-family="sans-serif">flat platform — tilted toward setter</text>
+          </svg>
+        </div>
+
+        <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:16px;">Clasp hands together with <strong style="color:var(--net);">thumbs parallel</strong> (not interlocked) and press forearms together. When the ball arrives, don't swing your arms — absorb and redirect by angling your platform and driving up through your legs.</p>
+        <div style="background:rgba(232,197,71,0.07); border-left:3px solid var(--net); border-radius:0 8px 8px 0; padding:12px 16px;">
+          <p style="font-size:.88rem; color:rgba(255,255,255,0.7); margin:0; line-height:1.7;"><strong style="color:var(--net);">Key mental model:</strong> Think of your forearms as a tilted table, not a baseball bat. Your legs do the lifting — arms barely move.</p>
+        </div>
+      </div>
+
+      <!-- Footwork + targeting card -->
+      <div class="vl-card mb-4">
+        <p class="section-title mb-3">👟 Footwork & Targeting</p>
+        <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:16px;">Footwork is <em>half</em> the skill. Move your feet to get behind and under the ball before it arrives — never reach sideways for it.</p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="info-tile">
+            <div class="info-tile-icon">🎯</div>
+            <div class="info-tile-text">Aim: 3m in the air near setter — 1m from net, right side</div>
+          </div>
+          <div class="info-tile">
+            <div class="info-tile-icon">🛡️</div>
+            <div class="info-tile-text">Libero (different jersey) takes the hardest serves — best passer on the team</div>
+          </div>
+        </div>
+      </div>
+
+      {% if lesson.steps %}
+      <div class="vl-card mb-4" style="padding:28px 32px;">
+        <p class="section-title mb-4">Step-by-Step Technique</p>
+        <div style="display:flex; flex-direction:column; gap:0;">
+          {% for step in lesson.steps %}
+          <div style="display:flex; gap:18px; align-items:flex-start; padding:16px 0; {% if not loop.last %}border-bottom:1px solid rgba(255,255,255,0.05);{% endif %}">
+            <div style="width:32px; height:32px; border-radius:50%; background:rgba(59,130,160,0.2); border:1.5px solid rgba(59,130,160,0.5); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',cursive; color:#9dd5ef; font-size:1rem; flex-shrink:0; margin-top:2px;">{{ loop.index }}</div>
+            <div>
+              <div style="font-weight:700; font-size:.9rem; color:rgba(255,255,255,0.9); margin-bottom:4px;">{{ step.title }}</div>
+              <div style="font-size:.84rem; color:rgba(255,255,255,0.5); line-height:1.65;">{{ step.detail }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Interactive -->
       <div class="vl-card mb-4 interactive-card">
         <p class="section-title mb-1" style="color:#9dd5ef;">🎮 DRAG TO LABEL</p>
-        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Where on your arms do you actually contact the ball during a bump? Drag the correct label to the contact zone.</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Where on your arms do you actually contact the ball during a bump? Drag the correct label.</p>
         <div style="display:flex; gap:24px; align-items:center; flex-wrap:wrap; margin-bottom:18px;">
           <div style="flex:1; min-width:180px;">
             <div style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:10px; padding:18px; text-align:center; font-size:.85rem; color:rgba(255,255,255,0.5); line-height:2.2;">
@@ -162,9 +446,82 @@
         <div id="feetFillFeedback" class="feedback-box" style="display:none;"></div>
       </div>
 
+      {# ══════════════════════════════════════════════════════════════
+         LESSON 4 — The Set
+      ══════════════════════════════════════════════════════════════ #}
       {% elif lesson_num == 4 %}
-      <!-- LESSON 4: "Your instinct was..." reveals + arrange steps -->
 
+      <!-- Photo -->
+      <div class="vl-card mb-4" style="padding:16px; overflow:hidden;">
+        <img src="/data/{{ lesson.image }}" style="width:100%; max-width:700px; height:auto; display:block; margin:0 auto; border-radius:12px;">
+        <div style="padding:18px 24px;">
+          <p class="section-title mb-1" style="color:#9dd5ef;">📸 THE SET</p>
+          <p style="font-size:.84rem; color:rgba(255,255,255,0.5); margin:0;">Fingertips up above the forehead, wrists ready to extend — this is the moment the offense comes alive.</p>
+        </div>
+      </div>
+
+      <!-- Technique -->
+      <div class="vl-card mb-4">
+        <p class="section-title mb-3">👆 The Setter's Role</p>
+        <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:16px;">After the pass, the setter takes the <strong style="color:var(--net);">second touch</strong> — transforming an imperfect pass into a perfectly placed ball for the attacker. It's the most technical skill in volleyball.</p>
+
+        <!-- Hand position diagram -->
+        <div style="background:rgba(0,0,0,0.2); border-radius:10px; padding:20px; margin-bottom:20px; text-align:center;">
+          <svg viewBox="0 0 260 100" style="width:100%; max-width:320px;">
+            <!-- Triangle window -->
+            <polygon points="130,15 95,65 165,65" fill="none" stroke="rgba(232,197,71,0.6)" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <text x="130" y="50" text-anchor="middle" fill="rgba(232,197,71,0.5)" font-size="8" font-family="sans-serif">ball window</text>
+            <!-- Hands -->
+            <ellipse cx="95" cy="72" rx="18" ry="12" fill="#3B82A0" opacity=".8"/>
+            <ellipse cx="165" cy="72" rx="18" ry="12" fill="#3B82A0" opacity=".8"/>
+            <text x="95" y="76" text-anchor="middle" fill="white" font-size="7" font-family="sans-serif">L hand</text>
+            <text x="165" y="76" text-anchor="middle" fill="white" font-size="7" font-family="sans-serif">R hand</text>
+            <!-- Ball -->
+            <circle cx="130" cy="18" r="14" fill="rgba(232,197,71,0.85)"/>
+            <text x="130" y="23" text-anchor="middle" fill="#073763" font-size="10" font-family="sans-serif">🏐</text>
+            <!-- Labels -->
+            <text x="50" y="90" fill="rgba(255,255,255,0.4)" font-size="7.5" font-family="sans-serif">fingertips only</text>
+            <text x="160" y="90" fill="var(--spike)" font-size="7.5" font-family="sans-serif">NO palms!</text>
+          </svg>
+        </div>
+
+        <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:16px;">Form a loose triangle above your forehead — thumbs and index fingers lightly touching — and contact with fingertips only. A quick wrist extension delivers the ball. If it rests in your hands even briefly, referees call a 'lift.'</p>
+
+        <!-- Set types -->
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div class="info-tile">
+            <div class="info-tile-icon">⬆️</div>
+            <div class="info-tile-text"><strong style="color:rgba(255,255,255,0.85);">High outside set</strong> — gives hitter time, but lets blockers set up too</div>
+          </div>
+          <div class="info-tile">
+            <div class="info-tile-icon">⚡</div>
+            <div class="info-tile-text"><strong style="color:rgba(255,255,255,0.85);">Quick middle set</strong> — one of the hardest plays to defend against</div>
+          </div>
+          <div class="info-tile">
+            <div class="info-tile-icon">🔙</div>
+            <div class="info-tile-text"><strong style="color:rgba(255,255,255,0.85);">Back-set</strong> — ball delivered behind you without turning — keeps defense guessing</div>
+          </div>
+        </div>
+      </div>
+
+      {% if lesson.steps %}
+      <div class="vl-card mb-4" style="padding:28px 32px;">
+        <p class="section-title mb-4">Step-by-Step Technique</p>
+        <div style="display:flex; flex-direction:column; gap:0;">
+          {% for step in lesson.steps %}
+          <div style="display:flex; gap:18px; align-items:flex-start; padding:16px 0; {% if not loop.last %}border-bottom:1px solid rgba(255,255,255,0.05);{% endif %}">
+            <div style="width:32px; height:32px; border-radius:50%; background:rgba(59,130,160,0.2); border:1.5px solid rgba(59,130,160,0.5); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',cursive; color:#9dd5ef; font-size:1rem; flex-shrink:0; margin-top:2px;">{{ loop.index }}</div>
+            <div>
+              <div style="font-weight:700; font-size:.9rem; color:rgba(255,255,255,0.9); margin-bottom:4px;">{{ step.title }}</div>
+              <div style="font-size:.84rem; color:rgba(255,255,255,0.5); line-height:1.65;">{{ step.detail }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Interactive -->
       <div class="vl-card mb-4 interactive-card">
         <p class="section-title mb-1" style="color:#9dd5ef;">🎮 YOUR INSTINCT VS. REALITY</p>
         <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Tap what you'd instinctively do, then see what actually happens.</p>
@@ -181,7 +538,7 @@
 
       <div class="vl-card mb-4 interactive-card">
         <p class="section-title mb-1" style="color:#9dd5ef;">🎮 ARRANGE IN ORDER</p>
-        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Put these setter actions in the correct sequence — drag them into order.</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Put these setter actions in the correct sequence.</p>
         <div id="setOrderTarget" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
           <div class="order-slot-v" data-slot="0"><span class="slot-placeholder">Step 1</span></div>
           <div class="order-slot-v" data-slot="1"><span class="slot-placeholder">Step 2</span></div>
@@ -196,9 +553,131 @@
         <div id="setOrderFeedback" class="feedback-box" style="display:none;"></div>
       </div>
 
+      {# ══════════════════════════════════════════════════════════════
+         LESSON 5 — The Spike
+         NEW: animated cross-court shot diagram + drag-the-ball
+      ══════════════════════════════════════════════════════════════ #}
       {% elif lesson_num == 5 %}
-      <!-- LESSON 5: Arrange approach steps + scenario shot selection -->
 
+      <!-- Photo -->
+      <div class="vl-card mb-4" style="padding:16px; overflow:hidden;">
+        <img src="/data/{{ lesson.image }}" style="width:100%; max-width:700px; height:auto; display:block; margin:0 auto; border-radius:12px;">
+        <div style="padding:18px 24px;">
+          <p class="section-title mb-1" style="color:#9dd5ef;">📸 THE SPIKE</p>
+          <p style="font-size:.84rem; color:rgba(255,255,255,0.5); margin:0;">Notice the full arm extension, open hand contact, and attacker's arm position at peak jump.</p>
+        </div>
+      </div>
+
+      <!-- Approach & mechanics -->
+      <div class="vl-card mb-4">
+        <p class="section-title mb-3">⚡ The Approach</p>
+        <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:20px;">The approach is as important as the jump. Right-handed hitters use a 3-step sequence — converting horizontal momentum into vertical explosion.</p>
+
+        <!-- Approach steps visual -->
+        <div style="background:rgba(0,0,0,0.2); border-radius:10px; padding:20px; margin-bottom:20px; text-align:center;">
+          <svg viewBox="0 0 320 80" style="width:100%; max-width:400px;">
+            <defs>
+              <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L6,3 z" fill="rgba(255,255,255,0.3)"/>
+              </marker>
+            </defs>
+            <!-- Footprints -->
+            <ellipse cx="30" cy="50" rx="14" ry="20" fill="#3B82A0" opacity=".8"/>
+            <text x="30" y="55" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif">L</text>
+            <text x="30" y="18" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="9" font-family="sans-serif">Step 1</text>
+
+            <line x1="48" y1="50" x2="88" y2="50" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" marker-end="url(#arr)"/>
+
+            <ellipse cx="105" cy="50" rx="14" ry="20" fill="#E8C547" opacity=".9"/>
+            <text x="105" y="55" text-anchor="middle" fill="#073763" font-size="8" font-family="sans-serif" font-weight="700">R</text>
+            <text x="105" y="18" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="9" font-family="sans-serif">Step 2</text>
+
+            <ellipse cx="135" cy="60" rx="12" ry="18" fill="#E8C547" opacity=".7"/>
+            <text x="135" y="65" text-anchor="middle" fill="#073763" font-size="8" font-family="sans-serif">L</text>
+            <text x="120" y="18" text-anchor="middle" fill="rgba(255,255,255,0.6)" font-size="9" font-family="sans-serif">Plant</text>
+
+            <line x1="152" y1="50" x2="190" y2="50" stroke="rgba(255,255,255,0.25)" stroke-width="1.5" marker-end="url(#arr)"/>
+
+            <!-- Jump -->
+            <circle cx="230" cy="30" r="22" fill="#E05C3A" opacity=".85"/>
+            <text x="230" y="26" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif" font-weight="700">JUMP</text>
+            <text x="230" y="39" text-anchor="middle" fill="white" font-size="8" font-family="sans-serif">⬆️</text>
+            <!-- Spike -->
+            <circle cx="290" cy="15" r="14" fill="rgba(232,197,71,0.8)"/>
+            <text x="290" y="11" text-anchor="middle" fill="#073763" font-size="9" font-family="sans-serif">SPIKE</text>
+            <text x="290" y="23" text-anchor="middle" fill="#073763" font-size="8" font-family="sans-serif">✊</text>
+            <line x1="248" y1="20" x2="274" y2="15" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" marker-end="url(#arr)"/>
+          </svg>
+          <p style="font-size:.78rem; color:rgba(255,255,255,0.4); margin-top:8px;">3-step for right-handed hitters: Left → Right-Left plant → Jump → Contact</p>
+        </div>
+
+        <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:16px;">At the peak of your jump, your hitting arm extends fully and your open hand contacts the ball — <strong style="color:var(--net);">wrist snapping forward</strong> to drive the ball down at a steep angle. A spike that directly wins the rally = a <strong style="color:var(--spike);">kill</strong>.</p>
+      </div>
+
+      <!-- ★★ ANIMATED SHOT DIAGRAM + DRAG-THE-BALL ★★ -->
+      <div class="vl-card mb-4 interactive-card" style="border-color:rgba(224,92,58,0.3);">
+        <p class="section-title mb-1" style="color:var(--spike);">🎮 DRAG THE BALL — Pick Your Shot</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Drag the ball 🏐 to the target zone you want to hit, then watch the shot path animate across the court.</p>
+
+        <!-- Court with shot zones + animated ball -->
+        <div style="position:relative; user-select:none; touch-action:none;">
+          <svg id="shotCourtSvg" viewBox="0 0 400 300" style="width:100%; border-radius:10px; display:block;">
+            <!-- Court -->
+            <rect x="0" y="0" width="400" height="300" rx="6" fill="#1d3d2c"/>
+            <rect x="14" y="14" width="372" height="272" rx="3" fill="#2e6644"/>
+            <rect x="14" y="14" width="372" height="272" rx="3" fill="none" stroke="#7bcf79" stroke-width="1.5"/>
+            <!-- Attack line -->
+            <line x1="14" y1="195" x2="386" y2="195" stroke="#7bcf79" stroke-width="1" stroke-dasharray="6,4" opacity=".5"/>
+            <!-- Net -->
+            <line x1="14" y1="150" x2="386" y2="150" stroke="#c8b077" stroke-width="4"/>
+            <circle cx="14"  cy="150" r="5" fill="#c8b077"/>
+            <circle cx="386" cy="150" r="5" fill="#c8b077"/>
+            <!-- Labels -->
+            <text x="200" y="290" text-anchor="middle" fill="rgba(123,207,121,0.4)" font-size="8" font-family="sans-serif" letter-spacing="2">YOUR SIDE</text>
+            <text x="200" y="25"  text-anchor="middle" fill="rgba(123,207,121,0.28)" font-size="8" font-family="sans-serif" letter-spacing="2">OPPONENT SIDE</text>
+
+            <!-- Shot target zones (opponent court) -->
+            <!-- Line shot zone - right sideline -->
+            <rect id="zone-line" x="330" y="25" width="55" height="115" rx="4" fill="rgba(224,92,58,0.15)" stroke="rgba(224,92,58,0.5)" stroke-width="1.5" stroke-dasharray="5,3" class="shot-zone" data-shot="line"/>
+            <text x="357" y="88" text-anchor="middle" fill="rgba(224,92,58,0.8)" font-size="9" font-family="sans-serif" font-weight="600">LINE</text>
+
+            <!-- Cross-court zone - left deep -->
+            <rect id="zone-cross" x="14" y="25" width="100" height="115" rx="4" fill="rgba(59,130,160,0.15)" stroke="rgba(59,130,160,0.5)" stroke-width="1.5" stroke-dasharray="5,3" class="shot-zone" data-shot="cross"/>
+            <text x="64" y="88" text-anchor="middle" fill="rgba(59,130,160,0.9)" font-size="9" font-family="sans-serif" font-weight="600">CROSS</text>
+
+            <!-- Tip zone - front middle -->
+            <rect id="zone-tip" x="130" y="25" width="140" height="60" rx="4" fill="rgba(93,216,123,0.12)" stroke="rgba(93,216,123,0.45)" stroke-width="1.5" stroke-dasharray="5,3" class="shot-zone" data-shot="tip"/>
+            <text x="200" y="60" text-anchor="middle" fill="rgba(93,216,123,0.85)" font-size="9" font-family="sans-serif" font-weight="600">TIP / ROLL</text>
+
+            <!-- Blockers -->
+            <rect x="155" y="137" width="28" height="24" rx="4" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+            <text x="169" y="153" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8" font-family="sans-serif">BLK</text>
+            <rect x="215" y="137" width="28" height="24" rx="4" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+            <text x="229" y="153" text-anchor="middle" fill="rgba(255,255,255,0.5)" font-size="8" font-family="sans-serif">BLK</text>
+
+            <!-- Animated shot path (hidden by default) -->
+            <path id="shotPath" d="" fill="none" stroke-width="2.5" stroke-dasharray="8,4" opacity="0"/>
+
+            <!-- Attacker (hitter) on your side -->
+            <circle cx="60" cy="175" r="16" fill="#3B82A0" opacity=".9"/>
+            <text x="60" y="180" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif" font-weight="700">OH</text>
+
+            <!-- Draggable ball -->
+            <circle id="dragBall" cx="60" cy="155" r="14" fill="#E8C547" cursor="grab" filter="drop-shadow(0 2px 6px rgba(0,0,0,0.5))"/>
+            <text id="dragBallText" x="60" y="160" text-anchor="middle" font-size="13" style="pointer-events:none; user-select:none;">🏐</text>
+          </svg>
+
+          <!-- Shot result overlay -->
+          <div id="shotResult" style="display:none; position:absolute; bottom:12px; left:50%; transform:translateX(-50%); background:rgba(7,55,99,0.95); border:1px solid rgba(255,255,255,0.15); border-radius:10px; padding:12px 20px; text-align:center; width:90%; max-width:340px; backdrop-filter:blur(4px);">
+            <div id="shotResultTitle" style="font-family:'Bebas Neue',cursive; font-size:1.2rem; letter-spacing:1px; margin-bottom:4px;"></div>
+            <div id="shotResultDesc" style="font-size:.82rem; color:rgba(255,255,255,0.65); line-height:1.55;"></div>
+          </div>
+        </div>
+
+        <p style="font-size:.78rem; color:rgba(255,255,255,0.3); text-align:center; margin-top:10px;">Drag the 🏐 ball into any highlighted zone to see the shot</p>
+      </div>
+
+      <!-- Approach order -->
       <div class="vl-card mb-4 interactive-card">
         <p class="section-title mb-1" style="color:#9dd5ef;">🎮 ARRANGE IN ORDER</p>
         <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Put the 3-step spike approach in the correct foot order for a right-handed hitter.</p>
@@ -232,9 +711,6 @@
         <div id="spotFeedback3" class="feedback-box" style="display:none;"></div>
       </div>
 
-      {% endif %}
-
-      <!-- ── STEP-BY-STEP TECHNIQUE ── -->
       {% if lesson.steps %}
       <div class="vl-card mb-4" style="padding:28px 32px;">
         <p class="section-title mb-4">Step-by-Step Technique</p>
@@ -252,7 +728,24 @@
       </div>
       {% endif %}
 
-      <!-- ── KEY TAKEAWAYS ── -->
+      {% endif %}
+
+      <!-- ══ SHARED SECTIONS (all lessons) ══ -->
+
+      <!-- Did You Know -->
+      {% if lesson.did_you_know %}
+      <div class="vl-card mb-4" style="border-color:rgba(232,197,71,0.3); background:rgba(232,197,71,0.06); padding:22px 28px;">
+        <div style="display:flex; gap:16px; align-items:flex-start;">
+          <div class="icon-bubble" style="background:rgba(232,197,71,0.15); border-color:rgba(232,197,71,0.4);">💡</div>
+          <div>
+            <p class="section-title mb-2">DID YOU KNOW?</p>
+            <p style="font-size:.92rem; line-height:1.72; color:rgba(255,255,255,0.72); margin:0; font-style:italic;">{{ lesson.did_you_know }}</p>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Key Takeaways -->
       <div class="vl-card mb-4" style="padding:28px 32px;">
         <p class="section-title mb-3">Key Takeaways</p>
         <div style="display:flex; flex-wrap:wrap; gap:9px;">
@@ -262,7 +755,7 @@
         </div>
       </div>
 
-      <!-- ── COMMON MISTAKE ── -->
+      <!-- Common Mistake -->
       {% if lesson.common_mistake %}
       <div class="vl-card mb-4" style="border-color:rgba(224,92,58,0.3); background:rgba(224,92,58,0.05); padding:22px 28px;">
         <div style="display:flex; gap:16px; align-items:flex-start;">
@@ -275,7 +768,7 @@
       </div>
       {% endif %}
 
-      <!-- ── CONFIDENCE SLIDER ── -->
+      <!-- Confidence Slider -->
       <div class="vl-card mb-5" style="border-color:rgba(59,130,160,0.2); padding:26px 32px;">
         <p class="section-title mb-1" style="color:#9dd5ef;">HOW ARE YOU FEELING?</p>
         <p style="font-size:.75rem; color:rgba(255,255,255,0.28); margin-bottom:20px;">Rate your confidence with this skill — just for you, no grading.</p>
@@ -298,7 +791,7 @@
         </div>
       </div>
 
-      <!-- ── NAV ── -->
+      <!-- Nav -->
       <div class="d-flex justify-content-between align-items-center pb-4">
         {% if lesson_num > 1 %}
         <a href="/learn/{{ lesson_num - 1 }}" class="btn-vl btn-vl-outline" style="text-decoration:none; font-family:'Bebas Neue',cursive; font-size:1rem; padding:11px 28px; border-radius:8px;">← Back</a>
@@ -315,107 +808,82 @@
 </div>
 
 <style>
-.icon-bubble {
-  width:38px; height:38px; border-radius:50%; border-width:1.5px; border-style:solid;
-  display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0;
-}
+/* ── Shared component styles ── */
+.icon-bubble { width:38px; height:38px; border-radius:50%; border-width:1.5px; border-style:solid; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
 .interactive-card { border-color: rgba(59,130,160,0.25); background: rgba(59,130,160,0.05); }
 
+/* ── Stat tiles ── */
+.stat-tile { background:rgba(232,197,71,0.08); border:1px solid rgba(232,197,71,0.2); border-radius:10px; padding:14px 12px; text-align:center; }
+.stat-num { font-family:'Bebas Neue',cursive; font-size:2rem; color:var(--net); line-height:1; }
+.stat-label { font-size:.75rem; color:rgba(255,255,255,0.45); margin-top:4px; line-height:1.4; }
+
+/* ── Info tiles ── */
+.info-tile { display:flex; gap:12px; align-items:flex-start; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.06); border-radius:10px; padding:12px 16px; }
+.info-tile-icon { font-size:1.2rem; flex-shrink:0; margin-top:1px; }
+.info-tile-text { font-size:.85rem; color:rgba(255,255,255,0.65); line-height:1.65; }
+
+/* ── Serve type cards ── */
+.serve-type-card { display:flex; gap:14px; border:1.5px solid rgba(255,255,255,0.08); border-radius:10px; padding:14px 16px; align-items:flex-start; }
+.serve-type-icon { font-size:1.2rem; flex-shrink:0; margin-top:2px; }
+.serve-type-name { font-weight:700; font-size:.95rem; color:rgba(255,255,255,0.9); margin-bottom:4px; }
+.serve-type-desc { font-size:.82rem; color:rgba(255,255,255,0.5); line-height:1.6; }
+
+/* ── Position court dots ── */
+.pos-dot { cursor:pointer; transition:transform .15s, filter .15s; }
+.pos-dot:hover, .pos-dot.active { transform-origin:center; filter:drop-shadow(0 0 6px rgba(255,255,255,0.7)); }
+.pos-dot-label { pointer-events:none; }
+.pos-legend-dot { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.75rem; font-weight:700; cursor:pointer; flex-shrink:0; transition:transform .15s; }
+.pos-legend-dot:hover { transform:scale(1.15); }
+
+/* ── Shot zones ── */
+.shot-zone { transition:fill .2s; cursor:default; }
+.shot-zone.highlight { fill:rgba(232,197,71,0.25) !important; }
+
 /* ── Drag chips (horizontal) ── */
-.order-chip {
-  background: rgba(232,197,71,0.12); border: 1.5px solid rgba(232,197,71,0.35);
-  color: var(--net); border-radius:8px; padding:10px 16px;
-  font-size:.88rem; font-weight:600; cursor:grab; user-select:none;
-  transition: transform .15s, box-shadow .15s;
-}
+.order-chip { background: rgba(232,197,71,0.12); border: 1.5px solid rgba(232,197,71,0.35); color: var(--net); border-radius:8px; padding:10px 16px; font-size:.88rem; font-weight:600; cursor:grab; user-select:none; transition: transform .15s, box-shadow .15s; }
 .order-chip:hover { transform:translateY(-2px); box-shadow:0 4px 12px rgba(232,197,71,0.2); }
 .order-chip.dragging { opacity:.35; cursor:grabbing; }
 
 /* ── Drag chips (vertical) ── */
-.order-chip-v {
-  background: rgba(232,197,71,0.12); border: 1.5px solid rgba(232,197,71,0.35);
-  color: var(--net); border-radius:8px; padding:10px 16px;
-  font-size:.85rem; font-weight:600; cursor:grab; user-select:none;
-  transition: transform .15s;
-}
+.order-chip-v { background: rgba(232,197,71,0.12); border: 1.5px solid rgba(232,197,71,0.35); color: var(--net); border-radius:8px; padding:10px 16px; font-size:.85rem; font-weight:600; cursor:grab; user-select:none; transition: transform .15s; }
 .order-chip-v:hover { transform:translateX(4px); }
 .order-chip-v.dragging { opacity:.35; }
 
-/* ── Drop slots (horizontal) ── */
-.order-slot {
-  flex:1; min-height:46px; border:2px dashed rgba(255,255,255,0.12);
-  border-radius:8px; display:flex; align-items:center; justify-content:center;
-  transition: border-color .2s, background .2s; position:relative;
-}
+/* ── Drop slots ── */
+.order-slot { flex:1; min-height:46px; border:2px dashed rgba(255,255,255,0.12); border-radius:8px; display:flex; align-items:center; justify-content:center; transition: border-color .2s, background .2s; position:relative; }
 .order-slot.drag-over { border-color:var(--net); background:rgba(232,197,71,0.08); }
 .order-slot.filled { border-style:solid; border-color:rgba(232,197,71,0.4); }
 .slot-placeholder { font-size:.72rem; color:rgba(255,255,255,0.2); pointer-events:none; }
-
-/* ── Drop slots (vertical) ── */
-.order-slot-v {
-  min-height:44px; border:2px dashed rgba(255,255,255,0.12);
-  border-radius:8px; padding:0 14px; display:flex; align-items:center;
-  transition: border-color .2s, background .2s;
-}
+.order-slot-v { min-height:44px; border:2px dashed rgba(255,255,255,0.12); border-radius:8px; padding:0 14px; display:flex; align-items:center; transition: border-color .2s, background .2s; }
 .order-slot-v.drag-over { border-color:var(--net); background:rgba(232,197,71,0.08); }
 .order-slot-v.filled { border-style:solid; border-color:rgba(232,197,71,0.4); }
 
 /* ── Body label drop zones ── */
-.body-drop-zone {
-  min-height:36px; border:2px dashed rgba(255,255,255,0.12);
-  border-radius:8px; display:flex; align-items:center; justify-content:center;
-  font-size:.72rem; color:rgba(255,255,255,0.2); margin-top:4px; transition:all .2s;
-  cursor:default;
-}
+.body-drop-zone { min-height:36px; border:2px dashed rgba(255,255,255,0.12); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:.72rem; color:rgba(255,255,255,0.2); margin-top:4px; transition:all .2s; cursor:default; }
 .body-drop-zone.drag-over { border-color:var(--net); background:rgba(232,197,71,0.08); }
 .body-drop-zone.filled { border-style:solid; border-color:rgba(59,130,160,0.5); background:rgba(59,130,160,0.1); color:#9dd5ef; font-size:.82rem; font-weight:600; }
-.body-chip {
-  background:rgba(59,130,160,0.15); border:1.5px solid rgba(59,130,160,0.4);
-  color:#9dd5ef; border-radius:8px; padding:10px 16px; font-size:.88rem;
-  font-weight:600; cursor:grab; user-select:none; white-space:nowrap;
-}
+.body-chip { background:rgba(59,130,160,0.15); border:1.5px solid rgba(59,130,160,0.4); color:#9dd5ef; border-radius:8px; padding:10px 16px; font-size:.88rem; font-weight:600; cursor:grab; user-select:none; white-space:nowrap; }
 
-/* ── Choice cards (replaces spot-option buttons) ── */
-.choice-card {
-  padding: 13px 18px;
-  border-radius: 10px;
-  border: 1.5px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.04);
-  color: rgba(255,255,255,0.75);
-  font-size: .9rem;
-  cursor: pointer;
-  transition: border-color .18s, background .18s, color .18s;
-  user-select: none;
-}
+/* ── Choice cards ── */
+.choice-card { padding: 13px 18px; border-radius: 10px; border: 1.5px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.75); font-size: .9rem; cursor: pointer; transition: border-color .18s, background .18s, color .18s; user-select: none; }
 .choice-card:hover { border-color: rgba(59,130,160,0.55); background: rgba(59,130,160,0.09); color: white; }
-.choice-card.chosen-correct { border-color: var(--success) !important; background: rgba(93,216,123,0.12) !important; color: var(--success) !important; cursor: default; }
-.choice-card.chosen-wrong   { border-color: var(--spike) !important;   background: rgba(224,92,58,0.08) !important;  color: rgba(255,255,255,0.35) !important; cursor: default; }
+.choice-card.chosen-correct { border-color: #5dd87b !important; background: rgba(93,216,123,0.12) !important; color: #5dd87b !important; cursor: default; }
+.choice-card.chosen-wrong   { border-color: var(--spike) !important; background: rgba(224,92,58,0.08) !important; color: rgba(255,255,255,0.35) !important; cursor: default; }
 .choice-card.chosen-neutral { border-color: rgba(59,130,160,0.6) !important; background: rgba(59,130,160,0.15) !important; color: #9dd5ef !important; cursor: default; }
 .choice-group.done .choice-card { pointer-events: none; }
 
 /* ── Feedback boxes ── */
-.feedback-box {
-  border-radius:8px; padding:12px 16px; font-size:.85rem; line-height:1.65; margin-top:10px;
-}
+.feedback-box { border-radius:8px; padding:12px 16px; font-size:.85rem; line-height:1.65; margin-top:10px; }
 .feedback-box.correct-fb { background:rgba(93,216,123,0.1); border:1px solid rgba(93,216,123,0.3); color:#5dd87b; }
 .feedback-box.wrong-fb   { background:rgba(224,92,58,0.08); border:1px solid rgba(224,92,58,0.25); color:#e09080; }
 .feedback-box.instinct-reveal { background:rgba(59,130,160,0.1); border:1px solid rgba(59,130,160,0.3); color:#9dd5ef; }
 
 /* ── Check button ── */
-.check-btn {
-  background:transparent; border:1.5px solid rgba(59,130,160,0.4);
-  color:#9dd5ef; border-radius:8px; padding:9px 22px; font-size:.85rem;
-  font-family:'Bebas Neue',cursive; letter-spacing:1.5px; cursor:pointer;
-  transition:all .18s;
-}
+.check-btn { background:transparent; border:1.5px solid rgba(59,130,160,0.4); color:#9dd5ef; border-radius:8px; padding:9px 22px; font-size:.85rem; font-family:'Bebas Neue',cursive; letter-spacing:1.5px; cursor:pointer; transition:all .18s; }
 .check-btn:hover { background:rgba(59,130,160,0.15); border-color:rgba(59,130,160,0.7); }
 
-.inline-input {
-  background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.15);
-  border-radius:6px; padding:4px 10px; color:white; font-size:1rem;
-  width:60px; text-align:center; font-family:'DM Sans',sans-serif;
-  outline:none;
-}
+/* ── Inline inputs ── */
+.inline-input { background:rgba(255,255,255,0.08); border:1.5px solid rgba(255,255,255,0.15); border-radius:6px; padding:4px 10px; color:white; font-size:1rem; width:60px; text-align:center; font-family:'DM Sans',sans-serif; outline:none; }
 .inline-input-text { width:90px; }
 .inline-input:focus { border-color:var(--court); }
 </style>
@@ -424,34 +892,55 @@
 {% block scripts %}
 <script>
 // ── Confidence slider ──
-const confidenceLabels = {
-  1: "\"I'm pretty lost still...\"",
-  2: "\"Starting to get a feel for it.\"",
-  3: "\"I think I get the basics...\"",
-  4: "\"Feeling fairly confident!\"",
-  5: "\"Let me on the court right now.\""
+const confidenceLabels = { 1:"\"I'm pretty lost still...\"", 2:"\"Starting to get a feel for it.\"", 3:"\"I think I get the basics...\"", 4:"\"Feeling fairly confident!\"", 5:"\"Let me on the court right now.\"" };
+function updateConfidence(val) { document.getElementById('confidenceVal').value = val; document.getElementById('confidenceLabel').textContent = confidenceLabels[val]; }
+
+// ── Position court info ──
+const posData = {
+  S:  { name:"Setter",            color:"#E8C547", tc:"#073763", role:"The quarterback of the offense. Receives the second ball and delivers a precise set for the attacker. Runs the whole offensive strategy.", zone:"Front row right (Zone 2)" },
+  OH: { name:"Outside Hitter",    color:"#3B82A0", tc:"white",   role:"Attacks from the left side (Zone 4). Also a primary passer in serve receive. Most versatile attacker on the court.", zone:"Front left / Back left" },
+  MB: { name:"Middle Blocker",    color:"#9B59B6", tc:"white",   role:"Plays at the net and specializes in blocking. Hits quick sets in the middle. Often the tallest player on the team.", zone:"Front middle (Zone 3)" },
+  RS: { name:"Right Side / Opp.", color:"#5AAD7E", tc:"white",   role:"Also called 'Opposite' — attacks from the right side (Zone 2). Often the second-best attacker and helps block on the left side.", zone:"Front right / Back right" },
+  L:  { name:"Libero",            color:"#E05C3A", tc:"white",   role:"Wears a DIFFERENT jersey color. Can only play in the back row. Best passer and defender — takes the hardest serves. Cannot attack above the net.", zone:"Back middle / Back left" },
+  DS: { name:"Defensive Spec.",   color:"#F0A500", tc:"white",   role:"Similar to a libero — plays only in the back row and specializes in passing and digging. Subbed in for weak defensive front-row players.", zone:"Back row" },
 };
-function updateConfidence(val) {
-  document.getElementById('confidenceVal').value = val;
-  document.getElementById('confidenceLabel').textContent = confidenceLabels[val];
+
+function showPosInfo(pos) {
+  const d = posData[pos];
+  if (!d) return;
+  const panel = document.getElementById('posInfoPanel');
+  panel.innerHTML = `
+    <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+      <div style="width:34px; height:34px; border-radius:50%; background:${d.color}; display:flex; align-items:center; justify-content:center; font-size:.85rem; font-weight:700; color:${d.tc}; flex-shrink:0;">${pos}</div>
+      <div>
+        <div style="font-weight:700; font-size:1rem; color:rgba(255,255,255,0.95);">${d.name}</div>
+        <div style="font-size:.72rem; color:rgba(255,255,255,0.35);">${d.zone}</div>
+      </div>
+    </div>
+    <p style="font-size:.84rem; color:rgba(255,255,255,0.65); line-height:1.7; margin:0;">${d.role}</p>
+  `;
+  // highlight dot
+  document.querySelectorAll('.pos-dot').forEach(el => { el.style.filter = ''; el.style.transform = ''; });
+  const dot = document.getElementById('pc-' + pos);
+  if (dot) { dot.style.filter = 'drop-shadow(0 0 8px rgba(255,255,255,0.8))'; dot.style.transform = 'scale(1.15)'; dot.style.transformOrigin = 'center'; }
 }
 
-// ══════════════════════════════════
-// LESSON 1 LOGIC
-// ══════════════════════════════════
-const correctOrder = ['pass','set','spike'];
-const orderSlotContents = {};
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.pos-dot, .pos-dot-label, .pos-legend-dot').forEach(el => {
+    el.addEventListener('click', () => showPosInfo(el.dataset.pos));
+  });
+});
+
+// ── Drag chips (shared) ──
 let draggingChip = null;
-
-
-function getChipLabel(val, cls) {
-  const map = {
-    'pass':'🙌 Pass','set':'👆 Set','spike':'⚡ Spike',
-    'left':'👟 Left','rightleft':'👟👟 Right-Left (plant)','jump':'⬆️ Jump!'
-  };
+function getChipLabel(val) {
+  const map = { 'pass':'🙌 Pass','set':'👆 Set','spike':'⚡ Spike','left':'👟 Left','rightleft':'👟👟 Right-Left (plant)','jump':'⬆️ Jump!' };
   return map[val] || val;
 }
 
+// ── Lesson 1: rally order ──
+const correctOrder = ['pass','set','spike'];
+const orderSlotContents = {};
 function checkOrder() {
   const fb = document.getElementById('orderFeedback');
   const order = [orderSlotContents['0'], orderSlotContents['1'], orderSlotContents['2']];
@@ -459,15 +948,12 @@ function checkOrder() {
   const correct = JSON.stringify(order) === JSON.stringify(correctOrder);
   fb.style.display = 'block';
   fb.className = `feedback-box ${correct ? 'correct-fb' : 'wrong-fb'}`;
-  fb.textContent = correct
-    ? '✓ Perfect! Pass → Set → Spike is the classic three-touch sequence. Every great rally follows this pattern.'
-    : `Not quite. The right order is Pass → Set → Spike. You had: ${order.map(v => v ? v.charAt(0).toUpperCase()+v.slice(1) : '?').join(' → ')}.`;
+  fb.textContent = correct ? '✓ Perfect! Pass → Set → Spike is the classic three-touch sequence.' : `Not quite. The right order is Pass → Set → Spike. You had: ${order.map(v => v.charAt(0).toUpperCase()+v.slice(1)).join(' → ')}.`;
 }
 
 function checkFill(inputId, correctVal, successMsg, failMsg) {
   const val = parseInt(document.getElementById(inputId).value);
-  const fbId = inputId + 'Feedback';
-  const fb = document.getElementById(fbId);
+  const fb = document.getElementById(inputId + 'Feedback');
   fb.style.display = 'block';
   const correct = val === correctVal;
   fb.className = `feedback-box ${correct ? 'correct-fb' : 'wrong-fb'}`;
@@ -476,233 +962,285 @@ function checkFill(inputId, correctVal, successMsg, failMsg) {
 
 function checkTextFill(inputId, correctVals, successMsg, failMsg) {
   const val = document.getElementById(inputId).value.trim().toLowerCase();
-  const fbId = inputId + 'Feedback';
-  const fb = document.getElementById(fbId);
+  const fb = document.getElementById(inputId + 'Feedback');
   fb.style.display = 'block';
   const correct = correctVals.some(v => val.includes(v));
   fb.className = `feedback-box ${correct ? 'correct-fb' : 'wrong-fb'}`;
   fb.textContent = correct ? '✓ ' + successMsg : '✗ ' + failMsg;
 }
 
-// ══════════════════════════════════
-// UNIVERSAL CHOICE CARD SYSTEM
-// ══════════════════════════════════
+// ── Universal choice group system ──
 function initChoiceGroups() {
   document.querySelectorAll('.choice-group').forEach(group => {
     const isInstinct = group.classList.contains('instinct-group');
-    // find the feedback div: first .feedback-box sibling after the group
     let fb = group.nextElementSibling;
     while (fb && !fb.classList.contains('feedback-box')) fb = fb.nextElementSibling;
-
     group.querySelectorAll('.choice-card').forEach(card => {
       card.addEventListener('click', () => {
         if (group.classList.contains('done')) return;
         group.classList.add('done');
-
         const isCorrect = card.dataset.correct === 'true';
         const msg = card.dataset.msg;
-
         if (isInstinct) {
-          // instinct mode: every answer is valid, just reveal explanation
           group.querySelectorAll('.choice-card').forEach(c => c.classList.add('chosen-wrong'));
-          card.classList.remove('chosen-wrong');
-          card.classList.add('chosen-neutral');
-          if (fb) {
-            fb.style.display = 'block';
-            fb.className = 'feedback-box instinct-reveal';
-            fb.textContent = '💬 ' + msg;
-          }
+          card.classList.remove('chosen-wrong'); card.classList.add('chosen-neutral');
+          if (fb) { fb.style.display='block'; fb.className='feedback-box instinct-reveal'; fb.textContent='💬 '+msg; }
         } else {
-          // correct/wrong mode
-          group.querySelectorAll('.choice-card').forEach(c => {
-            if (c !== card) c.classList.add('chosen-wrong');
-          });
+          group.querySelectorAll('.choice-card').forEach(c => { if (c !== card) c.classList.add('chosen-wrong'); });
           card.classList.add(isCorrect ? 'chosen-correct' : 'chosen-wrong');
-          if (fb) {
-            fb.style.display = 'block';
-            fb.className = `feedback-box ${isCorrect ? 'correct-fb' : 'wrong-fb'}`;
-            fb.textContent = (isCorrect ? '✓ ' : '✗ ') + msg;
-          }
+          if (fb) { fb.style.display='block'; fb.className=`feedback-box ${isCorrect ? 'correct-fb' : 'wrong-fb'}`; fb.textContent=(isCorrect?'✓ ':'✗ ')+msg; }
         }
       });
     });
   });
 }
 
-// ══════════════════════════════════
-// LESSON 3 LOGIC — body label drop
-// ══════════════════════════════════
-let bodyChipDragging = false;
+// ── Lesson 3: body drop ──
 let bodyChipPlaced = null;
-
 document.addEventListener('DOMContentLoaded', () => {
   const chip = document.querySelector('.body-chip');
   if (!chip) return;
-  chip.addEventListener('dragstart', () => { bodyChipDragging = true; chip.classList.add('dragging'); });
-  chip.addEventListener('dragend', () => { chip.classList.remove('dragging'); });
-
+  chip.addEventListener('dragstart', () => chip.classList.add('dragging'));
+  chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
   document.querySelectorAll('.body-drop-zone').forEach(zone => {
     zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
     zone.addEventListener('dragleave', () => zone.classList.remove('drag-over'));
     zone.addEventListener('drop', e => {
-      e.preventDefault();
-      zone.classList.remove('drag-over');
-      // reset previous
-      document.querySelectorAll('.body-drop-zone').forEach(z => { if (z.classList.contains('filled')) { z.classList.remove('filled'); z.textContent='drop here'; } });
-      bodyChipPlaced = zone.id;
-      zone.classList.add('filled');
-      zone.textContent = '🏐 Ball Contact Zone';
-      if (chip) chip.style.display = 'none';
+      e.preventDefault(); zone.classList.remove('drag-over');
+      document.querySelectorAll('.body-drop-zone').forEach(z => { z.classList.remove('filled'); z.textContent='drop here'; });
+      bodyChipPlaced = zone.id; zone.classList.add('filled'); zone.textContent='🏐 Ball Contact Zone';
+      chip.style.display = 'none';
     });
   });
 });
-
 function checkBodyDrop() {
   const fb = document.getElementById('bodyDropFeedback');
   fb.style.display = 'block';
-  if (!bodyChipPlaced) {
-    fb.className = 'feedback-box wrong-fb';
-    fb.textContent = 'Drag the label to one of the zones first.';
-    return;
-  }
-  if (bodyChipPlaced === 'dropForearms') {
-    fb.className = 'feedback-box correct-fb';
-    fb.textContent = '✓ Exactly right! The fleshy part of your forearms — between wrist and elbow — is the contact zone. Never your hands, never your wrists.';
-  } else {
-    fb.className = 'feedback-box wrong-fb';
-    fb.textContent = bodyChipPlaced === 'dropHands'
-      ? '✗ Close — but your hands create an uneven surface and referees can call illegal contact. It\'s your forearms that form the flat platform.'
-      : '✗ Not quite — your elbows are bony and would send the ball in random directions. The forearms (between wrist and elbow) are the correct contact zone.';
-  }
+  if (!bodyChipPlaced) { fb.className='feedback-box wrong-fb'; fb.textContent='Drag the label to one of the zones first.'; return; }
+  if (bodyChipPlaced === 'dropForearms') { fb.className='feedback-box correct-fb'; fb.textContent='✓ Exactly right! The fleshy part of your forearms — between wrist and elbow — is the contact zone.'; }
+  else { fb.className='feedback-box wrong-fb'; fb.textContent = bodyChipPlaced==='dropHands' ? '✗ Close — but your hands create an uneven surface. It\'s your forearms that form the flat platform.' : '✗ Not quite — your elbows are bony and unpredictable. The forearms are the correct contact zone.'; }
 }
 
-// ══════════════════════════════════
-// LESSON 4 LOGIC — vertical order
-// ══════════════════════════════════
+// ── Lesson 4: vertical order ──
 const setCorrectOrder = ['call','position','contact'];
 const setSlotContents = {};
-
 document.addEventListener('DOMContentLoaded', () => {
   const vChips = document.querySelectorAll('.order-chip-v');
   const vSlots = document.querySelectorAll('.order-slot-v');
   if (!vChips.length) return;
-
   vChips.forEach(chip => {
-    chip.addEventListener('dragstart', e => { draggingChip = chip.dataset.val; chip.classList.add('dragging'); });
+    chip.addEventListener('dragstart', () => { draggingChip = chip.dataset.val; chip.classList.add('dragging'); });
     chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
   });
   vSlots.forEach(slot => {
     slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('drag-over'); });
     slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
     slot.addEventListener('drop', e => {
-      e.preventDefault();
-      slot.classList.remove('drag-over');
+      e.preventDefault(); slot.classList.remove('drag-over');
       const idx = slot.dataset.slot;
-      if (setSlotContents[idx]) {
-        const prev = document.querySelector(`.order-chip-v[data-val="${setSlotContents[idx]}"]`);
-        if (prev) prev.style.display = '';
-      }
+      if (setSlotContents[idx]) { const prev = document.querySelector(`.order-chip-v[data-val="${setSlotContents[idx]}"]`); if (prev) prev.style.display=''; }
       setSlotContents[idx] = draggingChip;
-      const chip = document.querySelector(`.order-chip-v[data-val="${draggingChip}"]`);
-      if (chip) chip.style.display = 'none';
+      const chip = document.querySelector(`.order-chip-v[data-val="${draggingChip}"]`); if (chip) chip.style.display='none';
       const labels = {'call':'Call the play — signal which hitter gets the ball','position':'Sprint to position, hands up above forehead','contact':'Contact with fingertips, extend wrists'};
-      slot.classList.add('filled');
-      slot.innerHTML = `<span style="font-size:.83rem; color:var(--net); font-weight:600; padding:4px 0;">${labels[draggingChip]}</span>`;
+      slot.classList.add('filled'); slot.innerHTML=`<span style="font-size:.83rem; color:var(--net); font-weight:600; padding:4px 0;">${labels[draggingChip]}</span>`;
       draggingChip = null;
     });
   });
 });
-
 function checkSetOrder() {
   const fb = document.getElementById('setOrderFeedback');
   const order = [setSlotContents['0'], setSlotContents['1'], setSlotContents['2']];
   if (order.includes(undefined)) { fb.style.display='block'; fb.className='feedback-box wrong-fb'; fb.textContent='Fill all three slots first!'; return; }
-  fb.style.display = 'block';
-  // correct: call → position → contact (real answer is position → call → contact, but let's accept position-first too)
-  // Actually the real sequence: 1) call play 2) sprint to position 3) contact
   const correct = order[0]==='call' && order[1]==='position' && order[2]==='contact';
-  fb.className = `feedback-box ${correct ? 'correct-fb' : 'wrong-fb'}`;
-  fb.textContent = correct
-    ? '✓ Perfect setter sequence! Call the play first so your hitters know what\'s coming → sprint to position → contact with fingertips.'
-    : '✗ Not quite. The real sequence: 1) Call the play (hitters need to know!) → 2) Sprint to your position → 3) Contact with fingertips. Try again!';
+  fb.style.display='block'; fb.className=`feedback-box ${correct?'correct-fb':'wrong-fb'}`;
+  fb.textContent = correct ? '✓ Perfect setter sequence! Call the play → sprint to position → contact with fingertips.' : '✗ Not quite. The real sequence: 1) Call the play → 2) Sprint to your position → 3) Contact with fingertips.';
 }
 
-// ══════════════════════════════════
-// LESSON 5 LOGIC — approach order
-// ══════════════════════════════════
+// ── Lesson 5: approach order ──
 const approachCorrect = ['left','rightleft','jump'];
 const approachSlotContents = {};
-
 document.addEventListener('DOMContentLoaded', () => {
   const aChips = document.querySelectorAll('#approachBank .order-chip');
   const aSlots = document.querySelectorAll('#approachTarget .order-slot');
   if (!aChips.length) return;
-
   aChips.forEach(chip => {
-    chip.addEventListener('dragstart', e => { draggingChip = chip.dataset.val; chip.classList.add('dragging'); });
+    chip.addEventListener('dragstart', () => { draggingChip = chip.dataset.val; chip.classList.add('dragging'); });
     chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
   });
   aSlots.forEach(slot => {
     slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('drag-over'); });
     slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
     slot.addEventListener('drop', e => {
-      e.preventDefault();
-      slot.classList.remove('drag-over');
+      e.preventDefault(); slot.classList.remove('drag-over');
       const idx = slot.dataset.slot;
-      if (approachSlotContents[idx]) {
-        const prev = document.querySelector(`#approachBank .order-chip[data-val="${approachSlotContents[idx]}"]`);
-        if (prev) prev.style.display = '';
-      }
+      if (approachSlotContents[idx]) { const prev = document.querySelector(`#approachBank .order-chip[data-val="${approachSlotContents[idx]}"]`); if (prev) prev.style.display=''; }
       approachSlotContents[idx] = draggingChip;
-      const chip = document.querySelector(`#approachBank .order-chip[data-val="${draggingChip}"]`);
-      if (chip) chip.style.display = 'none';
-      slot.classList.add('filled');
-      slot.innerHTML = `<span style="font-size:.82rem; font-weight:600; color:var(--net); text-align:center;">${getChipLabel(draggingChip,'order-chip')}</span>`;
+      const chip = document.querySelector(`#approachBank .order-chip[data-val="${draggingChip}"]`); if (chip) chip.style.display='none';
+      slot.classList.add('filled'); slot.innerHTML=`<span style="font-size:.82rem; font-weight:600; color:var(--net); text-align:center;">${getChipLabel(draggingChip)}</span>`;
       draggingChip = null;
     });
   });
 });
-
 function checkApproach() {
   const fb = document.getElementById('approachFeedback');
   const order = [approachSlotContents['0'], approachSlotContents['1'], approachSlotContents['2']];
   if (order.includes(undefined)) { fb.style.display='block'; fb.className='feedback-box wrong-fb'; fb.textContent='Fill all three slots first!'; return; }
   const correct = JSON.stringify(order) === JSON.stringify(approachCorrect);
-  fb.style.display = 'block';
-  fb.className = `feedback-box ${correct ? 'correct-fb' : 'wrong-fb'}`;
-  fb.textContent = correct
-    ? '✓ Nailed it! Left → Right-Left plant → Jump. That right-left plant is explosive and converts your running momentum into vertical height.'
-    : '✗ Not quite. For a right-handed hitter: Left step → Right-Left plant (those last two are fast!) → Jump. The plant is what launches you up.';
+  fb.style.display='block'; fb.className=`feedback-box ${correct?'correct-fb':'wrong-fb'}`;
+  fb.textContent = correct ? '✓ Nailed it! Left → Right-Left plant → Jump. That right-left plant converts running momentum into vertical height.' : '✗ Not quite. For a right-handed hitter: Left step → Right-Left plant → Jump.';
 }
 
-// ── Init all choice groups + lesson 1 drag ──
+// ── Lesson 5: Drag-the-ball shot selection ──
+document.addEventListener('DOMContentLoaded', () => {
+  const svg = document.getElementById('shotCourtSvg');
+  const ball = document.getElementById('dragBall');
+  const ballText = document.getElementById('dragBallText');
+  if (!svg || !ball) return;
+
+  const shotInfo = {
+    line:  { title:"💥 LINE SHOT", color:"#E05C3A", desc:"Straight down the sideline — fast and direct. Best when the blocker is off the antenna. High risk, high reward.", path: (bx,by)=>`M${bx},${by} Q370,120 358,35` },
+    cross: { title:"↗️ CROSS-COURT", color:"#3B82A0", desc:"Diagonal across the court — covers more distance and harder to track. Aim for the deep left corner away from the libero.", path: (bx,by)=>`M${bx},${by} Q100,120 35,40` },
+    tip:   { title:"🤫 TIP / ROLL SHOT", color:"#5dd87b", desc:"Soft touch just over the block. Catches defenders off guard when they've dropped back for a power hit. The smart play.", path: (bx,by)=>`M${bx},${by} Q160,130 190,60` },
+  };
+
+  let isDragging = false;
+  let startX, startY, origCX, origCY;
+  const svgRect = () => svg.getBoundingClientRect();
+
+  function svgCoords(clientX, clientY) {
+    const r = svgRect();
+    const vb = svg.viewBox.baseVal;
+    return { x: (clientX - r.left) / r.width * vb.width, y: (clientY - r.top) / r.height * vb.height };
+  }
+
+  function getZoneAtPoint(cx, cy) {
+    const zones = svg.querySelectorAll('.shot-zone');
+    for (const z of zones) {
+      const b = z.getBBox();
+      if (cx >= b.x && cx <= b.x+b.width && cy >= b.y && cy <= b.y+b.height) return z.dataset.shot;
+    }
+    return null;
+  }
+
+  function animatePath(pathD, color) {
+    const pathEl = document.getElementById('shotPath');
+    pathEl.setAttribute('d', pathD);
+    pathEl.setAttribute('stroke', color);
+    pathEl.style.opacity = '1';
+    const len = pathEl.getTotalLength ? pathEl.getTotalLength() : 200;
+    pathEl.style.strokeDasharray = len;
+    pathEl.style.strokeDashoffset = len;
+    pathEl.style.transition = 'none';
+    requestAnimationFrame(() => {
+      pathEl.style.transition = 'stroke-dashoffset 0.5s ease-out';
+      pathEl.style.strokeDashoffset = '0';
+    });
+    // animate ball along path
+    animateBallAlongPath(pathEl, color);
+  }
+
+  function animateBallAlongPath(pathEl, color) {
+    const dur = 500, steps = 30;
+    let i = 0;
+    const interval = setInterval(() => {
+      i++;
+      const t = i / steps;
+      try {
+        const len = pathEl.getTotalLength();
+        const pt = pathEl.getPointAtLength(t * len);
+        ball.setAttribute('cx', pt.x);
+        ballText.setAttribute('x', pt.x);
+        ball.setAttribute('cy', pt.y);
+        ballText.setAttribute('y', pt.y + 5);
+      } catch(e) {}
+      if (i >= steps) {
+        clearInterval(interval);
+        // snap back after brief pause
+        setTimeout(() => {
+          ball.setAttribute('cx', origCX); ball.setAttribute('cy', origCY);
+          ballText.setAttribute('x', origCX); ballText.setAttribute('y', origCY + 5);
+          document.getElementById('shotPath').style.opacity = '0';
+        }, 600);
+      }
+    }, dur / steps);
+  }
+
+  origCX = parseFloat(ball.getAttribute('cx'));
+  origCY = parseFloat(ball.getAttribute('cy'));
+
+  ball.addEventListener('mousedown', e => { isDragging = true; const c = svgCoords(e.clientX, e.clientY); startX = c.x; startY = c.y; ball.style.cursor='grabbing'; e.preventDefault(); });
+  ball.addEventListener('touchstart', e => { isDragging = true; const t = e.touches[0]; const c = svgCoords(t.clientX, t.clientY); startX=c.x; startY=c.y; e.preventDefault(); }, {passive:false});
+
+  document.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    const c = svgCoords(e.clientX, e.clientY);
+    ball.setAttribute('cx', c.x); ballText.setAttribute('x', c.x);
+    ball.setAttribute('cy', c.y); ballText.setAttribute('y', c.y + 5);
+    // highlight zones
+    document.querySelectorAll('.shot-zone').forEach(z => z.classList.remove('highlight'));
+    const zone = getZoneAtPoint(c.x, c.y);
+    if (zone) { document.getElementById('zone-'+zone)?.classList.add('highlight'); }
+  });
+
+  document.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    const t = e.touches[0];
+    const c = svgCoords(t.clientX, t.clientY);
+    ball.setAttribute('cx', c.x); ballText.setAttribute('x', c.x);
+    ball.setAttribute('cy', c.y); ballText.setAttribute('y', c.y + 5);
+    document.querySelectorAll('.shot-zone').forEach(z => z.classList.remove('highlight'));
+    const zone = getZoneAtPoint(c.x, c.y);
+    if (zone) { document.getElementById('zone-'+zone)?.classList.add('highlight'); }
+    e.preventDefault();
+  }, {passive:false});
+
+  function endDrag(clientX, clientY) {
+    if (!isDragging) return;
+    isDragging = false;
+    ball.style.cursor = 'grab';
+    document.querySelectorAll('.shot-zone').forEach(z => z.classList.remove('highlight'));
+    const c = svgCoords(clientX, clientY);
+    const zone = getZoneAtPoint(c.x, c.y);
+    if (zone && shotInfo[zone]) {
+      const info = shotInfo[zone];
+      const pathD = info.path(origCX, origCY - 10);
+      animatePath(pathD, info.color);
+      const result = document.getElementById('shotResult');
+      document.getElementById('shotResultTitle').textContent = info.title;
+      document.getElementById('shotResultTitle').style.color = info.color;
+      document.getElementById('shotResultDesc').textContent = info.desc;
+      result.style.display = 'block';
+    } else {
+      // snap back
+      ball.setAttribute('cx', origCX); ball.setAttribute('cy', origCY);
+      ballText.setAttribute('x', origCX); ballText.setAttribute('y', origCY + 5);
+    }
+  }
+
+  document.addEventListener('mouseup', e => endDrag(e.clientX, e.clientY));
+  document.addEventListener('touchend', e => { const t = e.changedTouches[0]; endDrag(t.clientX, t.clientY); });
+});
+
+// ── Lesson 1: order drag init ──
 document.addEventListener('DOMContentLoaded', () => {
   initChoiceGroups();
-
   const orderBank = document.getElementById('orderBank');
   const orderTarget = document.getElementById('orderTarget');
   if (!orderBank || !orderTarget) return;
-
   orderBank.querySelectorAll('.order-chip').forEach(chip => {
-    chip.addEventListener('dragstart', e => { draggingChip = chip.dataset.val; chip.classList.add('dragging'); });
+    chip.addEventListener('dragstart', () => { draggingChip = chip.dataset.val; chip.classList.add('dragging'); });
     chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
   });
   orderTarget.querySelectorAll('.order-slot').forEach(slot => {
     slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('drag-over'); });
     slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
     slot.addEventListener('drop', e => {
-      e.preventDefault();
-      slot.classList.remove('drag-over');
+      e.preventDefault(); slot.classList.remove('drag-over');
       const idx = slot.dataset.slot;
-      if (orderSlotContents[idx]) {
-        const prev = orderBank.querySelector(`[data-val="${orderSlotContents[idx]}"]`);
-        if (prev) prev.style.display = '';
-      }
+      if (orderSlotContents[idx]) { const prev = orderBank.querySelector(`[data-val="${orderSlotContents[idx]}"]`); if (prev) prev.style.display=''; }
       orderSlotContents[idx] = draggingChip;
-      const chip = orderBank.querySelector(`[data-val="${draggingChip}"]`);
-      if (chip) chip.style.display = 'none';
-      slot.classList.add('filled');
-      slot.innerHTML = `<span style="font-size:.88rem; font-weight:600; color:var(--net);">${getChipLabel(draggingChip,'order-chip')}</span>`;
+      const chip = orderBank.querySelector(`[data-val="${draggingChip}"]`); if (chip) chip.style.display='none';
+      slot.classList.add('filled'); slot.innerHTML=`<span style="font-size:.88rem; font-weight:600; color:var(--net);">${getChipLabel(draggingChip)}</span>`;
       draggingChip = null;
     });
   });
