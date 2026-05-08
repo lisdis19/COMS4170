@@ -225,8 +225,55 @@
           "text": "Attack open spaces and weak defenders."
         }
       ]
+    },
+    {
+      "id": 6,
+      "title": "Court Positions & Setup",
+      "level": "Beginner",
+      "emoji": "📍",
+      "subtitle": "Where each player goes on the court",
+      "content": "Volleyball positions are organized by where players usually start on the court. Front-row players are closer to the net and focus more on attacking and blocking. Back-row players are farther from the net and focus more on passing, digging, and keeping the ball in play.\n\nUse the cards below to get a quick sense of where each position usually goes.",
+      "key_facts": [
+        "Setter: usually near the net and sets the second touch",
+        "Outside hitter: often attacks from the left side",
+        "Middle blocker: protects the center of the net",
+        "Right side: attacks and blocks from the right",
+        "Libero/DS: back-row defenders who pass and dig"
+      ],
+      "image": "volley.png",
+      "selection_prompt": "Which position seems most interesting to you?",
+      "selection_options": [
+        "Setter",
+        "Outside hitter",
+        "Middle blocker",
+        "Libero / defensive specialist"
+      ],
+      "visual_cards": [
+        {
+          "icon": "🧠",
+          "title": "Setter",
+          "text": "Stays near the net and sets the second touch."
+        },
+        {
+          "icon": "⚡",
+          "title": "Hitters",
+          "text": "Attack from the left, middle, or right side."
+        },
+        {
+          "icon": "🛡️",
+          "title": "Blockers",
+          "text": "Defend the net against opposing attacks."
+        },
+        {
+          "icon": "🙌",
+          "title": "Back Row",
+          "text": "Passes serves and digs attacks."
+        }
+      ],
+      "did_you_know": "The libero wears a different colored jersey so referees can easily tell that they are a back-row defensive specialist.",
+      "common_mistake": "Beginners often memorize player names without connecting them to court locations. Try thinking: setter near the net, blockers at the net, defenders in the back row."
     }
-  ],
+    ],
 
   "quiz": [
     {

@@ -711,6 +711,54 @@
         <div id="spotFeedback3" class="feedback-box" style="display:none;"></div>
       </div>
 
+      {% elif lesson_num == 6 %}
+      <!-- LESSON 6: Court positions + setup activity -->
+
+      <div class="vl-card mb-4 interactive-card">
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 TAP TO LEARN POSITIONS</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:18px;">
+          Tap each role to see its main job.
+        </p>
+      
+        <div id="positionLearnGroup" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px;">
+          <div class="choice-card position-card" data-msg="Setter: sets the second touch near the net.">🧠 Setter</div>
+          <div class="choice-card position-card" data-msg="Outside hitter: attacks from the left side.">⚡ Outside Hitter</div>
+          <div class="choice-card position-card" data-msg="Middle blocker: blocks quick attacks at the net.">🛡️ Middle Blocker</div>
+          <div class="choice-card position-card" data-msg="Right side: attacks and blocks from the right.">↗️ Right Side</div>
+          <div class="choice-card position-card" data-msg="Libero: back-row passer and defender.">🙌 Libero</div>
+          <div class="choice-card position-card" data-msg="Defensive specialist: back-row passing and defense.">👟 Defensive Specialist</div>
+        </div>
+      
+        <div id="positionFeedback" class="feedback-box instinct-reveal" style="display:none;"></div>
+      </div>
+
+      <div class="vl-card mb-4 interactive-card">
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 QUICK CHECK</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">
+          In serve receive, who should usually be ready near the net for the second touch?
+        </p>
+
+        <div class="choice-group" id="setupCheckGroup" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+          <div class="choice-card" data-correct="false" data-msg="The libero is important in serve receive, but they usually focus on passing in the back row.">
+            Libero
+          </div>
+          <div class="choice-card" data-correct="true" data-msg="Correct! The setter stays near the net so they can set the second touch after the pass.">
+            Setter
+          </div>
+          <div class="choice-card" data-correct="false" data-msg="The middle blocker is usually near the net, but their main job is blocking and quick attacks, not setting the second touch.">
+            Middle Blocker
+          </div>
+          <div class="choice-card" data-correct="false" data-msg="Outside hitters may pass or attack, but the setter is responsible for the second touch.">
+            Outside Hitter
+          </div>
+        </div>
+
+        <div id="setupCheckFeedback" class="feedback-box" style="display:none;"></div>
+      </div>
+
+      {% endif %}
+
+      <!-- ── STEP-BY-STEP TECHNIQUE ── -->
       {% if lesson.steps %}
       <div class="vl-card mb-4" style="padding:28px 32px;">
         <p class="section-title mb-4">Step-by-Step Technique</p>
@@ -1308,6 +1356,25 @@ document.addEventListener('DOMContentLoaded', () => {
 // ── Lesson 1: order drag init ──
 document.addEventListener('DOMContentLoaded', () => {
   initChoiceGroups();
+
+   // Lesson 6: allow users to tap multiple positions without locking the group
+   document.querySelectorAll('.position-card').forEach(card => {
+    card.addEventListener('click', () => {
+      document.querySelectorAll('.position-card').forEach(c => {
+        c.classList.remove('chosen-neutral');
+      });
+
+      card.classList.add('chosen-neutral');
+
+      const fb = document.getElementById('positionFeedback');
+      if (fb) {
+        fb.style.display = 'block';
+        fb.className = 'feedback-box instinct-reveal';
+        fb.textContent = card.dataset.msg;
+      }
+    });
+  });
+
   const orderBank = document.getElementById('orderBank');
   const orderTarget = document.getElementById('orderTarget');
   if (!orderBank || !orderTarget) return;
