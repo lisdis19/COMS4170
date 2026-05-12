@@ -74,6 +74,58 @@
       ],
       "success_message": "Great defensive setup! Two blockers seal the net and back row is spread to cover the whole court.",
       "learn_tip": "The libero almost always plays center back — they're your best passer and get the most digs from that spot."
+    },
+
+    {
+      "id": 4,
+      "title": "Free Ball Reception",
+      "emoji": "🌊",
+      "description": "The opponent can't attack — they're sending a soft free ball over the net. This is your team's chance to transition into a full offensive formation. Unlike serve receive, everyone is already moving, so your front-row hitters need to spread wide and prepare to attack while back-row players get into passing position.",
+      "hint": "A free ball means easy pass — so use it to set up a great attack. The setter runs to the net right-of-center. Both outside hitters spread wide on their approach sides. The libero takes the pass from center-back, and the middle blocker swings off the net to approach for a quick set.",
+      "players": [
+        {"id": "P1", "label": "S",  "role": "Setter",          "color": "#E8C547"},
+        {"id": "P2", "label": "OH", "role": "Outside Hitter",  "color": "#3B82A0"},
+        {"id": "P3", "label": "MB", "role": "Middle Blocker",  "color": "#9B59B6"},
+        {"id": "P4", "label": "L",  "role": "Libero",          "color": "#E05C3A"},
+        {"id": "P5", "label": "RS", "role": "Right Side",      "color": "#5AAD7E"},
+        {"id": "P6", "label": "DS", "role": "Defensive Spec.", "color": "#F0A500"}
+      ],
+      "zones": [
+        {"id": "Z1", "label": "Setter Position", "x": 75, "y": 18, "accepts": ["P1"]},
+        {"id": "Z2", "label": "Left Approach",   "x": 10, "y": 30, "accepts": ["P2"]},
+        {"id": "Z3", "label": "Middle Approach", "x": 45, "y": 28, "accepts": ["P3"]},
+        {"id": "Z4", "label": "Right Approach",  "x": 88, "y": 38, "accepts": ["P5"]},
+        {"id": "Z5", "label": "Pass Zone",        "x": 45, "y": 62, "accepts": ["P4"]},
+        {"id": "Z6", "label": "Back Support",     "x": 20, "y": 72, "accepts": ["P6"]}
+      ],
+      "success_message": "Perfect free-ball transition! Hitters are in approach position and the setter is ready for the pass.",
+      "learn_tip": "Free balls are gold — the other team just handed you an easy pass. Use it to run your best offensive play, not just keep the ball alive."
+    },
+
+    {
+      "id": 5,
+      "title": "Setter Transition",
+      "emoji": "🔁",
+      "description": "Your libero just dug a hard spike from the back row. Now your team needs to transition from defense to offense — fast. The setter has to sprint from wherever they were digging to their setting position near the net, while hitters peel off and start their approaches. Get everyone into attack mode.",
+      "hint": "After a dig, the setter's first priority is to sprint to the net (right-of-center). The outside hitter swings out wide-left for their approach. The middle blocker pivots from the net and steps back to approach. The libero who just dug stays ready for cover. Back-row players hold their defensive lanes in case the ball comes back.",
+      "players": [
+        {"id": "P1", "label": "S",  "role": "Setter",          "color": "#E8C547"},
+        {"id": "P2", "label": "OH", "role": "Outside Hitter",  "color": "#3B82A0"},
+        {"id": "P3", "label": "MB", "role": "Middle Blocker",  "color": "#9B59B6"},
+        {"id": "P4", "label": "L",  "role": "Libero",          "color": "#E05C3A"},
+        {"id": "P5", "label": "RS", "role": "Right Side",      "color": "#5AAD7E"},
+        {"id": "P6", "label": "DS", "role": "Defensive Spec.", "color": "#F0A500"}
+      ],
+      "zones": [
+        {"id": "Z1", "label": "Setting Run",      "x": 72, "y": 15, "accepts": ["P1"]},
+        {"id": "Z2", "label": "OH Swing Left",    "x":  8, "y": 32, "accepts": ["P2"]},
+        {"id": "Z3", "label": "MB Back-Approach", "x": 42, "y": 35, "accepts": ["P3"]},
+        {"id": "Z4", "label": "RS Hold",          "x": 85, "y": 28, "accepts": ["P5"]},
+        {"id": "Z5", "label": "Libero Cover",     "x": 30, "y": 60, "accepts": ["P4"]},
+        {"id": "Z6", "label": "Back Lane",        "x": 68, "y": 68, "accepts": ["P6"]}
+      ],
+      "success_message": "Smooth transition! The setter is running the offense and hitters are loaded for the attack.",
+      "learn_tip": "Transition is the hardest skill in volleyball — going from digging a spike to attacking in under two seconds. The setter's speed to the net is the most important factor."
     }
   ]
 }

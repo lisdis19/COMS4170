@@ -35,21 +35,38 @@
     <!-- Recap card -->
     <div class="vl-card text-start mb-5" style="border-color:rgba(232,197,71,0.2);">
       <p class="section-title mb-4">What you mastered</p>
-      {% set challenge_info = [
-        ("📡", "Serve Receive", "W-formation with libero in center back"),
-        ("⚡", "Spiking Attack", "Blockers up, hitter approaching, back row covering"),
-        ("🛡️", "Defensive Block", "Two blockers at net, four defenders spread behind"),
-      ] %}
-      {% for emoji, title, desc in challenge_info %}
-      <div style="display:flex; gap:14px; align-items:flex-start; padding:12px 0; {% if not loop.last %}border-bottom: 1px solid rgba(255,255,255,0.06);{% endif %}">
-        <span style="font-size:1.4rem; flex-shrink:0;">{{ emoji }}</span>
-        <div>
-          <div style="font-weight:700; font-size:.92rem; color:rgba(255,255,255,0.9);">{{ title }}</div>
-          <div style="font-size:.8rem; color:rgba(255,255,255,0.4); margin-top:2px;">{{ desc }}</div>
+
+      {# Use challenges passed from backend if available, otherwise fall back to hardcoded list #}
+      {% if challenges %}
+        {% for challenge in challenges %}
+        <div style="display:flex; gap:14px; align-items:flex-start; padding:12px 0; {% if not loop.last %}border-bottom:1px solid rgba(255,255,255,0.06);{% endif %}">
+          <span style="font-size:1.4rem; flex-shrink:0;">{{ challenge.emoji }}</span>
+          <div>
+            <div style="font-weight:700; font-size:.92rem; color:rgba(255,255,255,0.9);">{{ challenge.title }}</div>
+            <div style="font-size:.8rem; color:rgba(255,255,255,0.4); margin-top:2px;">{{ challenge.learn_tip }}</div>
+          </div>
+          <span style="margin-left:auto; font-size:1.2rem;">{{ '✅' if loop.index <= completed else '⬜' }}</span>
         </div>
-        <span style="margin-left:auto; font-size:1.2rem;">{{ '✅' if loop.index <= completed else '⬜' }}</span>
-      </div>
-      {% endfor %}
+        {% endfor %}
+      {% else %}
+        {% set challenge_info = [
+          ("📡", "Serve Receive",      "W-formation: back row spreads to pass, setter holds at the net"),
+          ("⚡", "Spiking Attack",     "Blockers up at the net, hitter approaching, back row covers tips"),
+          ("🛡️", "Defensive Block",   "Two blockers seal the net, four defenders cover the open lanes"),
+          ("🌊", "Free Ball Reception","Transition to full attack — hitters spread wide, libero takes the pass"),
+          ("🔁", "Setter Transition",  "Setter sprints to the net after a dig, hitters peel into their approach"),
+        ] %}
+        {% for emoji, title, desc in challenge_info %}
+        <div style="display:flex; gap:14px; align-items:flex-start; padding:12px 0; {% if not loop.last %}border-bottom:1px solid rgba(255,255,255,0.06);{% endif %}">
+          <span style="font-size:1.4rem; flex-shrink:0;">{{ emoji }}</span>
+          <div>
+            <div style="font-weight:700; font-size:.92rem; color:rgba(255,255,255,0.9);">{{ title }}</div>
+            <div style="font-size:.8rem; color:rgba(255,255,255,0.4); margin-top:2px;">{{ desc }}</div>
+          </div>
+          <span style="margin-left:auto; font-size:1.2rem;">{{ '✅' if loop.index <= completed else '⬜' }}</span>
+        </div>
+        {% endfor %}
+      {% endif %}
     </div>
 
     <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">

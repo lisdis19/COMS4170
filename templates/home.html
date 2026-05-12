@@ -20,7 +20,7 @@
       <a href="/start" class="btn-vl btn-vl-spike" style="font-size:1.25rem; padding:16px 64px; border-radius:12px; text-decoration:none;">
         START LEARNING →
       </a>
-      <p style="color:rgba(255,255,255,0.25); font-size:0.78rem; margin-top:14px; letter-spacing:1px;">6 LESSONS · 3 INTERACTIVE CHALLENGES · ~10 MIN</p>
+      <p style="color:rgba(255,255,255,0.25); font-size:0.78rem; margin-top:14px; letter-spacing:1px;">8 LESSONS · 5 INTERACTIVE CHALLENGES · ~15 MIN</p>
     </div>
 
     <!-- How it works -->
@@ -30,8 +30,8 @@
 
         <div>
           <div style="width:52px; height:52px; border-radius:50%; background:rgba(232,197,71,0.15); border:2px solid var(--net); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',cursive; font-size:1.5rem; color:var(--net); margin:0 auto 14px;">1</div>
-          <div style="font-weight:700; font-size:.95rem; margin-bottom:6px;">Read 6 Lessons</div>
-          <div style="font-size:.8rem; color:rgba(255,255,255,0.4); line-height:1.65;">Court rules, serving, passing, setting, and spiking — the full foundation.</div>
+          <div style="font-weight:700; font-size:.95rem; margin-bottom:6px;">Read 8 Lessons</div>
+          <div style="font-size:.8rem; color:rgba(255,255,255,0.4); line-height:1.65;">Court rules, every skill, positions, rotations, and reading the game — the full picture.</div>
         </div>
 
         <div style="position:relative;">
@@ -44,7 +44,7 @@
         <div>
           <div style="width:52px; height:52px; border-radius:50%; background:rgba(224,92,58,0.15); border:2px solid var(--spike); display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',cursive; font-size:1.5rem; color:var(--spike); margin:0 auto 14px;">3</div>
           <div style="font-weight:700; font-size:.95rem; margin-bottom:6px;">Hit the Court</div>
-          <div style="font-size:.8rem; color:rgba(255,255,255,0.4); line-height:1.65;">Earn all 3 stars and you're genuinely ready for your first real match.</div>
+          <div style="font-size:.8rem; color:rgba(255,255,255,0.4); line-height:1.65;">Earn all 5 stars and you're genuinely ready for your first real match.</div>
         </div>
 
       </div>
@@ -55,12 +55,14 @@
       <p class="section-title mb-4">What You'll Learn</p>
       <div style="display:flex; flex-direction:column; gap:0;">
         {% set lessons = [
-          ("🏟️", "The Court & Rules",  "Court dimensions, scoring, rotation, and the flow of play"),
-          ("💪", "The Serve",           "Underhand, overhand, and jump serve — how every point begins"),
-          ("🙌", "The Pass (Bump)",     "Forearm platform technique, footwork, and defensive positioning"),
-          ("👆", "The Set",             "Fingertip control, setter strategy, and running the offense"),
-          ("⚡", "The Spike",           "3-step approach, contact mechanics, and attack angles"),
-          ("📍", "Court Positions & Setup", "Setter, hitters, blockers, libero, and back-row roles"),
+          ("🏟️", "The Court & Rules",        "Court dimensions, scoring, rotation, and the flow of play"),
+          ("💪", "The Serve",                 "Underhand, overhand, and jump serve — how every point begins"),
+          ("🙌", "The Pass (Bump)",           "Forearm platform technique, footwork, and defensive positioning"),
+          ("👆", "The Set",                   "Fingertip control, setter strategy, and running the offense"),
+          ("⚡", "The Spike",                 "3-step approach, contact mechanics, and attack angles"),
+          ("📍", "Court Positions & Setup",   "Setter, hitters, blockers, libero, and back-row roles"),
+          ("🔄", "Rotations in Real Time",    "Serving order vs. base position, zone numbers, and overlap rules"),
+          ("👁️", "Reading the Play",          "Predict the attack, read the setter, and position your defense"),
         ] %}
         {% for emoji, title, desc in lessons %}
         <div style="display:flex; align-items:center; gap:16px; padding:14px 0; {% if not loop.last %}border-bottom:1px solid rgba(255,255,255,0.05);{% endif %}">
@@ -69,15 +71,15 @@
             <div style="font-weight:600; font-size:.92rem; color:rgba(255,255,255,0.9);">{{ title }}</div>
             <div style="font-size:.78rem; color:rgba(255,255,255,0.38); margin-top:2px;">{{ desc }}</div>
           </div>
-          <div style="margin-left:auto; font-size:.72rem; color:rgba(255,255,255,0.2); font-family:'Bebas Neue',cursive; letter-spacing:1px;">{{ loop.index }}/6</div>
+          <div style="margin-left:auto; font-size:.72rem; color:rgba(255,255,255,0.2); font-family:'Bebas Neue',cursive; letter-spacing:1px;">{{ loop.index }}/8</div>
         </div>
         {% endfor %}
 
         <div style="display:flex; align-items:center; gap:16px; padding:14px 0; margin-top:4px; border-top:1px solid rgba(224,92,58,0.2);">
           <div style="width:40px; height:40px; border-radius:10px; background:rgba(224,92,58,0.12); display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0;">🎮</div>
           <div>
-            <div style="font-weight:700; font-size:.92rem; color:var(--spike);">Build-a-Play Challenges ×3</div>
-            <div style="font-size:.78rem; color:rgba(255,255,255,0.38); margin-top:2px;">Serve Receive · Spiking Attack · Defensive Block</div>
+            <div style="font-weight:700; font-size:.92rem; color:var(--spike);">Build-a-Play Challenges ×5</div>
+            <div style="font-size:.78rem; color:rgba(255,255,255,0.38); margin-top:2px;">Serve Receive · Spiking Attack · Defensive Block · Free Ball · Setter Transition</div>
           </div>
           <div style="margin-left:auto; font-size:.72rem; color:rgba(224,92,58,0.5); font-family:'Bebas Neue',cursive; letter-spacing:1px;">INTERACTIVE</div>
         </div>

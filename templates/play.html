@@ -36,9 +36,44 @@
       0 / {{ challenge.zones|length }} players placed
     </p>
 
-    <!-- Hint -->
-    <button class="hint-btn" id="hintToggle">💡 Show Hint</button>
-    <div id="hintBox" class="hint-box" style="display:none;">{{ challenge.hint }}</div>
+    <!-- Tiered hints -->
+    <div id="hintSection">
+      <!-- Hint 1: always available -->
+      <button class="hint-btn" id="hintToggle">💡 Show Hint</button>
+      <div id="hintBox" class="hint-box" style="display:none;">{{ challenge.hint }}</div>
+
+      <!-- Hint 2: per-player guide, unlocks after first wrong check -->
+      <div id="hint2Wrap" style="display:none; margin-top:8px;">
+        <button class="hint-btn" id="hint2Toggle" style="border-color:rgba(157,213,239,0.4); color:#9dd5ef; background:rgba(59,130,160,0.1);">🎯 Who Goes Where?</button>
+        <div id="hint2Box" class="hint-box" style="display:none; border-left-color:#9dd5ef;">
+          <p style="font-size:.75rem; color:#9dd5ef; font-weight:700; margin-bottom:8px; letter-spacing:.5px;">PLAYER GUIDE</p>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            {% for player in challenge.players %}
+            {% for zone in challenge.zones %}
+            {% if player.id in zone.accepts %}
+            <div style="display:flex; align-items:center; gap:8px; font-size:.8rem; color:rgba(255,255,255,0.65);">
+              <span style="width:26px; height:26px; border-radius:50%; border:2px solid {{ player.color }}; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',cursive; color:{{ player.color }}; font-size:.8rem; flex-shrink:0;">{{ player.label }}</span>
+              <span><strong style="color:rgba(255,255,255,0.85);">{{ player.role }}</strong> → {{ zone.label }}</span>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Hint 3: reveal all, unlocks after second wrong check -->
+      <div id="hint3Wrap" style="display:none; margin-top:8px;">
+        <button class="hint-btn" id="hint3Toggle" style="border-color:rgba(224,92,58,0.4); color:var(--spike); background:rgba(224,92,58,0.08);">👁️ Show Me the Answer</button>
+        <div id="hint3Box" class="hint-box" style="display:none; border-left-color:var(--spike); background:rgba(224,92,58,0.06);">
+          <p style="font-size:.75rem; color:var(--spike); font-weight:700; margin-bottom:6px; letter-spacing:.5px;">ANSWER REVEALED</p>
+          <p style="font-size:.78rem; color:rgba(255,255,255,0.5); line-height:1.6; margin:0;">The correct players are now glowing on the court. Place each one on its highlighted zone to complete the challenge.</p>
+        </div>
+      </div>
+
+      <!-- Attempt counter (hidden) -->
+      <div id="attemptMsg" style="display:none; margin-top:8px; font-size:.75rem; color:rgba(255,255,255,0.3); text-align:center;"></div>
+    </div>
 
     <!-- Bench -->
     <div class="bench-section">
@@ -305,6 +340,40 @@
   100% { transform: translate(-50%,-50%) scale(1) rotate(0); opacity:1; }
 }
 .pop-in { animation: popIn .38s cubic-bezier(.34,1.56,.64,1) forwards; }
+
+/* Tiered hint glow — zone pulses when "Show Me" is active */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(224,92,58,0); }
+  50%       { box-shadow: 0 0 0 8px rgba(224,92,58,0.35); }
+}
+.zone-reveal-glow { animation: pulseGlow 1.4s ease-in-out infinite; }
+
+/* Zone label shows bigger on hover for easier reading */
+.drop-zone:hover .zone-label {
+  color: rgba(255,255,255,0.7);
+  font-size: .68rem;
+  bottom: -20px;
+}
+
+/* Wrong-placement shake */
+@keyframes shake {
+  0%,100% { transform: translate(-50%,-50%) rotate(0); }
+  20%      { transform: translate(-50%,-50%) rotate(-5deg); }
+  40%      { transform: translate(-50%,-50%) rotate(5deg); }
+  60%      { transform: translate(-50%,-50%) rotate(-4deg); }
+  80%      { transform: translate(-50%,-50%) rotate(3deg); }
+}
+.shake { animation: shake .4s ease; }
+
+/* Bench token wrong-zone indicator */
+.player-token.wrong-placed {
+  border-color: var(--spike) !important;
+  background: rgba(224,92,58,0.08);
+}
+.player-token.wrong-placed .token-circle {
+  border-color: var(--spike);
+  color: var(--spike);
+}
 </style>
 {% endblock %}
 
@@ -494,9 +563,25 @@ document.querySelectorAll('.player-token').forEach(token => {
   });
 });
 
+// ── Attempt tracking ──
+let wrongAttempts = 0;
+
+function unlockHints() {
+  if (wrongAttempts >= 1) {
+    document.getElementById('hint2Wrap').style.display = 'block';
+    const msg = document.getElementById('attemptMsg');
+    msg.style.display = 'block';
+    msg.textContent = wrongAttempts === 1
+      ? '1 attempt used — player guide unlocked above'
+      : `${wrongAttempts} attempts — "Show Me" unlocked above`;
+  }
+  if (wrongAttempts >= 2) {
+    document.getElementById('hint3Wrap').style.display = 'block';
+  }
+}
+
 // ── Check ──
 document.getElementById('checkBtn').addEventListener('click', async () => {
-  
   const res  = await fetch('/api/play/submit', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -509,13 +594,41 @@ document.getElementById('checkBtn').addEventListener('click', async () => {
     if (r) setRing(z.id, r.correct ? 'correct' : 'wrong');
   });
 
+  if (!data.all_correct) {
+    wrongAttempts++;
+    unlockHints();
+
+    // Shake wrong court players and highlight wrong bench tokens
+    CHALLENGE.zones.forEach(z => {
+      const r = data.zone_results[z.id];
+      if (r && !r.correct) {
+        const cp = document.querySelector(`.court-player[data-zone="${z.id}"]`);
+        if (cp) { cp.classList.remove('shake'); void cp.offsetWidth; cp.classList.add('shake'); }
+        const pid = zoneContents[z.id];
+        const bt = document.getElementById(`player-${pid}`);
+        if (bt) {
+          bt.classList.add('wrong-placed');
+          setTimeout(() => bt.classList.remove('wrong-placed'), 1800);
+        }
+      }
+    });
+  }
+
   const nextUrl = CHALLENGE_NUM < TOTAL ? `/play/${CHALLENGE_NUM+1}` : '/play/result';
   document.getElementById('resultIcon').textContent  = data.all_correct ? '🏆' : '😅';
   document.getElementById('resultTitle').textContent = data.all_correct ? 'Perfect Formation!' : `${data.correct_count} / ${data.total} Correct`;
   document.getElementById('resultTitle').style.color = data.all_correct ? 'var(--net)' : 'var(--spike)';
-  document.getElementById('resultMsg').textContent   = data.all_correct ? data.success_message : 'Red zones show the wrong spots — try again or check the hint!';
-  document.getElementById('resultScore').textContent = data.all_correct ? (CHALLENGE_NUM < TOTAL ? `Next up: Challenge ${CHALLENGE_NUM+1} of ${TOTAL}` : '🎉 All 3 challenges complete!') : '';
-  document.getElementById('learnTip').textContent    = data.learn_tip;
+  document.getElementById('resultMsg').textContent   = data.all_correct
+    ? data.success_message
+    : wrongAttempts === 1
+      ? 'Not quite — red zones are wrong. Check the hint or tap "Who Goes Where?" for a player guide!'
+      : wrongAttempts === 2
+        ? 'Still tricky! Try "Show Me the Answer" on the left to reveal the correct spots.'
+        : 'Keep going — use the hints on the left. You\'ve got this!';
+  document.getElementById('resultScore').textContent = data.all_correct
+    ? (CHALLENGE_NUM < TOTAL ? `Next up: Challenge ${CHALLENGE_NUM+1} of ${TOTAL}` : `🎉 All ${TOTAL} challenges complete!`)
+    : '';
+  document.getElementById('learnTip').textContent = data.learn_tip;
   const nb = document.getElementById('nextBtn');
   nb.href        = nextUrl;
   nb.textContent = CHALLENGE_NUM < TOTAL ? 'Next Challenge →' : 'See Results →';
@@ -526,26 +639,53 @@ document.getElementById('checkBtn').addEventListener('click', async () => {
 // ── Reset / Retry ──
 function doReset() {
   document.getElementById('resultOverlay').style.display = 'none';
-  Object.keys(zoneContents).forEach(zid => { 
-    document.querySelector(`.court-player[data-zone="${zid}"]`)?.remove(); 
-    delete zoneContents[zid]; 
+  Object.keys(zoneContents).forEach(zid => {
+    document.querySelector(`.court-player[data-zone="${zid}"]`)?.remove();
+    delete zoneContents[zid];
   });
-  document.querySelectorAll('.player-token').forEach(t => { 
-    
-    t.classList.remove('placed'); 
-    t.querySelector('.placed-check').style.display='none'; 
-  
-});
+  document.querySelectorAll('.player-token').forEach(t => {
+    t.classList.remove('placed', 'wrong-placed');
+    t.querySelector('.placed-check').style.display='none';
+  });
+  // Remove any reveal glows
+  document.querySelectorAll('.zone-reveal-glow').forEach(el => el.classList.remove('zone-reveal-glow'));
   updateSidebar();
 }
 document.getElementById('retryBtn').addEventListener('click', doReset);
 document.getElementById('resetBtn').addEventListener('click', doReset);
 
+// ── Hint toggles ──
 document.getElementById('hintToggle').addEventListener('click', () => {
   const box = document.getElementById('hintBox');
   const showing = box.style.display !== 'none';
   box.style.display = showing ? 'none' : 'block';
   document.getElementById('hintToggle').textContent = showing ? '💡 Show Hint' : '💡 Hide Hint';
+});
+
+document.getElementById('hint2Toggle')?.addEventListener('click', () => {
+  const box = document.getElementById('hint2Box');
+  const showing = box.style.display !== 'none';
+  box.style.display = showing ? 'none' : 'block';
+  document.getElementById('hint2Toggle').textContent = showing ? '🎯 Who Goes Where?' : '🎯 Hide Player Guide';
+});
+
+document.getElementById('hint3Toggle')?.addEventListener('click', () => {
+  const box = document.getElementById('hint3Box');
+  const showing = box.style.display !== 'none';
+  box.style.display = showing ? 'none' : 'block';
+  document.getElementById('hint3Toggle').textContent = showing ? '👁️ Show Me the Answer' : '👁️ Hide Answer';
+
+  // Pulse-glow every drop zone so the correct spots are obvious
+  if (box.style.display !== 'none') {
+    document.querySelectorAll('.drop-zone').forEach(dz => dz.classList.add('zone-reveal-glow'));
+    // Also open hint 1 and 2 automatically
+    document.getElementById('hintBox').style.display = 'block';
+    document.getElementById('hintToggle').textContent = '💡 Hide Hint';
+    document.getElementById('hint2Box').style.display = 'block';
+    document.getElementById('hint2Toggle').textContent = '🎯 Hide Player Guide';
+  } else {
+    document.querySelectorAll('.drop-zone').forEach(dz => dz.classList.remove('zone-reveal-glow'));
+  }
 });
 </script>
 {% endblock %}

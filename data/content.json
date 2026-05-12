@@ -272,6 +272,68 @@
       ],
       "did_you_know": "The libero wears a different colored jersey so referees can easily tell that they are a back-row defensive specialist.",
       "common_mistake": "Beginners often memorize player names without connecting them to court locations. Try thinking: setter near the net, blockers at the net, defenders in the back row."
+    },
+
+    {
+      "id": 7,
+      "title": "Rotations in Real Time",
+      "level": "Intermediate",
+      "emoji": "🔄",
+      "subtitle": "Why players move — and when",
+      "content": "Rotation is one of the most confusing parts of volleyball for beginners. Every time your team wins back the serve, all six players shift one position clockwise. The player who rotates into the back-right zone (zone 1) becomes the new server. But here's the key: players only have to stay in their rotation spot until the serve happens — once the ball is in play, everyone moves to their actual base position on the court.",
+      "key_facts": [
+        "Rotate clockwise when you win back the serve",
+        "Zone 1 (back-right) is always the server's box",
+        "Players hold rotation spots until the whistle blows",
+        "After the serve, everyone moves to their base position",
+        "Crossing before the serve = overlap fault (point to opponent)"
+      ],
+      "selection_prompt": "Which part of rotation confuses you most?",
+      "selection_options": [
+        "Which direction to rotate",
+        "When exactly to rotate",
+        "Where to go after the serve",
+        "It all makes sense!"
+      ],
+      "visual_cards": [
+        { "icon": "🔄", "title": "Clockwise Only",  "text": "All rotations go clockwise, every time." },
+        { "icon": "1️⃣", "title": "Zone 1 = Server", "text": "The player in back-right always serves next." },
+        { "icon": "🏃", "title": "Base After Serve", "text": "Players sprint to their role positions once the ball is live." },
+        { "icon": "⚠️", "title": "Overlap Fault",   "text": "Moving to base before the whistle is a rule violation." }
+      ],
+      "did_you_know": "Even the libero follows rotation rules — they can only enter the back row, swapping in for any back-row player without counting as a substitution.",
+      "common_mistake": "Rotating counter-clockwise, or rotating when you win a point on your own serve. You only rotate when you WIN BACK the serve from the other team."
+    },
+
+    {
+      "id": 8,
+      "title": "Reading the Play",
+      "level": "Advanced",
+      "emoji": "👁️",
+      "subtitle": "See it before it happens",
+      "content": "Elite volleyball isn't about reacting — it's about predicting. Before the ball is even set, experienced players are reading the opponent's setter shoulders, the hitter's approach angle, and the blocker's positioning to know where the ball is going before it gets there. On defense, you read the block first: wherever the block seals, you cover the opposite lane.",
+      "key_facts": [
+        "Read the setter's shoulders to predict the set direction",
+        "A hitter's approach angle tells you their likely shot",
+        "The libero calls who takes the serve — watch their hands",
+        "Block seals one lane — defenders cover the other",
+        "Communication ('mine!', 'line!') eliminates defensive gaps"
+      ],
+      "selection_prompt": "Which skill would you work on first?",
+      "selection_options": [
+        "Reading the setter",
+        "Reading the hitter's approach",
+        "Defensive positioning",
+        "On-court communication"
+      ],
+      "visual_cards": [
+        { "icon": "🧠", "title": "Read the Setter",   "text": "Shoulders square left = outside set. Turned right = back-set." },
+        { "icon": "🏃", "title": "Hitter's Angle",    "text": "45° approach = cross-court. Straight at net = line shot." },
+        { "icon": "🤲", "title": "Block First",        "text": "The block takes one lane — diggers cover the open lane." },
+        { "icon": "💬", "title": "Talk Constantly",   "text": "Silent teams lose balls in the gaps between players." }
+      ],
+      "did_you_know": "Top liberos can start moving toward the dig spot before the hitter even contacts the ball — pure pattern recognition built from thousands of repetitions.",
+      "common_mistake": "Watching the ball instead of the hitter. Your eyes should be on the attacker's arm and shoulder at the moment of contact, not tracking the ball through the air."
     }
     ],
 

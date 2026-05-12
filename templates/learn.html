@@ -4,7 +4,7 @@
 {% block progress %}
 <div class="progress-wrap">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-    <div class="progress-label" style="margin:0;">Lesson {{ lesson_num }} of {{ total }} — Learning Phase</div>
+    <div class="progress-label" style="margin:0;">Lesson {{ lesson_num }} of {{ total }} — {{ lesson.title }}</div>
     <div style="font-size:.7rem; color:rgba(255,255,255,0.3); letter-spacing:1px;">
       {% if lesson.level == 'Beginner' %}🟢{% elif lesson.level == 'Intermediate' %}🟡{% else %}🔴{% endif %}
       {{ lesson.level | upper }}
@@ -78,43 +78,13 @@
         <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82);">A match is best of 5 sets. The first team to 25 points (with at least a 2-point lead) wins a set. If it reaches a deciding 5th set, that one goes to 15 points.</p>
       </div>
 
-      <!-- CARD 3: Rotation -->
-      <div class="vl-card mb-4">
-        <p class="section-title mb-3">🔄 Rotation</p>
-        <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:20px;">Players rotate <strong style="color:var(--net);">clockwise</strong> each time their team earns the right to serve. Everyone cycles through all 6 positions — front row attacks and blocks; back row passes and defends.</p>
-
-        <!-- Rotation SVG -->
-        <div style="text-align:center; margin-bottom:12px;">
-          <svg viewBox="0 0 320 200" style="width:100%; max-width:380px; border-radius:10px;">
-            <!-- Court background -->
-            <rect x="0" y="0" width="320" height="200" rx="8" fill="#1d3d2c"/>
-            <rect x="12" y="12" width="296" height="176" rx="4" fill="#2e6644"/>
-            <!-- Net -->
-            <line x1="12" y1="100" x2="308" y2="100" stroke="#c8b077" stroke-width="3"/>
-            <!-- Rotation arrow -->
-            <path d="M160 30 A70 55 0 0 1 260 100" fill="none" stroke="rgba(232,197,71,0.5)" stroke-width="1.5" stroke-dasharray="5,3"/>
-            <polygon points="262,92 268,105 255,103" fill="rgba(232,197,71,0.5)"/>
-            <text x="195" y="62" fill="rgba(232,197,71,0.7)" font-size="9" font-family="sans-serif">rotate clockwise</text>
-            <!-- Players front row -->
-            <circle cx="75"  cy="72" r="14" fill="#E8C547"/>
-            <text x="75"  y="77" text-anchor="middle" fill="#073763" font-size="9" font-family="sans-serif" font-weight="700">S</text>
-            <circle cx="160" cy="72" r="14" fill="#9B59B6"/>
-            <text x="160" y="77" text-anchor="middle" fill="white" font-size="8" font-family="sans-serif" font-weight="700">MB</text>
-            <circle cx="245" cy="72" r="14" fill="#5AAD7E"/>
-            <text x="245" y="77" text-anchor="middle" fill="white" font-size="8" font-family="sans-serif" font-weight="700">RS</text>
-            <!-- Players back row -->
-            <circle cx="75"  cy="148" r="14" fill="#3B82A0"/>
-            <text x="75"  y="153" text-anchor="middle" fill="white" font-size="8" font-family="sans-serif" font-weight="700">OH</text>
-            <circle cx="160" cy="148" r="14" fill="#E05C3A"/>
-            <text x="160" y="153" text-anchor="middle" fill="white" font-size="9" font-family="sans-serif" font-weight="700">L</text>
-            <circle cx="245" cy="148" r="14" fill="#F0A500"/>
-            <text x="245" y="153" text-anchor="middle" fill="white" font-size="8" font-family="sans-serif" font-weight="700">DS</text>
-            <!-- Labels -->
-            <text x="20" y="80" fill="rgba(255,255,255,0.35)" font-size="8" font-family="sans-serif">FRONT</text>
-            <text x="20" y="155" fill="rgba(255,255,255,0.35)" font-size="8" font-family="sans-serif">BACK</text>
-          </svg>
+      <!-- CARD 3: Rotation teaser -->
+      <div class="vl-card mb-4" style="border-color:rgba(232,197,71,0.2); background:rgba(232,197,71,0.04);">
+        <p class="section-title mb-3">🔄 Rotation — The Quick Version</p>
+        <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:16px;">Whenever your team wins back the serve, everyone shifts one spot <strong style="color:var(--net);">clockwise</strong>. The player who rotates into the back-right corner becomes the next server. Front row attacks and blocks; back row passes and defends.</p>
+        <div style="background:rgba(232,197,71,0.07); border-left:3px solid var(--net); border-radius:0 8px 8px 0; padding:12px 16px;">
+          <p style="font-size:.88rem; color:rgba(255,255,255,0.7); margin:0; line-height:1.7;">Don't worry about memorising it now — <strong style="color:var(--net);">Lesson 7</strong> walks through rotations in full detail with an interactive court you can click through.</p>
         </div>
-        <p style="font-size:.82rem; color:rgba(255,255,255,0.4); text-align:center;">Your team's current rotation — each position above ↑</p>
       </div>
 
       <!-- ══ POSITIONS MAP — the missing section ══ -->
@@ -712,48 +682,361 @@
       </div>
 
       {% elif lesson_num == 6 %}
-      <!-- LESSON 6: Court positions + setup activity -->
+      <!-- LESSON 6: Court positions — formation focus -->
 
-      <div class="vl-card mb-4 interactive-card">
-        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 TAP TO LEARN POSITIONS</p>
-        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:18px;">
-          Tap each role to see its main job.
+      <!-- Positions in a real formation -->
+      <div class="vl-card mb-4">
+        <p class="section-title mb-3">📍 Where Everyone Lines Up</p>
+        <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:18px;">
+          Each position has a home base on the court. Front-row players are within 3 metres of the net — ready to attack and block. Back-row players spread out behind the attack line to pass and dig. Here's the starting picture for a typical rotation:
         </p>
-      
-        <div id="positionLearnGroup" style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px;">
-          <div class="choice-card position-card" data-msg="Setter: sets the second touch near the net.">🧠 Setter</div>
-          <div class="choice-card position-card" data-msg="Outside hitter: attacks from the left side.">⚡ Outside Hitter</div>
-          <div class="choice-card position-card" data-msg="Middle blocker: blocks quick attacks at the net.">🛡️ Middle Blocker</div>
-          <div class="choice-card position-card" data-msg="Right side: attacks and blocks from the right.">↗️ Right Side</div>
-          <div class="choice-card position-card" data-msg="Libero: back-row passer and defender.">🙌 Libero</div>
-          <div class="choice-card position-card" data-msg="Defensive specialist: back-row passing and defense.">👟 Defensive Specialist</div>
+        <div style="text-align:center; margin-bottom:12px;">
+          <svg viewBox="0 0 320 240" style="width:100%; max-width:380px; border-radius:10px;">
+            <rect x="0" y="0" width="320" height="240" rx="8" fill="#1d3d2c"/>
+            <rect x="14" y="14" width="292" height="212" rx="4" fill="#2e6644"/>
+            <rect x="14" y="14" width="292" height="212" rx="4" fill="none" stroke="#7bcf79" stroke-width="1.5"/>
+            <!-- Attack line -->
+            <line x1="14" y1="155" x2="306" y2="155" stroke="#7bcf79" stroke-width="1" stroke-dasharray="6,4" opacity=".5"/>
+            <!-- Net -->
+            <line x1="14" y1="120" x2="306" y2="120" stroke="#c8b077" stroke-width="3"/>
+            <!-- Front row labels -->
+            <text x="58" y="118" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="7" font-family="sans-serif">ZONE 4</text>
+            <text x="160" y="118" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="7" font-family="sans-serif">ZONE 3</text>
+            <text x="262" y="118" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="7" font-family="sans-serif">ZONE 2</text>
+            <!-- Front row players -->
+            <circle cx="58"  cy="95" r="18" fill="#3B82A0"/><text x="58"  y="100" text-anchor="middle" fill="white" font-size="8" font-weight="700" font-family="sans-serif">OH</text>
+            <circle cx="160" cy="95" r="18" fill="#9B59B6"/><text x="160" y="100" text-anchor="middle" fill="white" font-size="8" font-weight="700" font-family="sans-serif">MB</text>
+            <circle cx="262" cy="95" r="18" fill="#E8C547"/><text x="262" y="100" text-anchor="middle" fill="#073763" font-size="8" font-weight="700" font-family="sans-serif">S</text>
+            <!-- Back row labels -->
+            <text x="58"  y="225" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="7" font-family="sans-serif">ZONE 5</text>
+            <text x="160" y="225" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="7" font-family="sans-serif">ZONE 6</text>
+            <text x="262" y="225" text-anchor="middle" fill="rgba(255,255,255,0.2)" font-size="7" font-family="sans-serif">ZONE 1</text>
+            <!-- Back row players -->
+            <circle cx="58"  cy="195" r="18" fill="#5AAD7E"/><text x="58"  y="200" text-anchor="middle" fill="white" font-size="8" font-weight="700" font-family="sans-serif">RS</text>
+            <circle cx="160" cy="195" r="18" fill="#E05C3A"/><text x="160" y="200" text-anchor="middle" fill="white" font-size="9" font-weight="700" font-family="sans-serif">L</text>
+            <circle cx="262" cy="195" r="18" fill="#F0A500"/><text x="262" y="200" text-anchor="middle" fill="white" font-size="8" font-weight="700" font-family="sans-serif">DS</text>
+            <!-- Opponent -->
+            <circle cx="58"  cy="35" r="10" fill="rgba(255,255,255,0.08)"/>
+            <circle cx="160" cy="35" r="10" fill="rgba(255,255,255,0.08)"/>
+            <circle cx="262" cy="35" r="10" fill="rgba(255,255,255,0.08)"/>
+            <text x="160" y="18" text-anchor="middle" fill="rgba(123,207,121,0.25)" font-size="7" font-family="sans-serif" letter-spacing="2">OPPONENT</text>
+            <text x="160" y="232" text-anchor="middle" fill="rgba(123,207,121,0.4)" font-size="7" font-family="sans-serif" letter-spacing="2">YOUR TEAM</text>
+          </svg>
         </div>
-      
-        <div id="positionFeedback" class="feedback-box instinct-reveal" style="display:none;"></div>
+        <p style="font-size:.78rem; color:rgba(255,255,255,0.3); text-align:center; margin-top:4px;">Front row: OH · MB · S — Back row: RS · L · DS</p>
       </div>
 
-      <div class="vl-card mb-4 interactive-card">
-        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 QUICK CHECK</p>
-        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">
-          In serve receive, who should usually be ready near the net for the second touch?
-        </p>
+      <!-- What each position actually does in a play -->
+      <div class="vl-card mb-4">
+        <p class="section-title mb-3">🎯 What Each Position Does in a Play</p>
+        <div style="display:flex; flex-direction:column; gap:0;">
+          {% set pos_details = [
+            ("#E8C547","#073763","S","Setter","Zone 2 (front-right)","Takes the second touch. Runs all offensive decisions — who gets the set, what type. Stays near the net between rallies."),
+            ("#3B82A0","white","OH","Outside Hitter","Zone 4 (front-left)","Primary attacker. Also a key passer in serve receive. Gets the most sets because it's the easiest angle for the setter."),
+            ("#9B59B6","white","MB","Middle Blocker","Zone 3 (front-center)","Leads the block at the net. Also hits quick sets in the middle — the fastest play in volleyball. Moves side to side constantly."),
+            ("#5AAD7E","white","RS","Right Side / Opposite","Zone 2 back (zone 1)","Attacks from the right and provides a second blocking option. Also covers the right side defensively in the back row."),
+            ("#E05C3A","white","L","Libero","Zone 6 (back-center)","Defensive specialist in a different-coloured jersey. Can't attack above the net or serve. Best passer — anchors serve receive."),
+            ("#F0A500","white","DS","Defensive Specialist","Zone 5 (back-left)","Similar to libero but can rotate out. Passes and digs in the back row. Often subbed in for a front-row player when they rotate back."),
+          ] %}
+          {% for bg, tc, abbr, name, zone, desc in pos_details %}
+          <div style="display:flex; gap:14px; align-items:flex-start; padding:14px 0; {% if not loop.last %}border-bottom:1px solid rgba(255,255,255,0.05);{% endif %}">
+            <div style="width:36px; height:36px; border-radius:50%; background:{{ bg }}; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',cursive; font-size:.9rem; color:{{ tc }}; flex-shrink:0; margin-top:2px;">{{ abbr }}</div>
+            <div>
+              <div style="font-weight:700; font-size:.9rem; color:rgba(255,255,255,0.9); margin-bottom:2px;">{{ name }} <span style="font-weight:400; font-size:.75rem; color:rgba(255,255,255,0.35);">· {{ zone }}</span></div>
+              <div style="font-size:.82rem; color:rgba(255,255,255,0.5); line-height:1.65;">{{ desc }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
 
+      <!-- Interactive: match role to job -->
+      <div class="vl-card mb-4 interactive-card">
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 MATCH THE ROLE</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Which player's job is described? Tap your answer.</p>
+        <div style="background:rgba(0,0,0,0.2); border-radius:10px; padding:16px; margin-bottom:14px; font-size:.93rem; color:rgba(255,255,255,0.8); line-height:1.8;">
+          📋 This player takes the <strong>second touch</strong> on nearly every rally, decides which hitter gets the ball, and rarely attacks themselves. They're the quarterback of the team.
+        </div>
         <div class="choice-group" id="setupCheckGroup" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
-          <div class="choice-card" data-correct="false" data-msg="The libero is important in serve receive, but they usually focus on passing in the back row.">
-            Libero
+          <div class="choice-card" data-correct="false" data-msg="The libero is your best passer — they take the first touch on serve receive, not the second.">Libero</div>
+          <div class="choice-card" data-correct="true"  data-msg="Correct! The setter takes the second touch and runs the offense. Every hitter on the team is waiting for the setter's decision.">Setter</div>
+          <div class="choice-card" data-correct="false" data-msg="The middle blocker attacks quick sets but doesn't run the offense — that's the setter's job.">Middle Blocker</div>
+          <div class="choice-card" data-correct="false" data-msg="The outside hitter is the primary attacker, not the playmaker.">Outside Hitter</div>
+        </div>
+        <div id="setupCheckFeedback" class="feedback-box" style="display:none;"></div>
+      </div>
+
+      <!-- Bridge to challenges -->
+      <div class="vl-card mb-4 interactive-card">
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 QUICK CHECK — Front or Back?</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Which row does this player belong in during a normal rally?</p>
+        <div style="background:rgba(0,0,0,0.2); border-radius:10px; padding:16px; margin-bottom:14px; font-size:.93rem; color:rgba(255,255,255,0.8); line-height:1.8;">
+          📋 The outside hitter is about to receive a serve. Where are they positioned?
+        </div>
+        <div class="choice-group" id="frontBackGroup" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+          <div class="choice-card" data-correct="false" data-msg="The outside hitter doesn't stay at the net during serve receive — they drop back to help pass the serve alongside the libero.">Right at the net (front row)</div>
+          <div class="choice-card" data-correct="true"  data-msg="Correct! In serve receive, the outside hitter drops into the back row to help pass. After the pass, they move forward into their attack approach. This is the outside hitter's double job — pass AND attack.">Back row, helping to pass the serve</div>
+          <div class="choice-card" data-correct="false" data-msg="The outside hitter doesn't sit out — they're one of the most active players in serve receive.">Off the court — they only attack</div>
+        </div>
+        <div id="frontBackFeedback" class="feedback-box" style="display:none;"></div>
+      </div>
+
+      {# ══════════════════════════════════════════════════════════════
+         LESSON 7 — Rotations in Real Time
+      ══════════════════════════════════════════════════════════════ #}
+      {% elif lesson_num == 7 %}
+
+      <!-- Intro card -->
+      <div class="vl-card mb-4">
+        <p class="section-title mb-3">🔄 Two Rules You Need to Know</p>
+        <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:20px;">
+          Rotation has two layers that beginners often mix up. The <strong style="color:var(--net);">serving order</strong> is the rule — players must stay in their numbered position until the serve happens. But the moment the ball is served, everyone sprints to their <strong style="color:var(--net);">base position</strong> — the spot that matches their actual role.
+        </p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div class="stat-tile" style="background:rgba(59,130,160,0.15); border-color:rgba(59,130,160,0.4);">
+            <div class="stat-num" style="color:#9dd5ef; font-size:1.1rem; padding:6px 0;">📋 Serving Order</div>
+            <div class="stat-label">The rule. Positions 1–6 clockwise. Must hold until the whistle.</div>
           </div>
-          <div class="choice-card" data-correct="true" data-msg="Correct! The setter stays near the net so they can set the second touch after the pass.">
-            Setter
-          </div>
-          <div class="choice-card" data-correct="false" data-msg="The middle blocker is usually near the net, but their main job is blocking and quick attacks, not setting the second touch.">
-            Middle Blocker
-          </div>
-          <div class="choice-card" data-correct="false" data-msg="Outside hitters may pass or attack, but the setter is responsible for the second touch.">
-            Outside Hitter
+          <div class="stat-tile" style="background:rgba(232,197,71,0.1); border-color:rgba(232,197,71,0.3);">
+            <div class="stat-num" style="color:var(--net); font-size:1.1rem; padding:6px 0;">🏃 Base Position</div>
+            <div class="stat-label">Where players actually run after the serve — based on their role.</div>
           </div>
         </div>
+      </div>
 
-        <div id="setupCheckFeedback" class="feedback-box" style="display:none;"></div>
+      <!-- Zone numbers card -->
+      <div class="vl-card mb-4">
+        <p class="section-title mb-3">📍 The 6 Zones — Numbered</p>
+        <p style="font-size:.92rem; color:rgba(255,255,255,0.65); line-height:1.75; margin-bottom:18px;">
+          Every court position has a number. Zones 1–3 are the back row (right to left), zones 4–6 are the front row (left to right from the net). The server always starts in zone 1.
+        </p>
+        <div style="text-align:center;">
+          <svg viewBox="0 0 320 220" style="width:100%; max-width:380px; border-radius:10px;">
+            <!-- Court -->
+            <rect x="0" y="0" width="320" height="220" rx="8" fill="#1d3d2c"/>
+            <rect x="14" y="14" width="292" height="192" rx="4" fill="#2e6644"/>
+            <rect x="14" y="14" width="292" height="192" rx="4" fill="none" stroke="#7bcf79" stroke-width="1.5"/>
+            <!-- Net -->
+            <line x1="14" y1="110" x2="306" y2="110" stroke="#c8b077" stroke-width="3"/>
+            <!-- Grid lines -->
+            <line x1="111" y1="14" x2="111" y2="206" stroke="rgba(123,207,121,0.2)" stroke-width="1"/>
+            <line x1="208" y1="14" x2="208" y2="206" stroke="rgba(123,207,121,0.2)" stroke-width="1"/>
+            <!-- Front row zones (4, 3, 2) — your team's attacking side (bottom half) -->
+            <text x="62"  y="72" text-anchor="middle" fill="rgba(232,197,71,0.7)" font-size="28" font-family="sans-serif" font-weight="700">4</text>
+            <text x="159" y="72" text-anchor="middle" fill="rgba(232,197,71,0.7)" font-size="28" font-family="sans-serif" font-weight="700">3</text>
+            <text x="256" y="72" text-anchor="middle" fill="rgba(232,197,71,0.7)" font-size="28" font-family="sans-serif" font-weight="700">2</text>
+            <!-- Back row zones (5, 6, 1) -->
+            <text x="62"  y="168" text-anchor="middle" fill="rgba(157,213,239,0.7)" font-size="28" font-family="sans-serif" font-weight="700">5</text>
+            <text x="159" y="168" text-anchor="middle" fill="rgba(157,213,239,0.7)" font-size="28" font-family="sans-serif" font-weight="700">6</text>
+            <text x="256" y="168" text-anchor="middle" fill="rgba(157,213,239,0.7)" font-size="28" font-family="sans-serif" font-weight="700">1</text>
+            <!-- Labels -->
+            <text x="160" y="210" text-anchor="middle" fill="rgba(123,207,121,0.4)" font-size="8" font-family="sans-serif" letter-spacing="2">YOUR TEAM</text>
+            <text x="160" y="24"  text-anchor="middle" fill="rgba(123,207,121,0.28)" font-size="8" font-family="sans-serif" letter-spacing="2">OPPONENT</text>
+            <!-- Zone 1 star (server) -->
+            <text x="256" y="155" text-anchor="middle" fill="rgba(224,92,58,0.8)" font-size="10" font-family="sans-serif">★ server</text>
+          </svg>
+          <p style="font-size:.72rem; color:rgba(255,255,255,0.3); margin-top:6px;">Zone 1 (back-right) = the server's box. Rotate clockwise when you win the serve.</p>
+        </div>
+      </div>
+
+      <!-- Interactive rotate button -->
+      <div class="vl-card mb-4 interactive-card" style="border-color:rgba(232,197,71,0.25);">
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 WATCH THE ROTATION</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Your team just won a rally and earned the serve. Hit "Rotate" to see everyone shift clockwise to the next position.</p>
+
+        <div style="text-align:center; margin-bottom:16px;">
+          <svg id="rotateCourt" viewBox="0 0 320 220" style="width:100%; max-width:380px; border-radius:10px;">
+            <rect x="0" y="0" width="320" height="220" rx="8" fill="#1d3d2c"/>
+            <rect x="14" y="14" width="292" height="192" rx="4" fill="#2e6644"/>
+            <rect x="14" y="14" width="292" height="192" rx="4" fill="none" stroke="#7bcf79" stroke-width="1.5"/>
+            <line x1="14" y1="110" x2="306" y2="110" stroke="#c8b077" stroke-width="3"/>
+            <line x1="111" y1="14" x2="111" y2="206" stroke="rgba(123,207,121,0.15)" stroke-width="1"/>
+            <line x1="208" y1="14" x2="208" y2="206" stroke="rgba(123,207,121,0.15)" stroke-width="1"/>
+            <!-- Players: S, OH, MB, RS, L, DS -->
+            <circle id="rp-0" cx="62"  cy="60"  r="20" fill="#E8C547"/>
+            <text   id="rt-0" x="62"  y="65"  text-anchor="middle" fill="#073763" font-size="10" font-family="sans-serif" font-weight="700">S</text>
+            <circle id="rp-1" cx="159" cy="60"  r="20" fill="#9B59B6"/>
+            <text   id="rt-1" x="159" y="65"  text-anchor="middle" fill="white"   font-size="8"  font-family="sans-serif" font-weight="700">MB</text>
+            <circle id="rp-2" cx="256" cy="60"  r="20" fill="#5AAD7E"/>
+            <text   id="rt-2" x="256" y="65"  text-anchor="middle" fill="white"   font-size="8"  font-family="sans-serif" font-weight="700">RS</text>
+            <circle id="rp-3" cx="62"  cy="160" r="20" fill="#3B82A0"/>
+            <text   id="rt-3" x="62"  y="165" text-anchor="middle" fill="white"   font-size="8"  font-family="sans-serif" font-weight="700">OH</text>
+            <circle id="rp-4" cx="159" cy="160" r="20" fill="#E05C3A"/>
+            <text   id="rt-4" x="159" y="165" text-anchor="middle" fill="white"   font-size="9"  font-family="sans-serif" font-weight="700">L</text>
+            <circle id="rp-5" cx="256" cy="160" r="20" fill="#F0A500"/>
+            <text   id="rt-5" x="256" y="165" text-anchor="middle" fill="white"   font-size="8"  font-family="sans-serif" font-weight="700">DS</text>
+            <text x="160" y="210" text-anchor="middle" fill="rgba(123,207,121,0.4)" font-size="8" font-family="sans-serif" letter-spacing="2">YOUR TEAM</text>
+          </svg>
+        </div>
+
+        <div style="text-align:center; margin-bottom:10px;">
+          <div id="rotateStepLabel" style="font-size:.82rem; color:rgba(255,255,255,0.5); margin-bottom:12px; font-style:italic;">Starting position — Rotation 1</div>
+          <button type="button" id="rotateBtn" class="btn-vl" style="font-size:.95rem; padding:10px 32px;">🔄 Rotate →</button>
+          <button type="button" id="rotateResetBtn" class="btn-vl btn-vl-outline" style="font-size:.85rem; padding:10px 20px; margin-left:8px; font-family:'Bebas Neue',cursive; letter-spacing:1px; border-radius:8px;">Reset</button>
+        </div>
+
+        <div id="rotateTip" style="display:none; background:rgba(232,197,71,0.07); border:1px solid rgba(232,197,71,0.2); border-radius:10px; padding:12px 16px; font-size:.84rem; color:rgba(255,255,255,0.7); line-height:1.65; margin-top:8px;"></div>
+      </div>
+
+      <!-- Rotation recall quiz -->
+      <div class="vl-card mb-4 interactive-card" style="border-color:rgba(232,197,71,0.3);">
+        <p class="section-title mb-1" style="color:var(--net);">🔁 QUICK RECALL — Rotation Rules</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Let's make sure the rotation logic clicked.</p>
+        <div style="background:rgba(0,0,0,0.2); border-radius:10px; padding:16px; margin-bottom:14px; font-size:.93rem; color:rgba(255,255,255,0.8); line-height:1.75;">
+          📋 Your team just won the rally. The other team was serving. What happens next?
+        </div>
+        <div class="choice-group" id="rotRecall" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+          <div class="choice-card" data-correct="false" data-msg="Only the serving team rotates when they win the serve. Since you just won the serve back, you rotate — but not the opponent.">Both teams rotate clockwise</div>
+          <div class="choice-card" data-correct="true"  data-msg="Correct! You won the right to serve, so your team rotates clockwise. The player who moves into zone 1 (back-right) becomes the new server.">Your team rotates clockwise and earns the serve</div>
+          <div class="choice-card" data-correct="false" data-msg="Counter-clockwise is wrong — rotation always goes clockwise, and only when your team wins back the serve.">Your team rotates counter-clockwise</div>
+          <div class="choice-card" data-correct="false" data-msg="You don't stay put — winning a rally from the opponent's serve means you earn the serve and must rotate before the next point.">Nothing — you just serve from wherever you are</div>
+        </div>
+        <div id="rotRecallFeedback" class="feedback-box" style="display:none;"></div>
+      </div>
+
+      <!-- Overlap rule card -->
+      <div class="vl-card mb-4" style="border-color:rgba(224,92,58,0.3); background:rgba(224,92,58,0.05); padding:22px 28px;">
+        <div style="display:flex; gap:16px; align-items:flex-start;">
+          <div class="icon-bubble" style="background:rgba(224,92,58,0.12); border-color:rgba(224,92,58,0.4);">⚠️</div>
+          <div>
+            <p class="section-title mb-2" style="color:var(--spike);">THE OVERLAP FAULT</p>
+            <p style="font-size:.92rem; line-height:1.72; color:rgba(255,255,255,0.72); margin:0;">Before the serve, players must stay in their correct relative positions — a back-row player can't stand in front of the same-side front-row player. Crossing over before the whistle is an <strong style="color:var(--spike);">overlap fault</strong> and gives the point to the other team. Once the ball is served, players are free to move anywhere.</p>
+          </div>
+        </div>
+      </div>
+
+      {# ══════════════════════════════════════════════════════════════
+         LESSON 8 — Reading the Play
+      ══════════════════════════════════════════════════════════════ #}
+      {% elif lesson_num == 8 %}
+
+      <!-- Intro card -->
+      <div class="vl-card mb-4">
+        <p class="section-title mb-3">👁️ Court Vision — Before the Ball Moves</p>
+        <p style="font-size:1.02rem; line-height:1.85; color:rgba(255,255,255,0.82); margin-bottom:16px;">
+          Great players aren't reacting — they're <strong style="color:var(--net);">predicting</strong>. Before the ball is even set, experienced players are reading the opponent's body language, the setter's shoulders, the hitter's approach angle. This lesson teaches you what to watch for.
+        </p>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div class="info-tile">
+            <div class="info-tile-icon">🧠</div>
+            <div class="info-tile-text"><strong style="color:rgba(255,255,255,0.9);">Setter's shoulders</strong> — if they're square to the left antenna, the set is likely going outside (zone 4). Turned slightly right? Back-set incoming.</div>
+          </div>
+          <div class="info-tile">
+            <div class="info-tile-icon">🏃</div>
+            <div class="info-tile-text"><strong style="color:rgba(255,255,255,0.9);">Hitter's approach angle</strong> — a hitter running straight at the net usually goes line; one approaching at 45° is setting up a cross-court cut shot.</div>
+          </div>
+          <div class="info-tile">
+            <div class="info-tile-icon">🙌</div>
+            <div class="info-tile-text"><strong style="color:rgba(255,255,255,0.9);">Libero's call</strong> — in serve receive, the libero calls who takes the ball. Watch the libero's hands and voice before the serve even crosses the net.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Setter decision card -->
+      <div class="vl-card mb-4">
+        <p class="section-title mb-3">⚡ What the Setter Is Thinking</p>
+        <p style="font-size:.92rem; color:rgba(255,255,255,0.65); line-height:1.75; margin-bottom:18px;">
+          The setter reads the pass quality first, then decides which option to use. They're managing three hitters simultaneously and trying to keep the defense guessing.
+        </p>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; gap:14px; align-items:flex-start; padding:14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:10px;">
+            <span style="font-size:1.4rem; flex-shrink:0;">📡</span>
+            <div>
+              <div style="font-weight:700; font-size:.9rem; color:rgba(255,255,255,0.9); margin-bottom:3px;">If the pass is tight to the net</div>
+              <div style="font-size:.82rem; color:rgba(255,255,255,0.5); line-height:1.6;">All three options are available — high ball to OH, quick set to MB, or back-set to RS. The setter has full freedom. They'll pick based on the block positioning.</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:14px; align-items:flex-start; padding:14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:10px;">
+            <span style="font-size:1.4rem; flex-shrink:0;">😬</span>
+            <div>
+              <div style="font-weight:700; font-size:.9rem; color:rgba(255,255,255,0.9); margin-bottom:3px;">If the pass is off the net (shanked)</div>
+              <div style="font-size:.82rem; color:rgba(255,255,255,0.5); line-height:1.6;">The quick middle is off the table — not enough time to sync up. The setter goes high ball to the outside hitter or even plays it over themselves if the pass is really bad.</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:14px; align-items:flex-start; padding:14px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:10px;">
+            <span style="font-size:1.4rem; flex-shrink:0;">🎭</span>
+            <div>
+              <div style="font-weight:700; font-size:.9rem; color:rgba(255,255,255,0.9); margin-bottom:3px;">The deception play</div>
+              <div style="font-size:.82rem; color:rgba(255,255,255,0.5); line-height:1.6;">Setters fake the middle set to freeze the blocker, then redirect to the outside. The middle blocker's job is to jump as if they're getting the ball — even if they won't — just to pull the block.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interactive: read the setter -->
+      <div class="vl-card mb-4 interactive-card" style="border-color:rgba(59,130,160,0.25);">
+        <p class="section-title mb-1" style="color:#9dd5ef;">🎮 READ THE SETTER</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">Read each situation and tap where you think the setter will go. Then see the reasoning.</p>
+
+        <!-- Scenario 1 -->
+        <div style="background:rgba(0,0,0,0.2); border-radius:10px; padding:16px; margin-bottom:14px; font-size:.93rem; color:rgba(255,255,255,0.8); line-height:1.8;">
+          📋 The pass comes in perfectly — tight to the net, right in front of the setter. The opposing middle blocker is cheating toward zone 4 (outside left). What does the smart setter do?
+        </div>
+        <div class="choice-group" id="readGroup1" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+          <div class="choice-card" data-correct="false" data-msg="The outside hitter would work, but the blocker is already moving there — you'd be setting into traffic. Not the best read.">High ball to the Outside Hitter (zone 4)</div>
+          <div class="choice-card" data-correct="true"  data-msg="Perfect read! The middle blocker cheated left, so zone 2 (right side) is exposed. A back-set to the Right Side hitter gets a one-on-one or even no-block situation.">Back-set to the Right Side Hitter (zone 2)</div>
+          <div class="choice-card" data-correct="false" data-msg="The quick middle works when the middle blocker is centered — but they've already moved toward zone 4, so a back-set exploits the bigger gap.">Quick set to the Middle Blocker</div>
+        </div>
+        <div id="readFeedback1" class="feedback-box" style="display:none; margin-bottom:20px;"></div>
+
+        <!-- Scenario 2 -->
+        <div style="background:rgba(0,0,0,0.2); border-radius:10px; padding:16px; margin-bottom:14px; font-size:.93rem; color:rgba(255,255,255,0.8); line-height:1.8;">
+          📋 The serve is tough — the pass flies two meters off the net. Your middle blocker is already running their quick approach. What's the setter's best option?
+        </div>
+        <div class="choice-group" id="readGroup2" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+          <div class="choice-card" data-correct="false" data-msg="The quick middle requires a near-perfect pass — there isn't time to sync the timing on a bad pass. The MB would arrive too early and jump before the ball gets there.">Force the quick set to the Middle Blocker</div>
+          <div class="choice-card" data-correct="true"  data-msg="Yes! A high ball outside gives the setter time to get under a bad pass and gives the hitter time to adjust their approach. It's the safe, reliable option when the pass is off.">High ball to the Outside Hitter</div>
+          <div class="choice-card" data-correct="false" data-msg="Playing the ball over on the second touch (a 'setter dump') is a surprise play — useful sometimes, but not the right call here when you have a hitter available and just need to handle a tough pass.">Play it over the net yourself (setter dump)</div>
+        </div>
+        <div id="readFeedback2" class="feedback-box" style="display:none;"></div>
+      </div>
+
+      <!-- Defensive read card -->
+      <div class="vl-card mb-4">
+        <p class="section-title mb-3">🛡️ Reading on Defense</p>
+        <p style="font-size:.92rem; color:rgba(255,255,255,0.65); line-height:1.75; margin-bottom:16px;">
+          Defense isn't just reacting to spikes — it's reading cues before contact to cheat into the right spot.
+        </p>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div class="info-tile">
+            <div class="info-tile-icon">👀</div>
+            <div class="info-tile-text"><strong style="color:rgba(255,255,255,0.9);">Watch the hitter's arm swing</strong> — a hitter opening their shoulder toward line is going line. Square to the court usually means cross-court. Start moving before contact.</div>
+          </div>
+          <div class="info-tile">
+            <div class="info-tile-icon">🤲</div>
+            <div class="info-tile-text"><strong style="color:rgba(255,255,255,0.9);">Blockers take away one lane</strong> — back-row defenders position themselves in the lane the block doesn't cover. If the block is sealing line, the diggers shift cross-court.</div>
+          </div>
+          <div class="info-tile">
+            <div class="info-tile-icon">💬</div>
+            <div class="info-tile-text"><strong style="color:rgba(255,255,255,0.9);">Talk constantly</strong> — "mine!", "help!", "line!" — communication eliminates gaps. Silent teams lose balls between players who both assumed the other would take it.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Defensive read quiz -->
+      <div class="vl-card mb-4 interactive-card" style="border-color:rgba(232,197,71,0.3);">
+        <p class="section-title mb-1" style="color:var(--net);">🎮 WHAT DO YOU WATCH?</p>
+        <p style="font-size:.75rem; color:rgba(255,255,255,0.3); margin-bottom:16px;">You're a back-row defender. The blocker at the net has sealed off the line shot. Where do you position?</p>
+        <div style="background:rgba(0,0,0,0.2); border-radius:10px; padding:16px; margin-bottom:14px; font-size:.93rem; color:rgba(255,255,255,0.8); line-height:1.8;">
+          📋 The block is fully closing the line. The hitter is winding up for a full power swing. You're in the back row. Where do you cheat to?
+        </div>
+        <div class="choice-group" id="defRead" style="display:flex; flex-direction:column; gap:8px; margin-bottom:14px;">
+          <div class="choice-card" data-correct="false" data-msg="The line is already covered by the block — two defenders on line would leave cross-court completely open. Spread out.">Stay behind the block covering the line</div>
+          <div class="choice-card" data-correct="true"  data-msg="Correct! The block takes line, so the open lane is cross-court. Shift toward the angle the block doesn't cover and you're in perfect position to dig the spike.">Shift cross-court — the open lane behind the block</div>
+          <div class="choice-card" data-correct="false" data-msg="Charging the net during a spike is dangerous and leaves the whole back court empty. Stay deep enough to read and react.">Move up to the attack line to cut off tips</div>
+        </div>
+        <div id="defReadFeedback" class="feedback-box" style="display:none;"></div>
+      </div>
+
+      <!-- Coaching tip -->
+      <div class="vl-card mb-4" style="border-color:rgba(232,197,71,0.3); background:rgba(232,197,71,0.06); padding:22px 28px;">
+        <div style="display:flex; gap:16px; align-items:flex-start;">
+          <div class="icon-bubble" style="background:rgba(232,197,71,0.15); border-color:rgba(232,197,71,0.4);">💡</div>
+          <div>
+            <p class="section-title mb-2">COACH'S CORNER</p>
+            <p style="font-size:.92rem; line-height:1.72; color:rgba(255,255,255,0.72); margin:0; font-style:italic;">"Every ball you play at the elite level, you've already decided what to do before it gets to you. That decision is made by reading the other side — the setter's eyes, the hitter's body, the way the ball spins off the pass. Train your eyes as hard as you train your arms."</p>
+          </div>
+        </div>
       </div>
 
       {% endif %}
@@ -930,8 +1213,8 @@
 
 /* ── Feedback boxes ── */
 .feedback-box { border-radius:8px; padding:12px 16px; font-size:.85rem; line-height:1.65; margin-top:10px; }
-.feedback-box.correct-fb { background:rgba(93,216,123,0.1); border:1px solid rgba(93,216,123,0.3); color:#5dd87b; }
-.feedback-box.wrong-fb   { background:rgba(224,92,58,0.08); border:1px solid rgba(224,92,58,0.25); color:#e09080; }
+.feedback-box.correct-fb, .feedback-box.feedback-correct { background:rgba(93,216,123,0.1); border:1px solid rgba(93,216,123,0.3); color:#5dd87b; }
+.feedback-box.wrong-fb, .feedback-box.feedback-wrong     { background:rgba(224,92,58,0.08); border:1px solid rgba(224,92,58,0.25); color:#e09080; }
 .feedback-box.instinct-reveal { background:rgba(59,130,160,0.1); border:1px solid rgba(59,130,160,0.3); color:#9dd5ef; }
 
 /* ── Check button ── */
@@ -1351,28 +1634,44 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('touchend', e => { const t = e.changedTouches[0]; endDrag(t.clientX, t.clientY); });
 });
 
-// ── Lesson 1: order drag init ──
+// ── Lesson 1: order drag + all choice groups init ──
 document.addEventListener('DOMContentLoaded', () => {
   initChoiceGroups();
 
-   // Lesson 6: allow users to tap multiple positions without locking the group
-   document.querySelectorAll('.position-card').forEach(card => {
-    card.addEventListener('click', () => {
-      document.querySelectorAll('.position-card').forEach(c => {
-        c.classList.remove('chosen-neutral');
+  // Lessons 6, 7, 8: manually-wired choice groups (outside initChoiceGroups scope)
+  const extraGroups = ['rotRecall', 'readGroup1', 'readGroup2', 'defRead', 'frontBackGroup'];
+  const extraFeedback = {
+    rotRecall: 'rotRecallFeedback',
+    readGroup1: 'readFeedback1',
+    readGroup2: 'readFeedback2',
+    defRead: 'defReadFeedback',
+    frontBackGroup: 'frontBackFeedback',
+  };
+  extraGroups.forEach(groupId => {
+    const group = document.getElementById(groupId);
+    if (!group) return;
+    group.querySelectorAll('.choice-card').forEach(card => {
+      card.addEventListener('click', () => {
+        if (group.dataset.answered) return;
+        group.dataset.answered = '1';
+        const correct = card.dataset.correct === 'true';
+        card.style.borderColor = correct ? '#5dd87b' : 'var(--spike)';
+        card.style.background  = correct ? 'rgba(93,216,123,0.1)' : 'rgba(224,92,58,0.1)';
+        group.querySelectorAll('.choice-card').forEach(c => {
+          if (c !== card) c.style.opacity = '0.45';
+          if (c.dataset.correct === 'true' && c !== card) { c.style.borderColor = '#5dd87b'; c.style.opacity = '1'; }
+        });
+        const fb = document.getElementById(extraFeedback[groupId]);
+        if (fb) {
+          fb.style.display = 'block';
+          fb.className = 'feedback-box ' + (correct ? 'feedback-correct' : 'feedback-wrong');
+          fb.textContent = card.dataset.msg;
+        }
       });
-
-      card.classList.add('chosen-neutral');
-
-      const fb = document.getElementById('positionFeedback');
-      if (fb) {
-        fb.style.display = 'block';
-        fb.className = 'feedback-box instinct-reveal';
-        fb.textContent = card.dataset.msg;
-      }
     });
   });
 
+  // Lesson 1: rally order drag
   const orderBank = document.getElementById('orderBank');
   const orderTarget = document.getElementById('orderTarget');
   if (!orderBank || !orderTarget) return;
@@ -1392,6 +1691,61 @@ document.addEventListener('DOMContentLoaded', () => {
       slot.classList.add('filled'); slot.innerHTML=`<span style="font-size:.88rem; font-weight:600; color:var(--net);">${getChipLabel(draggingChip)}</span>`;
       draggingChip = null;
     });
+  });
+});
+document.addEventListener('DOMContentLoaded', () => {
+  const rotateBtn = document.getElementById('rotateBtn');
+  const resetBtn  = document.getElementById('rotateResetBtn');
+  if (!rotateBtn) return;
+
+  // positions: [cx, cy] for each of the 6 players in rotation order
+  // Clockwise: front-left(4) → front-mid(3) → front-right(2) → back-right(1) → back-mid(6) → back-left(5)
+  const positions = [
+    [62, 60], [159, 60], [256, 60],   // front: zone 4, 3, 2
+    [256, 160], [159, 160], [62, 160]  // back: zone 1, 6, 5
+  ];
+  // player indices in the SVG: 0=S,1=MB,2=RS,3=OH,4=L,5=DS
+  // their starting slot indices into positions[]
+  let slots = [0, 1, 2, 3, 4, 5]; // slots[player] = position index
+  let step = 0;
+
+  const tips = [
+    "Starting position — Rotation 1. The Setter (S) is front-left.",
+    "Rotated to Rotation 2 — everyone shifts one spot clockwise. DS moves to back-right and becomes the server.",
+    "Rotation 3 — the Libero (L) is now in the back-right serving position.",
+    "Rotation 4 — the Outside Hitter (OH) serves from zone 1.",
+    "Rotation 5 — Middle Blocker (MB) is serving. Notice how the front row has changed entirely.",
+    "Rotation 6 — Right Side (RS) serves. One more rotate brings you back to the start.",
+  ];
+
+  function updatePositions() {
+    for (let p = 0; p < 6; p++) {
+      const [cx, cy] = positions[slots[p]];
+      const circle = document.getElementById(`rp-${p}`);
+      const text   = document.getElementById(`rt-${p}`);
+      if (circle) { circle.setAttribute('cx', cx); circle.setAttribute('cy', cy); }
+      if (text)   { text.setAttribute('x', cx);    text.setAttribute('y', cy + 5); }
+    }
+    document.getElementById('rotateStepLabel').textContent = tips[step % 6];
+    const tip = document.getElementById('rotateTip');
+    if (step > 0) {
+      tip.style.display = 'block';
+      tip.textContent = `After ${step} rotation${step > 1 ? 's' : ''}: the player in back-right (zone 1) is the server. Players have moved to their new rotation spots but will fan out to base positions once the whistle blows.`;
+    } else {
+      tip.style.display = 'none';
+    }
+  }
+
+  rotateBtn.addEventListener('click', () => {
+    // Shift each player's slot index forward by 1 (clockwise = next slot in the positions array)
+    slots = slots.map(s => (s + 1) % 6);
+    step++;
+    if (step >= 6) { step = 0; slots = [0,1,2,3,4,5]; } // full cycle back to start
+    updatePositions();
+  });
+
+  resetBtn.addEventListener('click', () => {
+    slots = [0,1,2,3,4,5]; step = 0; updatePositions();
   });
 });
 </script>
