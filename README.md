@@ -93,6 +93,13 @@ It may be a port different from 5000 (ex. 5001). Open that in your browser!
 
 ---
 
+# Team Members
+
+- Lisa — lisdis19
+- Hope — HopeTrygstad
+- Sydney — 5555sk AND syd6cyberbear
+- Jenna — jgs2188
+
 ## Course
 
 **COMS 4170 — User Interface Design**  
